@@ -85,7 +85,10 @@ class _MainPageState extends State<MainPage> {
       ),
 
       // body, basically the page to show on screen
-      body: _pages[_currentPage],
+      body: AnimatedSwitcher(
+        duration: Duration(milliseconds: 150),
+        child: _pages[_currentPage],
+      ),
 
     );
   }
