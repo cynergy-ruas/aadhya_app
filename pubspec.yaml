@@ -20,6 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  curved_navigation_bar: ^0.3.1
   dwimay_backend:
     git: https://github.com/cynergy-ruas/dwimay_app_backend.git
 
