@@ -1,9 +1,10 @@
 import 'package:dwimay/pages/about_page.dart';
-import 'package:dwimay/pages/profile_page.dart';
+import 'package:dwimay/pages/login_page.dart';
+import 'package:dwimay/pages/events_page.dart';
 import 'package:flutter/material.dart';
 
 /// The main page. It isn't technically a page, but it consists
-/// of the bottom navigation bar that is used to navigate to 
+/// of the bottom navigation bar that is used to navigate to
 /// other pages.
 class MainPage extends StatefulWidget {
   @override
@@ -11,7 +12,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
   List<Widget> _pages;
   int _currentPage;
 
@@ -20,11 +20,12 @@ class _MainPageState extends State<MainPage> {
     super.initState();
 
     // the pages that can be navigated to from the
-    // bottom navigation bar. The order of the pages is 
+    // bottom navigation bar. The order of the pages is
     // important.
     _pages = [
       AboutPage(),
-      ProfilePage(),
+      LoginPage(),
+      EventsPage(),
     ];
 
     _currentPage = 0;
@@ -41,25 +42,23 @@ class _MainPageState extends State<MainPage> {
       // the bottom navigation bar
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          // background color of the bar
-          canvasColor: Color(0xff393e46),
+            // background color of the bar
+            canvasColor: Color(0xff393e46),
 
-          // icon color of the selected tab
-          primaryColor: Color(0xff00adb5),
+            // icon color of the selected tab
+            primaryColor: Color(0xff00adb5),
 
-          // icon color of the unselected tab
-          textTheme: Theme.of(context).textTheme.copyWith(
-            caption: new TextStyle(color: Color(0xffeeeeee))
-          )
-        ),
-
+            // icon color of the unselected tab
+            textTheme: Theme.of(context)
+                .textTheme
+                .copyWith(caption: new TextStyle(color: Color(0xffeeeeee)))),
         child: BottomNavigationBar(
           currentIndex: _currentPage,
 
           // callback to execute when a bottom navigation bar
           // item is tapped.
           onTap: (index) {
-            // the [_currentPage] is set to the index of the 
+            // the [_currentPage] is set to the index of the
             // tapped item, in a [setState] call.
             setState(() {
               _currentPage = index;
@@ -68,28 +67,31 @@ class _MainPageState extends State<MainPage> {
 
           // the items in the bottom navigation bar. The order of the
           // items should match the order of the pages in [_pages]
-          items: <BottomNavigationBarItem> [
+          items: <BottomNavigationBarItem>[
             // nav bar item for about page
             BottomNavigationBarItem(
-              icon: Icon(Icons.info),
-              title: Container() // an empty container because the `title` argument should not be null.
-            ),
+                icon: Icon(Icons.info),
+                title:
+                    Container() // an empty container because the `title` argument should not be null.
+                ),
 
             // nav bar item for profile page
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Container()
+                icon: Icon(Icons.person), title: Container()),
+
+            // nav bar item for login page
+            BottomNavigationBarItem(
+              icon: Icon(Icons.event_note),
+              title: Container(),
             ),
           ],
         ),
       ),
-
       // body, basically the page to show on screen
       body: AnimatedSwitcher(
         duration: Duration(milliseconds: 150),
         child: _pages[_currentPage],
       ),
-
     );
   }
 }
