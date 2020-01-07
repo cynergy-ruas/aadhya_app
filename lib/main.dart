@@ -29,7 +29,9 @@ class MyApp extends StatelessWidget {
 
         // rest of the app
         child: MainPage(),
-      )
+      ),
+
+      debugShowCheckedModeBanner: false,
     );
   }
 }

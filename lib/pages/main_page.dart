@@ -1,7 +1,8 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:dwimay/pages/about_page.dart';
 import 'package:dwimay/pages/profile_page.dart';
+import 'package:dwimay/pages/registered_events.dart';
 import 'package:flutter/material.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 /// The main page. It isn't technically a page, but it consists
 /// of the bottom navigation bar that is used to navigate to 
@@ -14,7 +15,6 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
 
   List<Widget> _pages;
-  int _currentPage;
 
   @override
   void initState() {
@@ -27,71 +27,82 @@ class _MainPageState extends State<MainPage> {
       AboutPage(),
       ProfilePage(),
     ];
-
-    _currentPage = 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // the app bar
-      appBar: AppBar(
-        title: Text("Dwimay"),
-      ),
 
-      // the bottom navigation bar
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          // background color of the bar
-          canvasColor: Color(0xff393e46),
+    // the default controller for the tab bar
+    return DefaultTabController(
+      length: 2, // the length should be changed when new pages are added to the tab bar
 
-          // icon color of the selected tab
-          primaryColor: Color(0xff00adb5),
+      // the child
+      child: Scaffold(
 
-          // icon color of the unselected tab
-          textTheme: Theme.of(context).textTheme.copyWith(
-            caption: new TextStyle(color: Color(0xffeeeeee))
+        // the tab bar
+        appBar: PreferredSize(
+          // setting the preferred size of the bar
+          preferredSize: Size(MediaQuery.of(context).size.width, 100),
+
+          // creating the tab bar on a card
+          child: SafeArea(
+            child: Card(
+              
+              // the elevation of the card
+              elevation: 26.0,
+
+              // the color
+              color: Theme.of(context).primaryColor,
+
+              // the tabs
+              child: TabBar(
+                tabs: <Widget>[
+                  Tab(icon: Icon(Icons.info),),
+                  Tab(icon: Icon(Icons.person))
+                ],
+
+                // defining how the indicator should look like
+                indicator: UnderlineTabIndicator(
+                  insets: EdgeInsets.symmetric(horizontal: 10),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).accentColor,
+                    width: 2
+                  )
+                )
+              ),
+            ),
           )
         ),
 
-        child: CurvedNavigationBar(
-          // height of the navigation bar
-          height: 60,
+        // the body of the app is wrapped in a Bottom sheet widget 
+        // called [SlidingUpPanel]. This widget displays the list
+        // of registered events if the user has logged in.
+        body: SlidingUpPanel(
 
-          // the duration of the animation
-          animationDuration: Duration(milliseconds: 300),
+          // the contents of the panel
+          panel: RegisteredEvents(),
 
-          // background color
-          backgroundColor: Colors.transparent,
+          // the body of the application
+          body: TabBarView(
 
-          // the items in the bottom navigation bar. The order of the
-          // items should match the order of the pages in [_pages]
-          items: <Widget> [
-            // icon for about page
-            Icon(Icons.info),
+            // setting the physics to user
+            physics: BouncingScrollPhysics(),
 
-            // icon for profile page
-            Icon(Icons.person),
-          ],
+            // the pages
+            children: _pages
+          ),
 
-          // callback to execute when a bottom navigation bar
-          // item is tapped.
-          onTap: (index) {
-            // the [_currentPage] is set to the index of the 
-            // tapped item, in a [setState] call.
-            setState(() {
-              _currentPage = index;
-            });
-          },
-        ),
+          // setting the border of the sheet
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24.0),
+            topRight: Radius.circular(24.0)
+          ),
+
+          // setting the parallax effect
+          parallaxEnabled: true,
+        )
+
       ),
-
-      // body, basically the page to show on screen
-      body: AnimatedSwitcher(
-        duration: Duration(milliseconds: 150),
-        child: _pages[_currentPage],
-      ),
-
     );
   }
 }
