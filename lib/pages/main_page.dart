@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:dwimay/pages/about_page.dart';
 import 'package:dwimay/pages/login_page.dart';
 import 'package:dwimay/pages/events_page.dart';
@@ -52,8 +53,28 @@ class _MainPageState extends State<MainPage> {
             textTheme: Theme.of(context)
                 .textTheme
                 .copyWith(caption: new TextStyle(color: Color(0xffeeeeee)))),
-        child: BottomNavigationBar(
-          currentIndex: _currentPage,
+        child: CurvedNavigationBar(
+          // height of the navigation bar
+          height: 60,
+
+          // the duration of the animation
+          animationDuration: Duration(milliseconds: 300),
+
+          // background color
+          backgroundColor: Colors.transparent,
+
+          // the items in the bottom navigation bar. The order of the
+          // items should match the order of the pages in [_pages]
+          items: <Widget>[
+            // icon for about page
+            Icon(Icons.info),
+
+            // icon for profile page
+            Icon(Icons.person),
+
+            // icon for event page
+            Icon(Icons.event_note),
+          ],
 
           // callback to execute when a bottom navigation bar
           // item is tapped.
@@ -64,27 +85,6 @@ class _MainPageState extends State<MainPage> {
               _currentPage = index;
             });
           },
-
-          // the items in the bottom navigation bar. The order of the
-          // items should match the order of the pages in [_pages]
-          items: <BottomNavigationBarItem>[
-            // nav bar item for about page
-            BottomNavigationBarItem(
-                icon: Icon(Icons.info),
-                title:
-                    Container() // an empty container because the `title` argument should not be null.
-                ),
-
-            // nav bar item for profile page
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Container()),
-
-            // nav bar item for login page
-            BottomNavigationBarItem(
-              icon: Icon(Icons.event_note),
-              title: Container(),
-            ),
-          ],
         ),
       ),
       // body, basically the page to show on screen

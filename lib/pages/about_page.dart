@@ -27,6 +27,8 @@ class _AboutPageState extends State<AboutPage> {
               Strings.festName,
               style: Theme.of(context).textTheme.title
             ),
+            
+            // gap
             SizedBox(height: 20,),
 
             // the about content, fills the rest of the space.
