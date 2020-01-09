@@ -58,26 +58,30 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  // store the email id
   TextEditingController emailController = TextEditingController();
 
+  //store the password
   TextEditingController passwordController = TextEditingController();
 
   // this is the style of the hint text e.g "Enter your Password"
-  final HintTextStyle = TextStyle(
+  final hintTextStyle = TextStyle(
     color: Colors.white54,
     fontFamily: 'OpenSans',
   );
 
   // this the style of the label of the textfields
-  final LabelStyle = TextStyle(
+  final labelStyle = TextStyle(
     color: Colors.white,
     fontWeight: FontWeight.bold,
     fontFamily: 'OpenSans',
   );
 
   // the style for the textfields
-  final BoxDecorationStyle = BoxDecoration(
+  final boxDecorationStyle = BoxDecoration(
+    // to get a curved border
     borderRadius: BorderRadius.circular(10.0),
+    // to give a shadow to the tf
     boxShadow: [
       BoxShadow(
         color: Colors.black12,
@@ -95,15 +99,16 @@ class _LoginFormState extends State<LoginForm> {
         // the tf label
         Text(
           'Email',
-          style: LabelStyle,
+          style: labelStyle,
         ),
 
+        // gap
         SizedBox(height: 10.0),
 
         // the actual email tf
         Container(
           alignment: Alignment.centerLeft,
-          decoration: BoxDecorationStyle,
+          decoration: boxDecorationStyle,
           height: 60.0,
           child: TextField(
             keyboardType: TextInputType.emailAddress,
@@ -114,12 +119,13 @@ class _LoginFormState extends State<LoginForm> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
+              // the prefix icon in the email tf
               prefixIcon: Icon(
                 Icons.email,
                 color: Colors.white,
               ),
               hintText: 'Enter your Email',
-              hintStyle: HintTextStyle,
+              hintStyle: hintTextStyle,
             ),
             controller: emailController,
           ),
@@ -136,9 +142,10 @@ class _LoginFormState extends State<LoginForm> {
         // password tf label
         Text(
           'Password',
-          style: LabelStyle,
+          style: labelStyle,
         ),
 
+        // gap
         SizedBox(height: 10.0),
 
         // the actual password tf
@@ -155,12 +162,13 @@ class _LoginFormState extends State<LoginForm> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
+              // the prefix icon in the password tf
               prefixIcon: Icon(
                 Icons.lock,
                 color: Colors.white,
               ),
               hintText: 'Enter your Password',
-              hintStyle: HintTextStyle,
+              hintStyle: hintTextStyle,
             ),
             controller: passwordController,
           ),
@@ -228,6 +236,8 @@ class _LoginFormState extends State<LoginForm> {
           // this basically the whole login form
           Container(
               height: double.infinity,
+              // wraping the tfs and button in a scroll view
+              // so that we can scroll when the keyboard is open
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 padding: EdgeInsets.symmetric(
@@ -254,9 +264,7 @@ class _LoginFormState extends State<LoginForm> {
                     _buildEmailTF(),
 
                     // gap
-                    SizedBox(
-                      height: 30.0,
-                    ),
+                    SizedBox(height: 30.0),
 
                     // building password field
                     _buildPasswordTF(),
