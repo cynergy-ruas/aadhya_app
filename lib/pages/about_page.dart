@@ -45,7 +45,9 @@ class _AboutPageState extends State<AboutPage> {
                 ),
               )
             ),
-            SizedBox(height: 20,)
+
+            // gap
+            SizedBox(height: 180,)
           ],
         ),
       ),

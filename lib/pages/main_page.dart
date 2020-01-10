@@ -1,8 +1,8 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:dwimay/pages/about_page.dart';
-import 'package:dwimay/pages/login_page.dart';
-import 'package:dwimay/pages/events_page.dart';
+import 'package:dwimay/pages/profile_page.dart';
+import 'package:dwimay/pages/registered_events.dart';
 import 'package:flutter/material.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 /// The main page. It isn't technically a page, but it consists
 /// of the bottom navigation bar that is used to navigate to
@@ -13,7 +13,11 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  
+  /// The list of pages
   List<Widget> _pages;
+
+  /// the index of the current page
   int _currentPage;
 
   @override
@@ -25,8 +29,7 @@ class _MainPageState extends State<MainPage> {
     // important.
     _pages = [
       AboutPage(),
-      LoginPage(),
-      EventsPage(),
+      ProfilePage(),
     ];
 
     _currentPage = 0;
@@ -34,63 +37,93 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // the app bar
-      appBar: AppBar(
-        title: Text("Dwimay"),
-      ),
+    // the default controller for the tab bar
+    return DefaultTabController(
+      length: 2, // the length should be changed when new pages are added to the tab bar
 
-      // the bottom navigation bar
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-            // background color of the bar
-            canvasColor: Color(0xff393e46),
+      // the child
+      child: Scaffold(
 
-            // icon color of the selected tab
-            primaryColor: Color(0xff00adb5),
-
-            // icon color of the unselected tab
-            textTheme: Theme.of(context)
-                .textTheme
-                .copyWith(caption: new TextStyle(color: Color(0xffeeeeee)))),
-        child: CurvedNavigationBar(
-          // height of the navigation bar
-          height: 60,
-
-          // the duration of the animation
-          animationDuration: Duration(milliseconds: 300),
-
-          // background color
-          backgroundColor: Colors.transparent,
-
-          // the items in the bottom navigation bar. The order of the
-          // items should match the order of the pages in [_pages]
-          items: <Widget>[
-            // icon for about page
-            Icon(Icons.info),
-
-            // icon for profile page
-            Icon(Icons.person),
-
-            // icon for event page
-            Icon(Icons.event_note),
-          ],
-
-          // callback to execute when a bottom navigation bar
-          // item is tapped.
-          onTap: (index) {
-            // the [_currentPage] is set to the index of the
-            // tapped item, in a [setState] call.
-            setState(() {
-              _currentPage = index;
-            });
-          },
+        // the tab bar
+        appBar: AppBar(
+          title: Text("Dwimay"),
         ),
-      ),
-      // body, basically the page to show on screen
-      body: AnimatedSwitcher(
-        duration: Duration(milliseconds: 150),
-        child: _pages[_currentPage],
+
+        // the bottom nav bar
+        bottomNavigationBar: Container( // adding a shadow around the nav bar
+          height: 45,
+          decoration: BoxDecoration(
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                spreadRadius: 2,
+                blurRadius: 5,
+                color: Colors.black12
+              )
+            ]
+          ),
+
+          // the actual nav bar
+          child: BottomNavigationBar(
+            // the index of the highlighted item
+            currentIndex: _currentPage,
+
+            // the icons in the nav bar
+            items: <BottomNavigationBarItem> [
+
+              // icon for the about page
+              BottomNavigationBarItem(
+                icon: Icon(Icons.info),
+                title: Container(),
+              ),
+
+              // the icon for the profile page
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                title: Container(),
+              ),
+
+              // the icon for the announcments page
+              BottomNavigationBarItem(
+                icon: Icon(Icons.speaker),
+                title: Container()
+              )
+            ],
+
+            // defining what to do when a tab in the nav bar is tapped
+            onTap: (int index) {
+              setState(() {
+                // setting the [_currentPage] to the index of the tapped tab
+                _currentPage = index;
+              });
+            },
+          ),
+        ),
+
+        // the body of the app is wrapped in a Bottom sheet widget 
+        // called [SlidingUpPanel]. This widget displays the list
+        // of registered events if the user has logged in.
+        body: SlidingUpPanel(
+
+          // the contents of the panel
+          panel: RegisteredEvents(),
+
+          minHeight: 60,
+
+          // the body of the application
+          body: AnimatedSwitcher(
+            duration: Duration(milliseconds: 500),
+            child: _pages[_currentPage],
+          ),
+
+          // setting the border of the sheet
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(14.0),
+            topRight: Radius.circular(14.0)
+          ),
+
+          // setting the parallax effect
+          parallaxEnabled: true,
+        )
       ),
     );
   }

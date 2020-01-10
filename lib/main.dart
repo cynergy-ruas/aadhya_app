@@ -20,13 +20,18 @@ class MyApp extends StatelessWidget {
           // configuring callback to run when notification occurs when the
           // app is in foreground.
           onMessage: (BuildContext context, Map<String, dynamic> message) {
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: message['body'],
-            ));
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: message['body'],
+              )
+            );
           },
-
+          
           // rest of the app
           child: MainPage(),
-        ));
+        ),
+
+        debugShowCheckedModeBanner: false,
+     );
   }
 }

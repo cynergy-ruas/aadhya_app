@@ -19,9 +19,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
   font_awesome_flutter: ^8.5.0
-
-  curved_navigation_bar: ^0.3.1
+  sliding_up_panel: ^0.3.6
   dwimay_backend:
     git: https://github.com/cynergy-ruas/dwimay_app_backend.git
 
