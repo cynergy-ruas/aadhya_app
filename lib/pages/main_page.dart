@@ -1,4 +1,5 @@
 import 'package:dwimay/pages/about_page.dart';
+import 'package:dwimay/pages/announcements_page.dart';
 import 'package:dwimay/pages/profile_page.dart';
 import 'package:dwimay/pages/registered_events.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,11 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
+  /// The list of pages
   List<Widget> _pages;
+
+  /// the index of the current page
+  int _currentPage;
 
   @override
   void initState() {
@@ -26,7 +31,10 @@ class _MainPageState extends State<MainPage> {
     _pages = [
       AboutPage(),
       ProfilePage(),
+      AnnouncementsPage()
     ];
+
+    _currentPage = 0;
   }
 
   @override
@@ -40,38 +48,58 @@ class _MainPageState extends State<MainPage> {
       child: Scaffold(
 
         // the tab bar
-        appBar: PreferredSize(
-          // setting the preferred size of the bar
-          preferredSize: Size(MediaQuery.of(context).size.width, 100),
+        appBar: AppBar(
+          title: Text("Dwimay"),
+        ),
 
-          // creating the tab bar on a card
-          child: SafeArea(
-            child: Card(
-              
-              // the elevation of the card
-              elevation: 26.0,
+        // the bottom nav bar
+        bottomNavigationBar: Container( // adding a shadow around the nav bar
+          height: 45,
+          decoration: BoxDecoration(
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                spreadRadius: 2,
+                blurRadius: 5,
+                color: Colors.black12
+              )
+            ]
+          ),
 
-              // the color
-              color: Theme.of(context).primaryColor,
+          // the actual nav bar
+          child: BottomNavigationBar(
+            // the index of the highlighted item
+            currentIndex: _currentPage,
 
-              // the tabs
-              child: TabBar(
-                tabs: <Widget>[
-                  Tab(icon: Icon(Icons.info),),
-                  Tab(icon: Icon(Icons.person))
-                ],
+            // the icons in the nav bar
+            items: <BottomNavigationBarItem> [
 
-                // defining how the indicator should look like
-                indicator: UnderlineTabIndicator(
-                  insets: EdgeInsets.symmetric(horizontal: 10),
-                  borderSide: BorderSide(
-                    color: Theme.of(context).accentColor,
-                    width: 2
-                  )
-                )
+              // icon for the about page
+              BottomNavigationBarItem(
+                icon: Icon(Icons.info),
+                title: Container(),
               ),
-            ),
-          )
+
+              // the icon for the profile page
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                title: Container(),
+              ),
+
+              // the icon for the announcments page
+              BottomNavigationBarItem(
+                icon: Icon(Icons.speaker),
+                title: Container()
+              )
+            ],
+
+            // defining what to do when a tab in the nav bar is tapped
+            onTap: (int index) {
+              setState(() {
+                // setting the [_currentPage] to the index of the tapped tab
+                _currentPage = index;
+              });
+            },
+          ),
         ),
 
         // the body of the app is wrapped in a Bottom sheet widget 
@@ -82,20 +110,18 @@ class _MainPageState extends State<MainPage> {
           // the contents of the panel
           panel: RegisteredEvents(),
 
+          minHeight: 60,
+
           // the body of the application
-          body: TabBarView(
-
-            // setting the physics to user
-            physics: BouncingScrollPhysics(),
-
-            // the pages
-            children: _pages
+          body: AnimatedSwitcher(
+            duration: Duration(milliseconds: 500),
+            child: _pages[_currentPage],
           ),
 
           // setting the border of the sheet
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(24.0),
-            topRight: Radius.circular(24.0)
+            topLeft: Radius.circular(14.0),
+            topRight: Radius.circular(14.0)
           ),
 
           // setting the parallax effect

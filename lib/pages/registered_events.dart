@@ -10,13 +10,13 @@ class RegisteredEvents extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         // gap
-        SizedBox(height: 20,),
+        SizedBox(height: 10,),
 
         // the small horizontal bar which indicates the location 
         // to pull the sheet from
         Container(
           height: 5,
-          width: 50,
+          width: 30,
           decoration: BoxDecoration(
             color: Colors.grey,
             borderRadius: BorderRadius.all(Radius.circular(20))
@@ -24,10 +24,10 @@ class RegisteredEvents extends StatelessWidget {
         ),
 
         // gap
-        SizedBox(height: 20,),
+        SizedBox(height: 7,),
 
         // the body
-        Text("Registered Events", style: Theme.of(context).textTheme.title,)
+        Text("Your Events", style: Theme.of(context).textTheme.title,),
       ],
     );
   }
