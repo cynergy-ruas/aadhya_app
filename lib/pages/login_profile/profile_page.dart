@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 /// The details of the user and the QR code for entering will
 /// be present after logging in.
 class ProfilePage extends StatelessWidget {
-  final GlobalKey<LoginWidgetState> loginKey;
-
-  ProfilePage({@required this.loginKey});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +14,9 @@ class ProfilePage extends StatelessWidget {
           children: <Widget>[
             Text(
               "Profile page",
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.title.copyWith(
+                color: Colors.white,
+              ),
             ),
             SizedBox(
               height: 20,
@@ -25,7 +24,7 @@ class ProfilePage extends StatelessWidget {
             RaisedButton(
               child: Text("Logout"),
               onPressed: () {
-                loginKey.currentState.logout();
+                LoginWidget.of(context).logout();
               },
             )
           ]),

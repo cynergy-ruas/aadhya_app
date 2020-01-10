@@ -13,23 +13,27 @@ class _AboutPageState extends State<AboutPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: Center(
-
         // adding the contents in a column so they appear one after
         // the other.
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            SizedBox(height: 20,), // used to add a gap between the contents.
-            
+            // used to add a gap between the contents.
+            SizedBox(
+              height: 20,
+            ), 
+
             // the title
             Text(
               Strings.festName,
-              style: Theme.of(context).textTheme.title
+              style: Theme.of(context).textTheme.title,
             ),
-            
+
             // gap
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
 
             // the about content, fills the rest of the space.
             // hence, in a [Flexible]
@@ -43,11 +47,13 @@ class _AboutPageState extends State<AboutPage> {
                   Strings.aboutContent * 10,
                   style: Theme.of(context).textTheme.body1,
                 ),
-              )
+              ),
             ),
 
             // gap
-            SizedBox(height: 180,)
+            SizedBox(
+              height: 180,
+            ),
           ],
         ),
       ),

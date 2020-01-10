@@ -27,18 +27,24 @@ class _FAQPageState extends State<FAQPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SizedBox(height: 20,), // used to add a gap between the contents.
-
+          
+          // used to add a gap between the contents.
+          SizedBox(
+            height: 20,
+          ),
           // the title
           Text(
             Strings.faqTitle,
             style: Theme.of(context).textTheme.title,
           ),
-          SizedBox(height: 20,),
+
+          // gap
+          SizedBox(
+            height: 20,
+          ),
 
           // the questions and answers. Fill the remaining space available
           Flexible(
-
             // using [SingleChildScrollView] to get the scroll physics working
             // at both start and at the end.
             child: SingleChildScrollView(
@@ -51,7 +57,6 @@ class _FAQPageState extends State<FAQPage> {
                 itemCount: Strings.faqs.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
-                    
                     // the question
                     title: Text(
                       Strings.faqs[index]['question'],

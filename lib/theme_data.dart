@@ -41,7 +41,11 @@ ThemeData dwimayTheme = ThemeData(
     subtitle: TextStyle(),
 
     // Used for the primary text in app bars and dialogs (e.g., AppBar.title and AlertDialog.title).
-    title: TextStyle(),
+    title: TextStyle(
+      fontSize: 28,
+      fontWeight: FontWeight.bold,
+      height: 1
+    ),
   ),
 
   // The default InputDecoration values for InputDecorator, TextField, and
@@ -66,7 +70,11 @@ ThemeData dwimayTheme = ThemeData(
       fontFamily: 'OpenSans',
     ),
 
-    labelStyle: TextStyle(),
+    labelStyle: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontFamily: 'OpenSans'
+    ),
 
     // The color to fill the decoration's container with, if filled is true
     fillColor: Color(0xff4c4c4c),
