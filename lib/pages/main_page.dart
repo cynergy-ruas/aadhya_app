@@ -1,12 +1,11 @@
 import 'package:dwimay/pages/about_page.dart';
-import 'package:dwimay/pages/announcements_page.dart';
 import 'package:dwimay/pages/profile_page.dart';
 import 'package:dwimay/pages/registered_events.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 /// The main page. It isn't technically a page, but it consists
-/// of the bottom navigation bar that is used to navigate to 
+/// of the bottom navigation bar that is used to navigate to
 /// other pages.
 class MainPage extends StatefulWidget {
   @override
@@ -14,7 +13,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
+  
   /// The list of pages
   List<Widget> _pages;
 
@@ -26,12 +25,11 @@ class _MainPageState extends State<MainPage> {
     super.initState();
 
     // the pages that can be navigated to from the
-    // bottom navigation bar. The order of the pages is 
+    // bottom navigation bar. The order of the pages is
     // important.
     _pages = [
       AboutPage(),
       ProfilePage(),
-      AnnouncementsPage()
     ];
 
     _currentPage = 0;
@@ -39,7 +37,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-
     // the default controller for the tab bar
     return DefaultTabController(
       length: 2, // the length should be changed when new pages are added to the tab bar
@@ -127,7 +124,6 @@ class _MainPageState extends State<MainPage> {
           // setting the parallax effect
           parallaxEnabled: true,
         )
-
       ),
     );
   }
