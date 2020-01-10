@@ -89,7 +89,7 @@ class _EventsPageContentsState extends State<EventsPageContents> {
                 ..addAll(_eventsForDepartment(department: Department.ElectricAndElectronics, displayName: "Electrical and Electronics"))
                 ..addAll(_eventsForDepartment(department: Department.Design, displayName: "Design"))
                 ..addAll(_eventsForDepartment(department: Department.Mechanical, displayName: "Mechanical"))
-                ..add(SizedBox(height: 180,))
+                ..add(SizedBox(height: 100,))
                 ,
               ),
             ),
