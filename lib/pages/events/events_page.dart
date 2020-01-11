@@ -20,7 +20,7 @@ class EventsPage extends StatelessWidget {
           );
         },
 
-        onError: (BuildContext context, Exception e) {
+        onError: (BuildContext context, dynamic e) {
           Scaffold.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.red,

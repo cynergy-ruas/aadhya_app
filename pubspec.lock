@@ -99,7 +99,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "4ebed5decec5ad9ed6b4ebd5a497e001f2a9f2c2"
+      resolved-ref: "8a621bc9c79aeb8e7ea936815dff5fb1924d3938"
       url: "https://github.com/cynergy-ruas/dwimay_app_backend.git"
     source: git
     version: "0.0.1"
@@ -130,7 +130,7 @@ packages:
       name: firebase_auth_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.3"
+    version: "1.1.5"
   firebase_auth_web:
     dependency: transitive
     description:
