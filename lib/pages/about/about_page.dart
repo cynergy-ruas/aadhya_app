@@ -10,51 +10,53 @@ class AboutPage extends StatefulWidget {
 class _AboutPageState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: Center(
-        // adding the contents in a column so they appear one after
-        // the other.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            // used to add a gap between the contents.
-            SizedBox(
-              height: 20,
-            ), 
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+        child: Center(
+          // adding the contents in a column so they appear one after
+          // the other.
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              // used to add a gap between the contents.
+              SizedBox(
+                height: 20,
+              ), 
 
-            // the title
-            Text(
-              Strings.festName,
-              style: Theme.of(context).textTheme.title,
-            ),
+              // the title
+              Text(
+                Strings.festName,
+                style: Theme.of(context).textTheme.title,
+              ),
 
-            // gap
-            SizedBox(
-              height: 20,
-            ),
+              // gap
+              SizedBox(
+                height: 20,
+              ),
 
-            // the about content, fills the rest of the space.
-            // hence, in a [Flexible]
-            Flexible(
-              // making the text scrollable
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
+              // the about content, fills the rest of the space.
+              // hence, in a [Flexible]
+              Expanded(
+                // making the text scrollable
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
 
-                // the about content.
-                child: Text(
-                  Strings.aboutContent * 10,
-                  style: Theme.of(context).textTheme.body1,
+                  // the about content.
+                  child: Text(
+                    Strings.aboutContent * 10,
+                    style: Theme.of(context).textTheme.body1,
+                  ),
                 ),
               ),
-            ),
 
-            // gap
-            SizedBox(
-              height: 180,
-            ),
-          ],
+              // gap
+              SizedBox(
+                height: 100,
+              ),
+            ],
+          ),
         ),
       ),
     );

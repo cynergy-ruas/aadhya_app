@@ -25,7 +25,7 @@ class CollapsedContents extends StatelessWidget {
           ),
 
           // gap
-          SizedBox(height: 7,),
+          SizedBox(height: 15,),
 
           // title
           Text(

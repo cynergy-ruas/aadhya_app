@@ -38,7 +38,10 @@ ThemeData dwimayTheme = ThemeData(
     subhead: TextStyle(),
 
     // For medium emphasis text that's a little smaller than subhead.
-    subtitle: TextStyle(),
+    subtitle: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+    ),
 
     // Used for the primary text in app bars and dialogs (e.g., AppBar.title and AlertDialog.title).
     title: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, height: 1),

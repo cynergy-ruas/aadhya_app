@@ -38,13 +38,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    // the default controller for the tab bar
+    // the scaffold
     return Scaffold(
-
-      // the tab bar
-      appBar: AppBar(
-        title: Text("Dwimay"),
-      ),
 
       // the bottom nav bar
       bottomNavigationBar: Container( // adding a shadow around the nav bar
@@ -94,12 +89,27 @@ class _MainPageState extends State<MainPage> {
       // called [SlidingUpPanel]. This widget displays the list
       // of registered events if the user has logged in.
       body: SlidingUpPanel(
-        // contents of the panel when collapsed
-        collapsed: CollapsedContents(),
-        // the contents of the panel when opened
-        panel: LoginPage(),
+        // contents of the panel when collapsed, clipped at the 
+        // top corners
+        collapsed: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(14.0),
+            topRight: Radius.circular(14.0)
+          ),
+          child: CollapsedContents()
+        ),
 
-        minHeight: 60,
+        // the contents of the panel when opened, clipped at the
+        // top corners
+        panel: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(14.0),
+            topRight: Radius.circular(14.0)
+          ),
+          child: LoginPage()
+        ),
+
+        minHeight: 70,
 
         // the body of the application
         body: AnimatedSwitcher(
@@ -107,11 +117,8 @@ class _MainPageState extends State<MainPage> {
           child: _pages[_currentPage],
         ),
 
-        // setting the border of the sheet
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(14.0),
-          topRight: Radius.circular(14.0)
-        ),
+        // not rendering the sheet
+        renderPanelSheet: false,
 
         // setting the parallax effect
         parallaxEnabled: true,
