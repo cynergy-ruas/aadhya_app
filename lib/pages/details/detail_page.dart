@@ -8,16 +8,18 @@ class DetailPage extends StatelessWidget {
   DetailPage({@required this.event});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints.expand(),
-      color: Color(0xFF3E3963),
-      child: Stack(
-        children: <Widget>[
-          _buildBackground(),
-          _buildGradient(),
-          _buildContent(),
-          _buildToolbar(context),
-        ],
+    return Scaffold(
+      body: Container(
+        constraints: BoxConstraints.expand(),
+        color: Color(0xFF3E3963),
+        child: Stack(
+          children: <Widget>[
+            _buildBackground(),
+            _buildGradient(),
+            _buildContent(),
+            _buildToolbar(context),
+          ],
+        ),
       ),
     );
   }

@@ -18,7 +18,7 @@ class InfoCard extends StatelessWidget {
       child: Hero(
         tag: "${event.id}",
         child: Image(
-          image: AssetImage("${event.type}.png"),
+          image: AssetImage("assets/images/${event.type}.png"),
           height: 92.0,
           width: 92.0,
         ),
@@ -69,9 +69,9 @@ class InfoCard extends StatelessWidget {
             event.name,
             style: Style.titleTextStyle,
           ),
-          SizedBox(
-            height: 10.0,
-          ),
+          // SizedBox(
+          //   height: 10.0,
+          // ),
           Text(
             event.venue,
             style: Style.commonTextStyle,
@@ -83,7 +83,8 @@ class InfoCard extends StatelessWidget {
               Expanded(
                 flex: horizontal ? 1 : 0,
                 child: _eventSubtitle(
-                    value: "${event.datetime}", icon: Icons.timer),
+                    value: event.formatDate() + ", " + event.getTime(),
+                    icon: Icons.timer),
               ),
               SizedBox(
                 width: horizontal ? 8.0 : 32.0,
