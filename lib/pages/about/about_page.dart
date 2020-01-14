@@ -18,6 +18,7 @@ class _AboutPageState extends State<AboutPage> {
           // the other.
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               // used to add a gap between the contents.
