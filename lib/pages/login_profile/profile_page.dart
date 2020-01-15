@@ -6,25 +6,37 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/services.dart';
 
-/// The profile page. The user logs in using the profile page.
+/// The profile page. The user logs in using the login page.
 /// The details of the user and the QR code for entering will
 /// be present after logging in.
+/// if the user is not a participant then a qr code will be present
+/// if the users clearence level is higher than 3,
+/// then the user can edit the event data
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // get the emial id of the logged in user
     final _email = User.instance.getEmailID();
+    // get the clearance level of the logged in user
+    final level = User.instance.getClearanceLevel();
 
-    msgEncode(message) {
+    /// function to encrypt a [string]
+    encrypt(message) {
       var bytes = utf8.encode(message);
       var base64Str = base64.encode(bytes);
       return base64Str;
     }
 
-    msgDecode(base64Str) {
+    /// functuion to decrypt the [string]
+    /// encoded by [encrypt]
+    decrypt(String base64Str) {
+      var len = base64Str.length;
       var bytes = base64Decode(base64Str);
-      return utf8.decode(bytes);
+      var output = (len % 4 == 0) ? utf8.decode(bytes) : "INVALID";
+      return output;
     }
 
+    // await the load of the image to be embedded in the Qr code
     Future<ui.Image> _loadOverlayImage() async {
       final completer = Completer<ui.Image>();
       final byteData = await rootBundle.load('assets/images/talk.png');
@@ -32,19 +44,32 @@ class ProfilePage extends StatelessWidget {
       return completer.future;
     }
 
+    // building the Qr code scanner button
     final _buildQrReader = BuildButton(
       data: "SCAN",
       onPressed: () async {
+        // the output of the scan is stored in res
+        // if  scan is successful then
+        // the string in the Qr code is stored
+        // or else the string about the error is stored
         String res = await QrScanner.scan();
-        res = msgDecode(res);
+
+        // if the scan is successful then we decrypt the code
+        // the decrypted code is stored in result
+        // if the scan doesnt complete then
+        // decrypt returns "INVALID"
+        String result = decrypt(res);
+        print(result);
       },
       verticalPadding: 25.0,
       horizotalPadding: 100.0,
     );
 
+    //building the Qr code
     final qrFutureBuilder = FutureBuilder(
       future: _loadOverlayImage(),
       builder: (ctx, snapshot) {
+        // the size of the Qr code
         final size = 250.0;
         if (!snapshot.hasData) {
           return Container(width: size, height: size);
@@ -52,11 +77,16 @@ class ProfilePage extends StatelessWidget {
         return CustomPaint(
           size: Size.square(size),
           painter: QrPainter(
-            data: msgEncode(_email),
+            // the data of the Qr code
+            data: encrypt(_email),
             version: QrVersions.auto,
+
+            // the main color of the code
             color: Colors.black,
+
+            // the color of the empty part
             emptyColor: Color(0x00),
-            // size: 320.0,
+
             embeddedImage: snapshot.data,
             embeddedImageStyle: QrEmbeddedImageStyle(
               size: Size.square(60),
@@ -66,6 +96,7 @@ class ProfilePage extends StatelessWidget {
       },
     );
 
+    // build the logout button
     final _logoutButton = BuildButton(
       data: "LOGOUT",
       onPressed: () {
@@ -75,8 +106,8 @@ class ProfilePage extends StatelessWidget {
       horizotalPadding: 100.0,
     );
 
-    final level = User.instance.getClearanceLevel();
-
+    // if user is participant then build a Qr Code
+    // else build a Qr scanner
     final pass = (level == 0) ? qrFutureBuilder : _buildQrReader;
 
     return Center(
@@ -86,13 +117,18 @@ class ProfilePage extends StatelessWidget {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              // Title of profile page
               Text(
                 "Welcome " + _email.substring(0, _email.indexOf('@')),
                 style: Theme.of(context).textTheme.title.copyWith(
                       color: Colors.white,
                     ),
               ),
+
+              // gap
               SizedBox(height: 30),
+
+              // if user participant display entry pass else empty
               (level == 0)
                   ? Text(
                       "Your Pass: ",
@@ -101,9 +137,18 @@ class ProfilePage extends StatelessWidget {
                           ),
                     )
                   : Container(),
+
+              // gap
               (level == 0) ? SizedBox(height: 15) : Container(),
+
+              // if user is participant then build a Qr Code
+              // else build a Qr scanner
               pass,
+
+              // gap
               (level == 0) ? SizedBox(height: 25) : Container(),
+
+              // display the events of participants
               (level == 0)
                   ? Text(
                       "Your Events: ",
@@ -112,6 +157,10 @@ class ProfilePage extends StatelessWidget {
                           ),
                     )
                   : Container(),
+
+              // TODO: actually print the events registerd
+
+              // logout button
               _logoutButton,
             ]),
       ),

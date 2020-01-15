@@ -151,6 +151,8 @@ class _LoginFormState extends State<LoginForm> {
 
             // building password field
             _buildPasswordTF(),
+
+            // build login button
             BuildButton(
               data: "LOGIN",
               onPressed: () => LoginWidget.of(context).login(

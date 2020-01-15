@@ -100,4 +100,11 @@ class Style {
       color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.w600);
   static final headerTextStyle = baseTextStyle.copyWith(
       color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w400);
+  static final buttonTextStyle = TextStyle(
+    color: Color(0xFF527DAA),
+    letterSpacing: 1.5,
+    fontSize: 18.0,
+    fontWeight: FontWeight.bold,
+    fontFamily: 'OpenSans',
+  );
 }

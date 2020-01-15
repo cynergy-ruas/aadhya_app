@@ -217,24 +217,24 @@ class _EventsPageContentsState extends State<EventsPageContents> {
 
   /// Filters the events based on day, and sorts them based on time
   List<Event> _filterEvents({@required day}) {
-    return EventPool.getEventsOfDay(day: _selected, events: widget.events)
-                    ..sort((Event a, Event b) {
-                      int indexA = 0;
-                      int indexB = 0;
+    return Event.getEventsOfDay(day: _selected, events: widget.events)
+                ..sort((Event a, Event b) {
+                  int indexA = 0;
+                  int indexB = 0;
 
-                      // getting the index of the correct element
-                      // in the [Event.datetimes] list. it is calculated
-                      // by checking if the length of the list is more than 1.
-                      // if it is, then the minimum of the current day - 1 (one
-                      // subtracted so that it can be used to index the array)
-                      // and the total length of the list is taken as the index.
-                      if (a.datetimes.length > 1)
-                        indexA = min(a.datetimes.length - 1, day - 1);
-                      
-                      if (b.datetimes.length > 1)
-                        indexB = min(b.datetimes.length - 1, day - 1);
+                  // getting the index of the correct element
+                  // in the [Event.datetimes] list. it is calculated
+                  // by checking if the length of the list is more than 1.
+                  // if it is, then the minimum of the current day - 1 (one
+                  // subtracted so that it can be used to index the array)
+                  // and the total length of the list is taken as the index.
+                  if (a.datetimes.length > 1)
+                    indexA = min(a.datetimes.length - 1, day - 1);
+                  
+                  if (b.datetimes.length > 1)
+                    indexB = min(b.datetimes.length - 1, day - 1);
 
-                      return a.datetimes[indexA].compareTo(b.datetimes[indexB]);
-                    });
+                  return a.datetimes[indexA].compareTo(b.datetimes[indexB]);
+                });
   }
 }

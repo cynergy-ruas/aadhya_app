@@ -1,5 +1,11 @@
+import 'package:dwimay/theme_data.dart';
 import 'package:flutter/material.dart';
 
+/// this build a simple button
+/// it takes the [data] - button text,
+/// [onPressed] - on pressed function
+/// [verticalPadding] - to change the width of button
+/// [horizontalPadding] - to change the length of button
 class BuildButton extends StatelessWidget {
   final data;
   final void Function() onPressed;
@@ -26,13 +32,7 @@ class BuildButton extends StatelessWidget {
         color: Colors.white,
         child: Text(
           data,
-          style: TextStyle(
-            color: Color(0xFF527DAA),
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
+          style: Style.buttonTextStyle,
         ),
       ),
     );
