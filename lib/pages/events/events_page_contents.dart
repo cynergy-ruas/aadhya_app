@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dwimay/pages/details/detail_page.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 
@@ -156,7 +157,19 @@ class _EventsPageContentsState extends State<EventsPageContents> {
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: const EdgeInsets.only(left: 30, right: 10),
-                      child: ListCard(event: _events[index], day: _selected - 1,),
+                      child: GestureDetector(
+                        child: ListCard(event: _events[index], day: _selected - 1,),
+                        onTap: () => Navigator.of(context).push(
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => DetailPage(
+                              event: _events[index],
+                            ),
+                            transitionsBuilder:
+                                (context, animation, secondaryAnimation, child) =>
+                                    FadeTransition(opacity: animation, child: child),
+                          ),
+                        ),
+                      ),
                     );
                   },
                 )

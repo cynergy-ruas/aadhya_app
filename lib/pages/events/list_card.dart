@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:dwimay/pages/details/info_card.dart';
 import 'package:dwimay/theme_data.dart';
 import 'package:dwimay/widgets/relative_delegate.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
@@ -22,13 +21,10 @@ class ListCard extends StatefulWidget {
 }
 
 class _ListCardState extends State<ListCard> {
-  
-  // final double imageHeight = 91;
-  // final double imageWidth = 91;
 
   @override
   Widget build(BuildContext context) {
-    double imageHeight = MediaQuery.of(context).size.height * 0.1;
+    double imageHeight = 80;
     double imageWidth = imageHeight;
 
     int index = 0;
@@ -107,7 +103,6 @@ class _ListCardState extends State<ListCard> {
 
   Widget _eventSubtitle({@required int index}) =>
     Row(
-      // mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         // timer icon
         Icon(
