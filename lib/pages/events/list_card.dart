@@ -90,7 +90,7 @@ class _ListCardState extends State<ListCard> {
         "assets/images/${widget.event.type}.png",
         width: imageHeight,
         height: imageWidth,
-      ),
+      )
     );
 
   Widget _separator() =>

@@ -160,14 +160,7 @@ class _EventsPageContentsState extends State<EventsPageContents> {
                       child: GestureDetector(
                         child: ListCard(event: _events[index], day: _selected - 1,),
                         onTap: () => Navigator.of(context).push(
-                          PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => DetailPage(
-                              event: _events[index],
-                            ),
-                            transitionsBuilder:
-                                (context, animation, secondaryAnimation, child) =>
-                                    FadeTransition(opacity: animation, child: child),
-                          ),
+                          MaterialPageRoute(builder: (context) => DetailPage(event: _events[index],))
                         ),
                       ),
                     );

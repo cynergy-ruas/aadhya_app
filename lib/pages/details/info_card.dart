@@ -33,7 +33,7 @@ class InfoCard extends StatelessWidget {
           height: deviceHeight * 0.1,
           width: deviceHeight * 0.1,
         ),
-      ),
+      )
     );
 
     // this takes a string and icon as input
