@@ -16,7 +16,7 @@ class InfoCard extends StatelessWidget {
     // the event thumbnail(icon)
     // it changes based on the event type
     final eventThumbnail = Container(
-      margin: EdgeInsets.symmetric(vertical: 16.0),
+      margin: EdgeInsets.symmetric(vertical: deviceHeight * 0.01),
       // alignment changes based on the value of horizontal
       // if horizontal is true then align centerLeft
       // if horizontal is false then align center
@@ -30,8 +30,8 @@ class InfoCard extends StatelessWidget {
         tag: "${event.id}",
         child: Image(
           image: AssetImage("assets/images/${event.type}.png"),
-          height: deviceHeight * 0.115,
-          width: deviceHeight * 0.115,
+          height: deviceHeight * 0.1,
+          width: deviceHeight * 0.1,
         ),
       ),
     );
@@ -71,8 +71,8 @@ class InfoCard extends StatelessWidget {
     // the content of the card
     final eventCardContent = Container(
       margin: EdgeInsets.fromLTRB(
-          horizontal ? deviceWidth * 0.185 : deviceWidth * 0.039,
-          horizontal ? deviceHeight * 0.02 : deviceHeight * 0.153,
+          horizontal ? deviceWidth * 0.15 : deviceWidth * 0.039,
+          horizontal ? deviceHeight * 0.02 : deviceHeight * 0.08,
           deviceWidth * 0.039,
           deviceHeight * 0.02),
       // constraints: BoxConstraints.expand(),
@@ -123,6 +123,9 @@ class InfoCard extends StatelessWidget {
 
     // the event card with the content
     final eventCard = Card(
+      margin: horizontal
+          ? EdgeInsets.only(left: deviceWidth * 0.08)
+          : EdgeInsets.only(top: deviceHeight * 0.05),
       elevation: 10.0,
       child: eventCardContent,
       color: Color(0xFF434273),
