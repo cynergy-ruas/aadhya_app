@@ -25,7 +25,7 @@ class _ListCardState extends State<ListCard> {
 
   @override
   Widget build(BuildContext context) {
-    double imageHeight = 80;
+    double imageHeight = 60;
     double imageWidth = imageHeight;
 
     int index = 0;
@@ -34,7 +34,7 @@ class _ListCardState extends State<ListCard> {
     
     return GestureDetector(
       child: SizedBox(
-        height: imageHeight * 1.5,
+        height: imageHeight * 1.75,
         child: CustomMultiChildLayout(
           delegate: RelativeDelegate(objectCenter: FractionalOffset(0, 0.5)),
           children: <Widget>[
