@@ -31,8 +31,8 @@ class ProfilePage extends StatelessWidget {
     /// encoded by [encrypt]
     decrypt(String base64Str) {
       var len = base64Str.length;
-      var bytes = base64Decode(base64Str);
-      var output = (len % 4 == 0) ? utf8.decode(bytes) : "INVALID";
+      var output =
+          (len % 4 == 0) ? utf8.decode(base64Decode(base64Str)) : "INVALID";
       return output;
     }
 

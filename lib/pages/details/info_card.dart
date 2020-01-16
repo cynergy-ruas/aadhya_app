@@ -11,6 +11,8 @@ class InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final deviceWidth = MediaQuery.of(context).size.width;
     // the event thumbnail(icon)
     // it changes based on the event type
     final eventThumbnail = Container(
@@ -28,8 +30,8 @@ class InfoCard extends StatelessWidget {
         tag: "${event.id}",
         child: Image(
           image: AssetImage("assets/images/${event.type}.png"),
-          height: 92.0,
-          width: 92.0,
+          height: deviceHeight * 0.115,
+          width: deviceHeight * 0.115,
         ),
       ),
     );
@@ -39,7 +41,7 @@ class InfoCard extends StatelessWidget {
     Widget _eventSubtitle({String value, IconData icon}) {
       return Container(
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Icon(
               icon,
@@ -69,8 +71,11 @@ class InfoCard extends StatelessWidget {
     // the content of the card
     final eventCardContent = Container(
       margin: EdgeInsets.fromLTRB(
-          horizontal ? 76.0 : 16.0, horizontal ? 16.0 : 42.0, 16.0, 16.0),
-      constraints: BoxConstraints.expand(),
+          horizontal ? deviceWidth * 0.185 : deviceWidth * 0.039,
+          horizontal ? deviceHeight * 0.02 : deviceHeight * 0.153,
+          deviceWidth * 0.039,
+          deviceHeight * 0.02),
+      // constraints: BoxConstraints.expand(),
       child: Column(
         // alignment changes based on the value of horizontal
         // if horizontal is true then align start
@@ -117,23 +122,10 @@ class InfoCard extends StatelessWidget {
     );
 
     // the event card with the content
-    final eventCard = Container(
+    final eventCard = Card(
+      elevation: 10.0,
       child: eventCardContent,
-      height: horizontal ? 125.0 : 155.0,
-      margin:
-          horizontal ? EdgeInsets.only(left: 46.0) : EdgeInsets.only(top: 72.0),
-      decoration: BoxDecoration(
-        color: Color(0xFF434273),
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(8.0),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10.0,
-            offset: Offset(0.0, 10.0),
-          ),
-        ],
-      ),
+      color: Color(0xFF434273),
     );
 
     // returning the card with content and the thumbnail.
