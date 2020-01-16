@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dwimay/pages/details/detail_page.dart';
 import 'package:dwimay/theme_data.dart';
 import 'package:dwimay/widgets/relative_delegate.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
@@ -31,22 +32,36 @@ class _ListCardState extends State<ListCard> {
     if (widget.event.datetimes.length > 1)
       index = min(widget.event.datetimes.length - 1, widget.day); // used to avoid IndexErrors
     
-    return SizedBox(
-      height: imageHeight * 1.5,
-      child: CustomMultiChildLayout(
-        delegate: RelativeDelegate(objectCenter: FractionalOffset(0, 0.5)),
-        children: <Widget>[
-          LayoutId(
-            id: Slot.bottom,
-            child: _bottomContent(index: index, imageWidth: imageWidth),
-          ),
+    return GestureDetector(
+      child: SizedBox(
+        height: imageHeight * 1.5,
+        child: CustomMultiChildLayout(
+          delegate: RelativeDelegate(objectCenter: FractionalOffset(0, 0.5)),
+          children: <Widget>[
+            LayoutId(
+              id: Slot.bottom,
+              child: _bottomContent(index: index, imageWidth: imageWidth),
+            ),
 
-          LayoutId(
-            id: Slot.top,
-            child: _topContent(imageHeight: imageHeight, imageWidth: imageWidth),
-          )
-        ],
+            LayoutId(
+              id: Slot.top,
+              child: _topContent(imageHeight: imageHeight, imageWidth: imageWidth),
+            )
+          ],
+        ),
       ),
+      onTap: () => Navigator.of(context).push(
+        PageRouteBuilder(
+          transitionDuration: Duration(milliseconds: 500),
+          pageBuilder: (_, __, ___) => DetailPage(
+            event: widget.event,
+            index: index,
+          ),
+          transitionsBuilder:
+              (context, animation, secondaryAnimation, child) =>
+                  FadeTransition(opacity: animation, child: child),
+        ),
+      )
     );
   }
 

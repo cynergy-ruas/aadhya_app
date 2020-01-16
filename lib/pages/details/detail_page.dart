@@ -1,13 +1,18 @@
-import 'package:dwimay/pages/details/info_card.dart';
+import 'package:dwimay/pages/details/page_header.dart';
 import 'package:dwimay/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 
 class DetailPage extends StatelessWidget {
-  Event event;
-  DetailPage({@required this.event});
+
+  final int index;
+  final Event event;
+
+  DetailPage({@required this.event, @required this.index});
+
   @override
   Widget build(BuildContext context) {
+
     // building the detail page
     return Scaffold(
       body: Container(
@@ -84,7 +89,15 @@ class DetailPage extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(0.0, 72.0, 0.0, 32.0),
         children: <Widget>[
           // the event info card with vertical icon
-          InfoCard.vertical(event),
+          // InfoCard.vertical(event),
+          SizedBox(height: 60,),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: PageHeader(event: event, day: index,),
+          ),
+
+          SizedBox(height: 20,),
           // the event overview or decription
           Container(
             padding: EdgeInsets.symmetric(horizontal: 32.0),
