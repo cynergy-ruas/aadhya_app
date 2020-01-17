@@ -90,7 +90,7 @@ ThemeData dwimayTheme = ThemeData(
 class Style {
   static final baseTextStyle = const TextStyle();
   static final smallTextStyle = commonTextStyle.copyWith(
-    fontSize: 9.0,
+    fontSize: 11.0,
   );
   static final commonTextStyle = baseTextStyle.copyWith(
       color: const Color(0xffb6b2df),

@@ -55,7 +55,7 @@ class _ListCardState extends State<ListCard> {
           transitionDuration: Duration(milliseconds: 500),
           pageBuilder: (_, __, ___) => DetailPage(
             event: widget.event,
-            index: index,
+            day: index,
           ),
           transitionsBuilder:
               (context, animation, secondaryAnimation, child) =>
@@ -121,8 +121,8 @@ class _ListCardState extends State<ListCard> {
       children: <Widget>[
         // timer icon
         Icon(
-          Icons.timer,
-          size: 12.0,
+          Icons.location_on,
+          size: 14.0,
         ),
 
         // gap
@@ -132,7 +132,7 @@ class _ListCardState extends State<ListCard> {
 
         // date and time
         Text(
-          widget.event.formatDate(index: index) + ", " + widget.event.getTime(index: index),
+          "Venue: " + widget.event.venue,
           style: Style.smallTextStyle,
         ),
 

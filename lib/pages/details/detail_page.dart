@@ -3,12 +3,17 @@ import 'package:dwimay/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 
+/// The page displaying the details of an event
 class DetailPage extends StatelessWidget {
 
-  final int index;
+  /// The day of the event, used to get the
+  /// correct date and time
+  final int day;
+
+  /// The event
   final Event event;
 
-  DetailPage({@required this.event, @required this.index});
+  DetailPage({@required this.event, @required this.day});
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +41,8 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-// the background image of the detail page
-  Container _buildBackground() {
+  /// the background image of the detail page
+  Widget _buildBackground() {
     return Container(
       // TODO: use  [Image.assets] instead of network image
       child: Image.network(
@@ -49,8 +54,8 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  // building the background gradient color that covers the bg-image
-  Container _buildGradient() {
+  /// building the background gradient color that covers the bg-image
+  Widget _buildGradient() {
     return Container(
       margin: EdgeInsets.only(top: 190.0),
       height: 110.0,
@@ -72,45 +77,52 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  // the seperator used to sepertate title from content
+  /// the seperator used to sepertate title from content
   Widget separator() {
-    return Container(
-        margin: new EdgeInsets.symmetric(vertical: 8.0),
-        height: 2.0,
-        width: 18.0,
-        color: new Color(0xff00c6ff));
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(
+          margin: new EdgeInsets.symmetric(vertical: 8.0),
+          height: 2.0,
+          width: 18.0,
+          color: new Color(0xff00c6ff),
+        )
+      ],
+    );
   }
 
-  // the main content of the detail page
-  Container _buildContent() {
-    final _overviewTitle = "Overview".toUpperCase();
-    return Container(
-      child: ListView(
-        padding: EdgeInsets.fromLTRB(0.0, 72.0, 0.0, 32.0),
+  /// the main content of the detail page
+  Widget _buildContent() {
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20.0, 72.0, 20.0, 0.0),
+      child: Column(
         children: <Widget>[
-          // the event info card with vertical icon
-          // InfoCard.vertical(event),
+          
+          // gap
           SizedBox(height: 60,),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: PageHeader(event: event, day: index,),
-          ),
+          // the header card
+          PageHeader(event: event, day: day,),
 
-          SizedBox(height: 20,),
           // the event overview or decription
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 32.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          Expanded(
+            child: ListView(
+              physics: BouncingScrollPhysics(),
               children: <Widget>[
+                // gap
+                SizedBox(height: 20,),
+
                 // title
                 Text(
-                  _overviewTitle,
+                  "Overview".toUpperCase(),
                   style: Style.headerTextStyle,
                 ),
+
                 //seperator
                 separator(),
+
                 // event description
                 Text(
                   event.description,
@@ -118,15 +130,15 @@ class DetailPage extends StatelessWidget {
                 ),
               ],
             ),
-          ),
+          )
         ],
       ),
     );
   }
 
-  // building the toolbar
-  // it contains the back button
-  Container _buildToolbar(BuildContext context) {
+  /// building the toolbar
+  /// it contains the back button
+  Widget _buildToolbar(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: BackButton(color: Colors.white),

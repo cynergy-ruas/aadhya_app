@@ -5,18 +5,26 @@ import 'package:dwimay_backend/dwimay_backend.dart';
 
 class PageHeader extends StatelessWidget {
   
+  /// The event for which the header has to be created
   final Event event;
+
+  /// The day on which the event is occurring. Used to
+  /// get the correct date and time.
   final int day;
 
+  /// The height of the thumbnail
   final double imageHeight = 80;
+
+  /// the width of the thumbnail
   final double imageWidth = 80;
   
   PageHeader({@required this.event, @required this.day});
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.2,
+      height: 170,
       child: CustomMultiChildLayout(
         delegate: RelativeDelegate(objectCenter: FractionalOffset(0.5, 0)),
         children: <Widget>[
@@ -33,6 +41,7 @@ class PageHeader extends StatelessWidget {
     );
   }
 
+  /// The content on the top. Consists of the thumbnail
   Widget _topContent() =>
     Hero(
       tag: "${event.id}",
@@ -43,6 +52,8 @@ class PageHeader extends StatelessWidget {
       )
     );
 
+  /// The content on the bottom. Consists of the title, venue
+  /// and data
   Widget _bottomContent() => 
     Card(
       elevation: 10,
@@ -64,8 +75,14 @@ class PageHeader extends StatelessWidget {
           // separator
           _separator(),
 
+          // venue
+          _eventSubtitle(icon: Icons.location_on, text: "Venue: " + event.venue),
+
+          // gap
+          SizedBox(height: 8,),
+
           // date and time
-          _eventSubtitle(),
+          _eventSubtitle(icon: Icons.alarm, text: event.formatDate(index: day) + ", " + event.getTime(index: day)),
 
           // gap
           SizedBox(height: 20,),
@@ -73,38 +90,39 @@ class PageHeader extends StatelessWidget {
       ),
     );
 
-  // this takes a string and icon as input
-  // it is used to add a subtitle to the info card
-  Widget _eventSubtitle() {
+  /// this takes a string and icon as input
+  /// it is used to add a subtitle to the info card
+  Widget _eventSubtitle({@required IconData icon, @required String text}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         // alarm icon
         Icon(
-          Icons.alarm,
-          size: 12.0,
+          icon,
+          size: 14.0,
         ),
 
         // gap
         SizedBox(
-          width: 8.0,
+          width: 4.0,
         ),
 
         // date and time
         Text(
-          event.formatDate(index: day) + ", " + event.getTime(index: day),
+          text,
           style: Style.smallTextStyle,
         ),
       ],
     );
   }
 
-  // seperator that seperates the title from subtitle
+  /// seperator that seperates the title from subtitle
   Widget _separator() {
     return Container(
-        margin: new EdgeInsets.symmetric(vertical: 8.0),
-        height: 2.0,
-        width: 18.0,
-        color: new Color(0xff00c6ff));
+      margin: new EdgeInsets.symmetric(vertical: 8.0),
+      height: 2.0,
+      width: 18.0,
+      color: new Color(0xff00c6ff),
+    );
   }
 }
