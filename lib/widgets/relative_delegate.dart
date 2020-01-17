@@ -5,8 +5,12 @@ enum Slot {
   top
 }
 
+/// Layout delegate that positions a [top] widget at the 
+/// center of a [bottom] widget, given its [objectCenter].
 class RelativeDelegate extends MultiChildLayoutDelegate {
 
+  /// The offset that defines where the center
+  /// of the top widget should be.
   final FractionalOffset objectCenter;
 
   RelativeDelegate({@required this.objectCenter});
@@ -16,6 +20,7 @@ class RelativeDelegate extends MultiChildLayoutDelegate {
     Size bottomWidgetSize = Size.zero;
     Offset bottomWidgetPos = Offset.zero;
     
+    // performing layout for the bottom widget
     if (hasChild(Slot.bottom)) {
       bottomWidgetSize = layoutChild(Slot.bottom, BoxConstraints.loose(size));
 
@@ -24,6 +29,7 @@ class RelativeDelegate extends MultiChildLayoutDelegate {
       positionChild(Slot.bottom, bottomWidgetPos);
     }
 
+    // performing layout for the top widget
     if (hasChild(Slot.top)) {
       Size topWidgetSize = layoutChild(Slot.top, BoxConstraints());
       positionChild(
@@ -31,7 +37,6 @@ class RelativeDelegate extends MultiChildLayoutDelegate {
         bottomWidgetPos + objectCenter.alongSize(bottomWidgetSize) - topWidgetSize.center(Offset.zero)
       );
     }
-
   }
 
   @override
