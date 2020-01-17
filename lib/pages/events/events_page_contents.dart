@@ -149,18 +149,21 @@ class _EventsPageContentsState extends State<EventsPageContents> {
       Padding(
         padding: const EdgeInsets.only(left:20.0),
         child: (_events.length > 0) // if there are events, then use a list view
-                ? ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(right: 20),
-                  physics: BouncingScrollPhysics(),
-                  itemCount: _events.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 30, right: 10),
-                      child: ListCard(event: _events[index], day: _selected - 1,),
-                    );
-                  },
-                )
+                ? ListView.separated(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.only(right: 20),
+                    physics: BouncingScrollPhysics(),
+                    itemCount: _events.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                      // the card
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30, right: 10),
+                        child: ListCard(event: _events[index], day: _selected - 1,),
+                      ),
+                    separatorBuilder: (BuildContext context, int index) => 
+                      // gap
+                      SizedBox(height: 10,)
+                  )
                 : Text("No Events"), // else display a text saying "no events"
       ),
 
