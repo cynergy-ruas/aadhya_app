@@ -117,7 +117,7 @@ class _ListCardState extends State<ListCard> {
   /// The top content. Contains the thumbnail image
   Widget _topContent() =>
     Hero(
-      tag: "${widget.event.id}",
+      tag: widget.event,
       child: Image.asset(
         "assets/images/${widget.event.type}.png",
         width: imageHeight,

@@ -44,7 +44,7 @@ class PageHeader extends StatelessWidget {
   /// The content on the top. Consists of the thumbnail
   Widget _topContent() =>
     Hero(
-      tag: "${event.id}",
+      tag: event,
       child: Image.asset(
         "assets/images/${event.type}.png",
         width: imageHeight,
