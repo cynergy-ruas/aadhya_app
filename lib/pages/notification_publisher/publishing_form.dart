@@ -208,6 +208,7 @@ class PublishingFormState extends State<PublishingForm> {
       formKey.currentState.save();
       widget.onSaved(_event, _title, _subtitle, _description);
       formKey.currentState.reset();
+      _eventsController.text = "";
     }
   }
 
