@@ -35,23 +35,21 @@ class _NotificationDialogContentsState extends State<NotificationDialogContents>
       );
 
     return FutureBuilder(
-      // future: FunctionsManager.instance.publishNotification(
-      //   topic: widget.notificationTopic,
-      //   announcement: Announcement.fromRaw(
-      //     title: widget.notificationTitle,
-      //     body: widget.notificationSubtitle,
-      //     data: {
-      //       "description": widget.notificationDescription,
-      //     }
-      //   )
-      // ),
-
-      future: Future.delayed(Duration(seconds: 3), () {
-        return 1;
-      }),
+      future: FunctionsManager.instance.publishNotification(
+        topic: widget.notificationTopic,
+        announcement: Announcement.fromRaw(
+          title: widget.notificationTitle,
+          body: widget.notificationSubtitle,
+          data: {
+            "description": widget.notificationDescription,
+          }
+        )
+      ),
 
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
+          Future.delayed(Duration(seconds: 3)).then((_) => Navigator.of(context).pop());
+        
           return Text(
             "Notification Published"
           );

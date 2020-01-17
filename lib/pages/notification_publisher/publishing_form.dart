@@ -30,7 +30,7 @@ class PublishingFormState extends State<PublishingForm> {
     // sorting the list of events received as parameter
     widget.events.sort((Event a, Event b) => a.name.compareTo(b.name));
 
-    // initializing global key
+    // initializing global key for form
     formKey = GlobalKey<FormState>();
   }
 
@@ -180,6 +180,7 @@ class PublishingFormState extends State<PublishingForm> {
                 ),
               );
             },
+            // validator for the form
             validator: (Event event) {
               if (event == null)
                 return "Event cannot be empty";
@@ -195,6 +196,7 @@ class PublishingFormState extends State<PublishingForm> {
     );
   }
 
+  /// Generates the drop down menu items
   List<DropdownMenuItem> _generateItems() {
     return widget.events.map(
       (event) => DropdownMenuItem<Event>(
@@ -207,6 +209,7 @@ class PublishingFormState extends State<PublishingForm> {
     ).toList();
   }
 
+  /// validates and saves the form.
   void saveForm() {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();

@@ -155,7 +155,10 @@ class _EventsPageContentsState extends State<EventsPageContents> {
                   physics: BouncingScrollPhysics(),
                   itemCount: _events.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return ListCard(event: _events[index], day: _selected - 1,);
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 30, right: 10),
+                      child: ListCard(event: _events[index], day: _selected - 1,),
+                    );
                   },
                 )
                 : Text("No Events"), // else display a text saying "no events"

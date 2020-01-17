@@ -1,12 +1,10 @@
+import 'package:dwimay_backend/dwimay_backend.dart';
+import 'package:flutter/material.dart';
 import 'package:dwimay/pages/login_profile/profile_contents.dart';
 import 'package:dwimay/pages/login_profile/tools_fab.dart';
 import 'package:dwimay/pages/notification_publisher/notification_publisher.dart';
-import 'package:dwimay_backend/dwimay_backend.dart';
-import 'package:flutter/material.dart';
 
-/// The profile page. The user logs in using the profile page.
-/// The details of the user and the QR code for entering will
-/// be present after logging in.
+
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -14,12 +12,15 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   
+  /// The widget that stores the body of the profile
+  /// page.
   Widget _body;
 
   @override
   void initState() {
     super.initState();
 
+    // intializing the body to profile contents.
     _body = ProfileContents();
   }
 
@@ -43,6 +44,8 @@ class _ProfilePageState extends State<ProfilePage> {
         )
         : null,
 
+      // the body. Enables a user with high clearance level to go to 
+      // the appropriate pages using a slide transition
       body: AnimatedSwitcher(
         duration: Duration(milliseconds: 500,),
         child: _body,
@@ -56,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ).animate(anim),
             child: child,
           ),
-      ),
+      )
     );
   }
 
