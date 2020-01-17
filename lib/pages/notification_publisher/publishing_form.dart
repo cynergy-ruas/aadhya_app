@@ -1,5 +1,6 @@
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class PublishingForm extends StatefulWidget {
 
@@ -18,6 +19,7 @@ class PublishingFormState extends State<PublishingForm> {
   String _title;
   String _subtitle;
   String _description;
+  TextEditingController _eventsController;
 
   GlobalKey<FormState> formKey;
 
@@ -32,6 +34,9 @@ class PublishingFormState extends State<PublishingForm> {
 
     // initializing global key for form
     formKey = GlobalKey<FormState>();
+
+    // initializing the events controller
+    _eventsController = TextEditingController();
   }
 
   @override
@@ -128,65 +133,66 @@ class PublishingFormState extends State<PublishingForm> {
           // gap
           SizedBox(height: 20,),
 
-          // drop down menu for event
-          FormField<Event>(
-            builder: (FormFieldState<Event> state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // the drop down menu to select the event
-                  DropdownButton<Event>(
-                    items: _generateItems(),
-                    onChanged: (Event value) => setState(() => state.didChange(value)),
-                    value: state.value,
+          // Suggestions field for events
+          TypeAheadFormField<Event>(
+            // configuring the field
+            textFieldConfiguration: TextFieldConfiguration(
+              decoration: InputDecoration(
+                hintText: "The event"
+              ),
+              style: Theme.of(context).textTheme.body1.copyWith(
+                color: Colors.white,
+              ),
+              controller: _eventsController
+            ),
+            
+            suggestionsBoxDecoration: SuggestionsBoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
 
-                    // the underline
-                    underline: Container(
-                      height: 1,
-                      color: (state.hasError) ? Colors.red : Theme.of(context).accentColor,
-                    ),
+            // used to get the suggestions from the string user has 
+            // typed
+            suggestionsCallback: (String pattern) =>
+              widget.events.where(
+                (event) => event.name.toLowerCase().contains(pattern.toLowerCase())
+              ).toList(),
 
-                    // the hint text
-                    hint: Center(
-                      child: Text(
-                        "Select the event",
-                        style: Theme.of(context).textTheme.body1.copyWith(color: Colors.grey),
-                      ),
-                    ),
-
-                    // how the selected item should look like
-                    selectedItemBuilder: (BuildContext buildContext) => 
-                      widget.events.map<Widget>((event) => 
-                        Center(
-                          child: Text(
-                            event.name,
-                            style: Theme.of(context).textTheme.body1.copyWith(
-                              color: Colors.white
-                            ),
-                          ),
-                        )
-                      ).toList()
-                  ),
-                ]
-                
-                ..addAll(
-                  // the error text, if any
-                  (state.hasError) 
-                  ? [Text(
-                      state.errorText,
-                      style: Theme.of(context).textTheme.caption.copyWith(color: Colors.red)
-                    )]
-                  : []
+            // used to build the UI for each suggestion
+            itemBuilder: (BuildContext context, Event suggestion) =>
+              ListTile(
+                title: Text(suggestion.name),
+              ),
+            
+            // Used to build the UI when no matching suggestion is found
+            noItemsFoundBuilder: (BuildContext context) => 
+              ListTile(
+                title: Text(
+                  "No events found.",
+                  style: TextStyle(color: Colors.grey),
                 ),
-              );
-            },
-            // validator for the form
-            validator: (Event event) {
-              if (event == null)
-                return "Event cannot be empty";
+              ),
+
+            // defines what to do when a suggestion is tapped
+            onSuggestionSelected: (Event suggestion) => 
+              _eventsController.text = suggestion.name,
+
+            // validator
+            validator: (String selected) {
+              if (selected.isEmpty) {
+                return "Please select a city";
+              }
+
+              if (widget.events.where((event) => event.name == selected).length == 0) {
+                return "Please select a valid event";
+              }
+
               return null;
             },
-            onSaved: (Event event) => _event = event,
+
+            // defines what to do when the form is saved
+            onSaved: (String value) =>
+              _event = widget.events.firstWhere((event) => event.name == value),
+
           ),
 
           // gap
@@ -194,19 +200,6 @@ class PublishingFormState extends State<PublishingForm> {
         ],
       ),
     );
-  }
-
-  /// Generates the drop down menu items
-  List<DropdownMenuItem> _generateItems() {
-    return widget.events.map(
-      (event) => DropdownMenuItem<Event>(
-        child: Text(
-          event.name,
-          style: Theme.of(context).textTheme.body1,
-        ),
-        value: event
-      )
-    ).toList();
   }
 
   /// validates and saves the form.
