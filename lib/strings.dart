@@ -33,6 +33,9 @@ class Strings {
     },
   ];
 
+  /// The title of the events page
+  static const eventsPageTitle = "Events";
+
   /// The title of the announcements page
   static const announcementsPageTitle = "Announcements";
 

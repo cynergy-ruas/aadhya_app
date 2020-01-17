@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dwimay/strings.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +52,7 @@ class _EventsPageContentsState extends State<EventsPageContents> {
           Padding(
             padding: const EdgeInsets.only(left: 20.0),
             child: Text(
-              "Events",
+              Strings.eventsPageTitle,
               style: Theme.of(context).textTheme.title,
             ),
           ),
@@ -177,7 +178,7 @@ class _EventsPageContentsState extends State<EventsPageContents> {
           child: Text(
             "Day " + day.toString(),
             style: Theme.of(context).textTheme.subhead.copyWith(
-              color: (_selected == day) ? Theme.of(context).accentColor : Colors.black,
+              color: (_selected == day) ? Theme.of(context).accentColor : Theme.of(context).textTheme.body2.color,
               fontWeight: FontWeight.bold,
             ),
           ),

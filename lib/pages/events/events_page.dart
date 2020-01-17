@@ -1,5 +1,5 @@
 import 'package:dwimay/pages/events/events_page_contents.dart';
-import 'package:dwimay/pages/login_profile/login_loading.dart';
+import 'package:dwimay/widgets/loading_widget.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 

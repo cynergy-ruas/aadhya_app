@@ -1,4 +1,4 @@
-import 'package:dwimay/pages/login_profile/login_loading.dart';
+import 'package:dwimay/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'login_form.dart';
