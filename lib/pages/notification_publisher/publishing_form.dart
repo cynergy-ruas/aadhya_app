@@ -66,7 +66,7 @@ class PublishingFormState extends State<PublishingForm> {
                 return "Title cannot be empty";
               return null;
             },
-            onSaved: (String value) => _title = value,
+            onSaved: (String value) => _title = value.trim(),
           ),
 
           // gap
@@ -92,7 +92,7 @@ class PublishingFormState extends State<PublishingForm> {
                 return "Subtitle cannot be empty";
               return null;
             },
-            onSaved: (String value) => _subtitle = value,
+            onSaved: (String value) => _subtitle = value.trim(),
           ),
 
           // gap
@@ -109,7 +109,7 @@ class PublishingFormState extends State<PublishingForm> {
           // gap
           SizedBox(height: 20,),
 
-          // Form field for substitle
+          // Form field for description
           TextFormField(
             maxLines: 10,
             style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
@@ -117,7 +117,7 @@ class PublishingFormState extends State<PublishingForm> {
               hintText: "Long description",
               contentPadding: EdgeInsets.all(10)
             ),
-            onSaved: (String value) => _description = value 
+            onSaved: (String value) => _description = value.trim()
           ),
 
           // gap

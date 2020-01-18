@@ -1,10 +1,10 @@
 import 'package:dwimay/pages/notification_publisher/publishing_form.dart';
 import 'package:dwimay/widgets/build_button.dart';
+import 'package:dwimay/widgets/confirmation_dialog.dart';
 import 'package:dwimay/widgets/loading_widget.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 
-import 'notification_dialog_contents.dart';
 
 /// Widget that takes information from the user and publishes it as
 /// a notification.
@@ -73,50 +73,19 @@ class _NotificationPublisherState extends State<NotificationPublisher> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) {
-        bool _shouldPublish = false;
-
-        return StatefulBuilder(
-          builder: (BuildContext context, void Function(void Function()) setState) =>
-            AlertDialog(
-              title: Text("Publish Notification"),
-              content: NotificationDialogContents(
-                shouldPublish: _shouldPublish,
-                dialogContext: context,
-                notificationTopic: topic,
-                notificationTitle: title,
-                notificationSubtitle: subtitle,
-                notificationDescription: description,
-              ),
-
-              // setting the actions. The actions depend on whether the notification
-              // is in the process of being published or not.
-              actions: <Widget>[]
-              ..addAll(
-                (! _shouldPublish)
-                ? [
-                  FlatButton(
-                    child: Text("Publish"),
-                    onPressed: () =>
-                      setState(() => _shouldPublish = true),
-                  )
-                ]
-                : []
-              )
-              ..addAll(
-                (! _shouldPublish)
-                ? [
-                  FlatButton(
-                    child: Text("Cancel"),
-                    onPressed: () => Navigator.of(context).pop(),
-                  )
-                ]
-                : []
-              ),
-              
-            )
-        );
-      }
+      builder: (BuildContext context) => ConfirmationDialog(
+        title: "Publish Notification",
+        future: () => FunctionsManager.instance.publishNotification(
+          topic: topic,
+          announcement: Announcement.fromRaw(
+            title: title,
+            body: subtitle,
+            data: {
+              "description": description,
+            }
+          )
+        )
+      )
     );
   }
 }
@@ -143,12 +112,10 @@ class _Contents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget body = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.only(top: 20.0, bottom: 30.0, left: 20.0, right: 20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          // gap
-          SizedBox(height: 20,),
 
           // title
           Text(
@@ -192,9 +159,6 @@ class _Contents extends StatelessWidget {
               ),
             ],
           ),
-
-          // gap
-          SizedBox(height: 30,),
         ]
       )
     );

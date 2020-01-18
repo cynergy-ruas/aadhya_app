@@ -1,3 +1,4 @@
+import 'package:dwimay/pages/clearance_modifier/clearance_modifier_page.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:dwimay/pages/login_profile/profile_contents.dart';
@@ -38,6 +39,13 @@ class _ProfilePageState extends State<ProfilePage> {
             setState(() {
               _body = NotificationPublisher(
                 onBackPressed: toProfileContents
+              );
+            });
+          },
+          onClearanceModifierButtonPressed: () {
+            setState(() {
+              _body = ClearanceModifier(
+                onBackPress: toProfileContents,
               );
             });
           },
