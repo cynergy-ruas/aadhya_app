@@ -10,7 +10,7 @@ admin.firestore().settings({
  * Function to update the clearance level of a user.
  */
 exports.updateClearance = functions.https.onCall(async (data, context) => {
-    console.log(`data received: ${data}`);
+    console.log(`request initiated by: ${context.auth.token.email}`);
 
     // checking if the user attempting to change the clearance has permissions
     if (context.auth.token.clearance < 1) {
@@ -19,6 +19,8 @@ exports.updateClearance = functions.https.onCall(async (data, context) => {
             status: 401
         };
     }
+
+    console.log(`changing clearance for ${data.email} to ${data.clearance}`);
 
     // getting the email of the user who's clearance should be updated
     const email = data.email;
@@ -64,21 +66,14 @@ exports.notifyUpdatedEvent = functions.firestore.document("/events/{docId}")
         console.log(`sending notification for event ${eventID}`);
         
         // constructing the notification payload
-        const payload = {
-            notification: {
-                title: "Update!",
-                body: `There is a change regarding the event: ${eventName}`,
-            },
+        const payload = constructNotificationPayload({
+            title: "Update!",
+            body: `There is a change regarding the event ${eventName}`,
             data: {
                 eventID: eventID
             },
-            android: {
-                notification: {
-                    click_action: "FLUTTER_NOTIFICATION_CLICK"
-                }
-            },
             topic: eventID
-        };
+        });
         
         // sending the notification
         return admin.messaging().send(payload)
@@ -91,3 +86,75 @@ exports.notifyUpdatedEvent = functions.firestore.document("/events/{docId}")
             console.log(error);
         });
     });
+
+/**
+ * Sends a notification to the topic.
+ */
+
+exports.publishNotification = functions.https.onCall(async (data, context) => {
+    
+    // checking if the user is authorized to send notifications or not
+    if (context.auth.token.clearance < 1) {
+        console.log(`Attempting to send notification with insufficient permissions: ${context.auth.token.email}`);
+        return {
+            status: 401
+        };
+    }
+
+    // logging
+    console.log(`sending notification: ${data.title}. Requested by: ${context.auth.token.email}`);
+
+    // constructing payload
+    const payload = constructNotificationPayload({
+        title: data.title,
+        body: data.body,
+        data: data.data,
+        topic: data.topic
+    });
+
+    try {
+        // sending the notification
+        await admin.messaging().send(payload);
+
+        // logging
+        console.log(`sent notification to topic ${data.topic}`);
+
+        // returning ok status code
+        return {
+            status: 200
+        };
+    } catch (err) {
+        // logging
+        console.log(`error sending sending notification to topic ${data.topic}`);
+        console.log(error);
+
+        // returning error status code
+        return {
+            status: 500
+        };
+    }
+});
+
+/**
+ * Constructs the notification payload.
+ * 
+ * @param title The title of the notification.
+ * @param body The body of the notification.
+ * @param data The data of the notification.
+ * @param topic The topic to send to the notification to.
+ */
+function constructNotificationPayload({title, body, data, topic}) {
+    return {
+        notification: {
+            title: title,
+            body: body,
+        },
+        data: data,
+        android: {
+            notification: {
+                click_action: "FLUTTER_NOTIFICATION_CLICK"
+            }
+        },
+        topic: topic
+    };
+}
