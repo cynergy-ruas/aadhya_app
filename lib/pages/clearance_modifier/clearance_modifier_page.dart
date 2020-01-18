@@ -4,9 +4,14 @@ import 'package:dwimay/widgets/confirmation_dialog.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 
+/// The page where the user can modify clearance level of 
+/// users.
 class ClearanceModifier extends StatelessWidget {
 
+  /// The function to execute when the backbutton is pressed
   final void Function() onBackPress;
+
+  /// The key for the form
   final GlobalKey<ClearanceModifierFormState> formKey;
 
   ClearanceModifier({@required this.onBackPress}) : 
@@ -14,6 +19,9 @@ class ClearanceModifier extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // The combination of [LayoutBuilder], [SingleChildScrollView], [ConstrainedBox]
+    // and [IntrinsicHeight] is used so that [Expanded] can be used inside a 
+    // [SingleChildScrollView].
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 30.0, left: 20.0, right: 20.0),
       child: LayoutBuilder(
@@ -48,6 +56,7 @@ class ClearanceModifier extends StatelessWidget {
                       ),
                     ),
 
+                    // the back and submit button
                     _buttonBar(),
                   ],
                 ),
@@ -58,6 +67,7 @@ class ClearanceModifier extends StatelessWidget {
     );
   }
 
+  // shows the confirmation dialog
   void _onSaved(BuildContext context, String email, int clearance) {
     showDialog(
       context: context,
@@ -65,6 +75,7 @@ class ClearanceModifier extends StatelessWidget {
       builder: (BuildContext context) => 
         ConfirmationDialog(
           title: "Update Clearance",
+          successMessage: "Clearance updated.",
           future: () async {
             Map<String, dynamic> res = Map<String, dynamic>.from(await FunctionsManager.instance.updateClearance(
               email: email,
@@ -88,6 +99,7 @@ class ClearanceModifier extends StatelessWidget {
     );
   }
 
+  // the back and submit buttons
   Widget _buttonBar() => 
     // Back button
     Row(

@@ -3,7 +3,6 @@ import 'package:dwimay/pages/announcements/announcements_page.dart';
 import 'package:dwimay/pages/events/events_page.dart';
 import 'package:dwimay/pages/login_profile/login_page.dart';
 import 'package:dwimay/pages/main/collapsed_contents.dart';
-import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -122,26 +121,11 @@ class _MainPageState extends State<MainPage> {
         minHeight: 70,
 
         // the body of the application
-        body: NotificationsListener(
-          // configuring callback to run when notification occurs when the
-          // app is in foreground.
-          onMessage: (BuildContext context, Map<String, dynamic> message) {
-            Scaffold.of(context).showSnackBar(
-              SnackBar(
-                content: ListTile(
-                  title: Text(message['notification']['title']),
-                  subtitle: Text(message['notification']['body']),
-                ),
-              )
-            );
-          },
-          
-          // rest of the app
-          child: AnimatedSwitcher(
-            duration: Duration(milliseconds: 500),
-            child: _pages[_currentPage],
-          ),
+        body: AnimatedSwitcher(
+          duration: Duration(milliseconds: 500),
+          child: _pages[_currentPage],
         ),
+        
 
         // not rendering the sheet
         renderPanelSheet: false,

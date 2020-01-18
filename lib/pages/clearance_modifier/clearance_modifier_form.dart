@@ -1,6 +1,7 @@
 import 'package:dwimay/pages/clearance_modifier/clearance_radio_group.dart';
 import 'package:flutter/material.dart';
 
+/// The form to modify the clearance levels
 class ClearanceModifierForm extends StatefulWidget {
 
   final void Function(String, int) onSaved;
@@ -13,8 +14,13 @@ class ClearanceModifierForm extends StatefulWidget {
 
 class ClearanceModifierFormState extends State<ClearanceModifierForm> {
   
+  /// The global key for the form
   GlobalKey<FormState> formKey;
+
+  /// The email id
   String _emailid;
+
+  /// The clearance level
   int _clearance;
 
   @override
@@ -83,6 +89,7 @@ class ClearanceModifierFormState extends State<ClearanceModifierForm> {
     );
   }
 
+  /// Validates the form, and saves it if it is valid
   void saveForm() {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();

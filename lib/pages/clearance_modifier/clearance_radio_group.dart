@@ -34,6 +34,7 @@ class _ClearanceRadioFormFieldState extends State<ClearanceRadioFormField> {
     );
   }
 
+  /// The radio buttons.
   Widget _radioButtons({@required FormFieldState<int> state}) =>
     Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -79,6 +80,7 @@ class _ClearanceRadioFormFieldState extends State<ClearanceRadioFormField> {
       ],
     );
 
+  /// A radio button plus its label
   List<Widget> _radioButtonEntry({@required int level, @required FormFieldState<int> state}) =>
     [
       // the button

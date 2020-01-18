@@ -2,6 +2,7 @@ import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
+/// The form used to publish a notification.
 class PublishingForm extends StatefulWidget {
 
   final List<Event> events;
@@ -16,13 +17,23 @@ class PublishingForm extends StatefulWidget {
 
 class PublishingFormState extends State<PublishingForm> {
 
+  /// The title of the notification
   String _title;
+
+  /// The subtitle of the notification
   String _subtitle;
+
+  /// The description of the notification
   String _description;
+
+  /// The controller used in the auto suggestion
+  /// events field
   TextEditingController _eventsController;
 
+  /// The global key for the form
   GlobalKey<FormState> formKey;
 
+  /// The event to send notifications for.
   Event _event;
 
   @override
