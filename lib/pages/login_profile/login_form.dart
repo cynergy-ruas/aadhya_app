@@ -155,7 +155,7 @@ class _LoginFormState extends State<LoginForm> {
             // build login button
             BuildButton(
               data: "LOGIN",
-              onPressed: () => LoginWidget.of(context).login(
+              onPressed: () => BackendProvider.of<AuthBloc>(context).login(
                   email: emailController.text,
                   password: passwordController.text),
               verticalPadding: 25.0,

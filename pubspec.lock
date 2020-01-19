@@ -99,7 +99,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "0770f865e477a0becc26456db14bcc866775d339"
+      resolved-ref: a975053f18b0d8001ed6e1f55b0df788dab7173f
       url: "https://github.com/cynergy-ruas/dwimay_app_backend.git"
     source: git
     version: "0.0.1"
@@ -259,7 +259,7 @@ packages:
     source: hosted
     version: "1.1.8"
   overlay_support:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: overlay_support
       url: "https://pub.dartlang.org"

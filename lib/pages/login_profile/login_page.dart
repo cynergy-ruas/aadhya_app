@@ -60,6 +60,7 @@ class _LoginPageState extends State<LoginPage> {
 
           Expanded(
             child: LoginWidget(
+              bloc: BackendProvider.of<AuthBloc>(context),
               // widget to display when the login process is on going
               onLoading: LoadingWidget(),
 

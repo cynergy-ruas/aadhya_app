@@ -8,6 +8,8 @@ class EventsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: EventLoader(
+        bloc: BackendProvider.of<EventLoadBloc>(context),
+        
         beginLoad: true,
 
         onUninitialized: Container(),

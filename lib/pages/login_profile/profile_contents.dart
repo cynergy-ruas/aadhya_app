@@ -100,7 +100,7 @@ class ProfileContents extends StatelessWidget {
     final _logoutButton = BuildButton(
       data: "LOGOUT",
       onPressed: () {
-        LoginWidget.of(context).logout();
+        BackendProvider.of<AuthBloc>(context).logout();
       },
       verticalPadding: 25.0,
       horizontalPadding: 100.0,

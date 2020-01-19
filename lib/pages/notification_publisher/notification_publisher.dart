@@ -27,6 +27,7 @@ class _NotificationPublisherState extends State<NotificationPublisher> {
   @override
   Widget build(BuildContext context) {
     return EventLoader(
+      bloc: EventLoadBloc(),
       beginLoad: true,
 
       // widget to display when loading
@@ -75,7 +76,7 @@ class _NotificationPublisherState extends State<NotificationPublisher> {
       barrierDismissible: false,
       builder: (BuildContext context) => ConfirmationDialog(
         title: "Publish Notification",
-        future: () => FunctionsManager.instance.publishNotification(
+        future: () => CloudFunctions.instance.publishNotification(
           topic: topic,
           announcement: Announcement.fromRaw(
             title: title,

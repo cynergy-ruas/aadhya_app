@@ -75,7 +75,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
 
                         // action to perform when item is dismissed
                         onDismissed: (DismissDirection direction) =>
-                          NotificationsListener.of(context).delete(index: index),
+                          BackendProvider.of<NotificationBloc>(context).removeFromPool(index: index),
                       ),
                   );
                 }

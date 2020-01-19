@@ -77,7 +77,7 @@ class ClearanceModifier extends StatelessWidget {
           title: "Update Clearance",
           successMessage: "Clearance updated.",
           future: () async {
-            Map<String, dynamic> res = Map<String, dynamic>.from(await FunctionsManager.instance.updateClearance(
+            Map<String, dynamic> res = Map<String, dynamic>.from(await CloudFunctions.instance.updateClearanceForUser(
               email: email,
               clearance: clearance
             ));
