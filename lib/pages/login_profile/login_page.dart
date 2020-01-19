@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
 
           // gap
           SizedBox(
-            height: 7,
+            height: 20,
           ),
 
           Expanded(

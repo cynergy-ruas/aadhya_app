@@ -24,10 +24,23 @@ class NotificationPublisher extends StatefulWidget {
 }
 
 class _NotificationPublisherState extends State<NotificationPublisher> {
+
+  /// The event loading bloc
+  EventLoadBloc _bloc;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // initializing the bloc
+    _bloc = EventLoadBloc();
+  }
+
   @override
   Widget build(BuildContext context) {
     return EventLoader(
-      bloc: EventLoadBloc(),
+      bloc: _bloc,
+
       beginLoad: true,
 
       // widget to display when loading
@@ -89,6 +102,12 @@ class _NotificationPublisherState extends State<NotificationPublisher> {
       )
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.close();
+  }
 }
 
 /// The contents of the page
@@ -113,7 +132,7 @@ class _Contents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget body = Padding(
-      padding: const EdgeInsets.only(top: 20.0, bottom: 30.0, left: 20.0, right: 20.0),
+      padding: const EdgeInsets.only(bottom: 30.0, left: 20.0, right: 20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
