@@ -42,97 +42,99 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     
     // the scaffold
-    return Scaffold(
+    return SafeArea(
+      child: Scaffold(
 
-      // the bottom nav bar
-      bottomNavigationBar: Container( // adding a shadow around the nav bar
-        height: 45,
-        decoration: BoxDecoration(
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              spreadRadius: 2,
-              blurRadius: 5,
-              color: Colors.black12
-            )
-          ]
+        // the bottom nav bar
+        bottomNavigationBar: Container( // adding a shadow around the nav bar
+          height: 45,
+          decoration: BoxDecoration(
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                spreadRadius: 2,
+                blurRadius: 5,
+                color: Colors.black12
+              )
+            ]
+          ),
+
+          // the actual nav bar
+          child: BottomNavigationBar(
+            // the index of the highlighted item
+            currentIndex: _currentPage,
+
+            // the icons in the nav bar
+            items: <BottomNavigationBarItem> [
+
+              // icon for the about page
+              BottomNavigationBarItem(
+                icon: Icon(Icons.info),
+                title: Container(),
+              ),
+
+              // the icon for the events page
+              BottomNavigationBarItem(
+                icon: Icon(Icons.event),
+                title: Container(),
+              ),
+
+              // the icon for the announcements page
+              BottomNavigationBarItem(
+                icon: Icon(Icons.notifications),
+                title: Container(),
+              )
+            ],
+
+            // defining what to do when a tab in the nav bar is tapped
+            onTap: (int index) {
+              setState(() {
+                // setting the [_currentPage] to the index of the tapped tab
+                _currentPage = index;
+              });
+            },
+          ),
         ),
 
-        // the actual nav bar
-        child: BottomNavigationBar(
-          // the index of the highlighted item
-          currentIndex: _currentPage,
-
-          // the icons in the nav bar
-          items: <BottomNavigationBarItem> [
-
-            // icon for the about page
-            BottomNavigationBarItem(
-              icon: Icon(Icons.info),
-              title: Container(),
+        // the body of the app is wrapped in a Bottom sheet widget 
+        // called [SlidingUpPanel]. This widget displays the list
+        // of registered events if the user has logged in.
+        body: SlidingUpPanel(
+          // contents of the panel when collapsed, clipped at the 
+          // top corners
+          collapsed: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(14.0),
+              topRight: Radius.circular(14.0)
             ),
+            child: CollapsedContents()
+          ),
 
-            // the icon for the events page
-            BottomNavigationBarItem(
-              icon: Icon(Icons.event),
-              title: Container(),
+          // the contents of the panel when opened, clipped at the
+          // top corners
+          panel: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(14.0),
+              topRight: Radius.circular(14.0)
             ),
+            child: LoginPage()
+          ),
 
-            // the icon for the announcements page
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              title: Container(),
-            )
-          ],
+          minHeight: 70,
 
-          // defining what to do when a tab in the nav bar is tapped
-          onTap: (int index) {
-            setState(() {
-              // setting the [_currentPage] to the index of the tapped tab
-              _currentPage = index;
-            });
-          },
-        ),
+          // the body of the application
+          body: AnimatedSwitcher(
+            duration: Duration(milliseconds: 500),
+            child: _pages[_currentPage],
+          ),
+          
+
+          // not rendering the sheet
+          renderPanelSheet: false,
+
+          // setting the parallax effect
+          parallaxEnabled: true,
+        )
       ),
-
-      // the body of the app is wrapped in a Bottom sheet widget 
-      // called [SlidingUpPanel]. This widget displays the list
-      // of registered events if the user has logged in.
-      body: SlidingUpPanel(
-        // contents of the panel when collapsed, clipped at the 
-        // top corners
-        collapsed: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(14.0),
-            topRight: Radius.circular(14.0)
-          ),
-          child: CollapsedContents()
-        ),
-
-        // the contents of the panel when opened, clipped at the
-        // top corners
-        panel: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(14.0),
-            topRight: Radius.circular(14.0)
-          ),
-          child: LoginPage()
-        ),
-
-        minHeight: 70,
-
-        // the body of the application
-        body: AnimatedSwitcher(
-          duration: Duration(milliseconds: 500),
-          child: _pages[_currentPage],
-        ),
-        
-
-        // not rendering the sheet
-        renderPanelSheet: false,
-
-        // setting the parallax effect
-        parallaxEnabled: true,
-      )
     );
   }
 }
