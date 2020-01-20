@@ -14,63 +14,58 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
   
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            
-            // title
-            Text(
-              Strings.announcementsPageTitle,
-              style: Theme.of(context).textTheme.title,
-            ),
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          
+          // title
+          Text(
+            Strings.announcementsPageTitle,
+            style: Theme.of(context).textTheme.title,
+          ),
 
-            // gap
-            SizedBox(height: 20,),
+          // gap
+          SizedBox(height: 20,),
 
-            // subtitle
-            Text(
-              Strings.announcementsPageSubtitle,
-            ),
+          // subtitle
+          Text(
+            Strings.announcementsPageSubtitle,
+          ),
 
-            // gap
-            SizedBox(height: 40,),
+          // gap
+          SizedBox(height: 40,),
 
-            Expanded(
-              child: AnnouncementsBuilder(
-                builder: (BuildContext context, List<Announcement> announcements) {
-                  // checking if there are no announcements. If there are none, 
-                  // displaying the appropriate text
-                  if (announcements.isEmpty)
-                    return Center(
-                      child: Text(
-                        Strings.noAnnouncementsText
-                      ),
-                    );
-
-                  // reversing the announcements list
-                  announcements = announcements.reversed.toList();
-
-                  // displaying the list of announcements
-                  return ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    itemCount: announcements.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                      AnnouncementCard(
-                        announcement: announcements[index],
-                        index: index,
-                      ),
+          Expanded(
+            child: AnnouncementsBuilder(
+              builder: (BuildContext context, List<Announcement> announcements) {
+                // checking if there are no announcements. If there are none, 
+                // displaying the appropriate text
+                if (announcements.isEmpty)
+                  return Center(
+                    child: Text(
+                      Strings.noAnnouncementsText
+                    ),
                   );
-                }
-              )
-            ),
-                        
-            // gap
-            SizedBox(height: 115,)
-          ],
-        ),
+
+                // displaying the list of announcements
+                return ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: announcements.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                    AnnouncementCard(
+                      announcement: announcements[announcements.length - 1 - index],
+                      index: announcements.length - 1 - index,
+                    ),
+                );
+              }
+            )
+          ),
+                      
+          // gap
+          SizedBox(height: 115,)
+        ],
       ),
     );
   }

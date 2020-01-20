@@ -24,6 +24,7 @@ dependencies:
   font_awesome_flutter: ^8.5.0
   sliding_up_panel: ^0.3.6
   flutter_typeahead: ^1.7.0
+  expandable: ^4.0.2
   dwimay_backend:
     git: https://github.com/cynergy-ruas/dwimay_app_backend.git
 

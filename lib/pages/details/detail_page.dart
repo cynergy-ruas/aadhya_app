@@ -27,23 +27,25 @@ class DetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     // building the detail page
-    return Scaffold(
-      body: Container(
-        // expan to fit the device
-        constraints: BoxConstraints.expand(),
-        // background color
-        color: Color(0xFF3E3963),
-        child: Stack(
-          children: <Widget>[
-            // the background image of the detail page
-            _buildBackground(),
-            // building the coustom gradient color
-            _buildGradient(),
-            // the content of the detail page
-            _buildContent(),
-            // the toolbar (back button)
-            _buildToolbar(context),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          // expan to fit the device
+          constraints: BoxConstraints.expand(),
+          // background color
+          color: Color(0xFF3E3963),
+          child: Stack(
+            children: <Widget>[
+              // the background image of the detail page
+              _buildBackground(),
+              // building the coustom gradient color
+              _buildGradient(),
+              // the content of the detail page
+              _buildContent(),
+              // the toolbar (back button)
+              _buildToolbar(context),
+            ],
+          ),
         ),
       ),
     );

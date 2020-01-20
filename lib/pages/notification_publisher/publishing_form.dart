@@ -37,15 +37,18 @@ class PublishingFormState extends State<PublishingForm> {
   /// The event to send notifications for.
   Event _event;
 
+  /// The list of events, to store a separate copy
+  List<Event> events;
+
   @override
   void initState() {
     super.initState();
     
-    // sorting the list of events received as parameter
-    widget.events.sort((Event a, Event b) => a.name.compareTo(b.name));
+    // creating a new copy
+    events = List.from(widget.events);
 
     // adding the general topic as an event
-    widget.events
+    events
     .add(
       Event(
         datetimes: null,
@@ -87,7 +90,10 @@ class PublishingFormState extends State<PublishingForm> {
           // Form field for title
           TextFormField(
             decoration: InputDecoration(hintText: Strings.titleFieldHint),
-            style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
+            textCapitalization: TextCapitalization.sentences,
+            style: Theme.of(context).textTheme.body1.copyWith(
+              color: Colors.white,
+            ),
             validator: (String value) {
               if (value.length == 0)
                 return Strings.titleFieldEmpty;
@@ -113,6 +119,7 @@ class PublishingFormState extends State<PublishingForm> {
           // Form field for substitle
           TextFormField(
             style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
+            textCapitalization: TextCapitalization.sentences,
             decoration: InputDecoration(hintText: Strings.subtitleFieldHint),
             validator: (String value) {
               if (value.length == 0)
@@ -180,7 +187,7 @@ class PublishingFormState extends State<PublishingForm> {
             // used to get the suggestions from the string user has 
             // typed
             suggestionsCallback: (String pattern) =>
-              widget.events.where(
+              events.where(
                 (event) => event.name.toLowerCase().contains(pattern.toLowerCase())
               ).toList(),
 
@@ -209,7 +216,7 @@ class PublishingFormState extends State<PublishingForm> {
                 return Strings.eventsFieldEmpty;
               }
 
-              if (widget.events.where((event) => event.name == selected).length == 0) {
+              if (events.where((event) => event.name == selected).length == 0) {
                 return Strings.notValidEvent;
               }
 
@@ -218,7 +225,7 @@ class PublishingFormState extends State<PublishingForm> {
 
             // defines what to do when the form is saved
             onSaved: (String value) =>
-              _event = widget.events.firstWhere((event) => event.name == value),
+              _event = events.firstWhere((event) => event.name == value),
 
           ),
 
