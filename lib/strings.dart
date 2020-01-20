@@ -102,14 +102,14 @@ class Strings {
   static const clearancePageSuccess = "Clearance updated.";
 
   /// The title of the email id field in the clearance modifier form
-  static const clearanceFormEmailTitle = "Email ID";
+  static const formEmailTitle = "Email ID";
 
   /// The hint for the email id field in the clearance modifier form
-  static const clearanceFormEmailHint = "email id";
+  static const formEmailHint = "email id";
 
   /// The error message to show when the email id field is empty in
   /// the clearance modifier form
-  static const clearanceFormEmailEmpty = "email id cannot be empty";
+  static const formEmailEmpty = "email id cannot be empty";
 
   /// The title of the clearance level radio buttons in the clearance modifier
   /// form
@@ -143,7 +143,7 @@ class Strings {
   static const detailsFieldHint = "Long description";
 
   /// The title of the notification publishing form title field
-  static const eventsFieldTitle = "Event to publish for";
+  static const notificationsPublishEventsFieldTitle = "Event to publish for";
 
   /// The hint text for the title field
   static const eventsFieldHint = "The event";
@@ -156,6 +156,15 @@ class Strings {
 
   /// The error message when a valid event is not selected
   static const notValidEvent = "Please select a valid event";
+
+  /// The title of the assign events page
+  static const assignEventsPageTitle = "Assign Events";
+
+  /// The success message
+  static const assignEventsSuccess = "Successfully assigned event.";
+
+  /// The title of the event auto complete form field
+  static const eventFormFieldTitle = "Event";
 
   /// The network error message
   static const networkError = "Please check your internet connection";

@@ -7,8 +7,13 @@ class ToolsFAB extends StatelessWidget {
 
   final void Function() onNotificationCreatorButtonPressed;
   final void Function() onClearanceModifierButtonPressed;
+  final void Function() onAssignEventsButtonPressed;
 
-  ToolsFAB({@required this.onNotificationCreatorButtonPressed, @required this.onClearanceModifierButtonPressed});
+  ToolsFAB({
+    @required this.onNotificationCreatorButtonPressed,
+    @required this.onClearanceModifierButtonPressed,
+    @required this.onAssignEventsButtonPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +35,7 @@ class ToolsFAB extends StatelessWidget {
       ..addAll(
         (User.instance.getClearanceLevel() > 2)
         ? [
+            // button for clearance modifier
             UnicornButton(
               currentButton: FloatingActionButton(
                 heroTag: "unicorn_clearance_modifier",
@@ -39,8 +45,21 @@ class ToolsFAB extends StatelessWidget {
                 ),
                 mini: true,
                 onPressed: onClearanceModifierButtonPressed,
+              ),
             ),
-          )
+
+            // button for assigning events to coordinators / volunteers
+            UnicornButton(
+              currentButton: FloatingActionButton(
+                heroTag: "unicorn_assign_events",
+                child: Icon(
+                  FontAwesomeIcons.userTag,
+                  size: 20
+                ),
+                mini: true,
+                onPressed: onAssignEventsButtonPressed,
+              ),
+            )     
         ]
         : []
       ),
