@@ -1,4 +1,5 @@
 import 'package:dwimay/pages/clearance_modifier/clearance_radio_group.dart';
+import 'package:dwimay/strings.dart';
 import 'package:flutter/material.dart';
 
 /// The form to modify the clearance levels
@@ -44,7 +45,7 @@ class ClearanceModifierFormState extends State<ClearanceModifierForm> {
             
             // title of the field
             Text(
-              "Email ID",
+              Strings.clearanceFormEmailTitle,
               style: Theme.of(context).textTheme.subhead.copyWith(
                 color: Colors.white
               ),
@@ -56,10 +57,10 @@ class ClearanceModifierFormState extends State<ClearanceModifierForm> {
             // Text field for email id
             TextFormField(
               style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
-              decoration: InputDecoration(hintText: "email id"),
+              decoration: InputDecoration(hintText: Strings.clearanceFormEmailHint),
               validator: (String value) {
                 if (value.length == 0)
-                  return "email id cannot be empty";
+                  return Strings.clearanceFormEmailEmpty;
                 return null;
               },
               onSaved: (String value) => _emailid = value.trim(),
@@ -70,7 +71,7 @@ class ClearanceModifierFormState extends State<ClearanceModifierForm> {
 
             // title of the "choose clearance level" section
             Text(
-              "Clearance Level",
+              Strings.clearanceFormLevelTitle,
               style: Theme.of(context).textTheme.subhead.copyWith(
                 color: Colors.white
               ),

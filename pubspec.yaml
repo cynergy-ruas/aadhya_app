@@ -49,6 +49,7 @@ flutter:
     - assets/images/competition.png
     - assets/images/talk.png
     - assets/images/workshop.png
+    - assets/images/faq.png
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see

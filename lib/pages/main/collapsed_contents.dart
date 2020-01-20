@@ -1,3 +1,4 @@
+import 'package:dwimay/strings.dart';
 import 'package:flutter/material.dart';
 
 /// contents of the bottom sheet when its collapsed
@@ -29,7 +30,7 @@ class CollapsedContents extends StatelessWidget {
 
           // title
           Text(
-            "Pass",
+            Strings.collapsedSheetTitle,
             style: Theme.of(context).textTheme.title.copyWith(
               color: Colors.white,
             ),

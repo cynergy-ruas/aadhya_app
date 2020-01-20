@@ -1,5 +1,7 @@
-import 'package:dwimay/pages/details/page_header.dart';
+import 'package:dwimay/strings.dart';
 import 'package:dwimay/theme_data.dart';
+import 'package:dwimay/widgets/multiline_subtitle.dart';
+import 'package:dwimay/widgets/page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 
@@ -12,6 +14,12 @@ class DetailPage extends StatelessWidget {
 
   /// The event
   final Event event;
+
+  /// The height of the page header thumbnail
+  final double thumbnailHeight = 80;
+
+  /// The width of the page header thumbnail
+  final double thumbnailWidth = 80;
 
   DetailPage({@required this.event, @required this.day});
 
@@ -44,7 +52,7 @@ class DetailPage extends StatelessWidget {
   /// the background image of the detail page
   Widget _buildBackground() {
     return Container(
-      // TODO: use  [Image.assets] instead of network image
+      // TODO: use  [Image.asset] instead of network image
       child: Image.network(
         "https://www.sxsw.com/wp-content/uploads/2019/06/2019-Hackathon-Photo-by-Randy-and-Jackie-Smith.jpg",
         fit: BoxFit.cover,
@@ -104,7 +112,38 @@ class DetailPage extends StatelessWidget {
           SizedBox(height: 60,),
 
           // the header card
-          PageHeader(event: event, day: day,),
+          PageHeader(
+            title: Text(
+              event.name,
+              style: Style.titleTextStyle,
+            ),
+
+            subtitle: MultilineSubtitle(
+              data: [
+                MultilineSubtitleData(
+                  icon: Icons.location_on,
+                  text: "Venue: " + event.venue
+                ),
+
+                MultilineSubtitleData(
+                  icon: Icons.alarm,
+                  text: event.formatDate(index: day) + ", " + event.getTime(index: day)
+                )
+              ],
+            ),
+
+            thumbnail: Image.asset(
+              "assets/images/${event.type}.png",
+              width: thumbnailHeight,
+              height: thumbnailWidth,
+            ),
+
+            heroTag: event,
+
+            thumbnailHeight: thumbnailHeight,
+
+            thumbnailWidth: thumbnailWidth,
+          ),
 
           // the event overview or decription
           Expanded(
@@ -116,7 +155,7 @@ class DetailPage extends StatelessWidget {
 
                 // title
                 Text(
-                  "Overview".toUpperCase(),
+                  Strings.detailsPageTitle,
                   style: Style.headerTextStyle,
                 ),
 

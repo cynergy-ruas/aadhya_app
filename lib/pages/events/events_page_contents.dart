@@ -84,12 +84,12 @@ class _EventsPageContentsState extends State<EventsPageContents> {
                   SizedBox(height: 40,),  
                 ]
                 // the following are the events per department
-                ..addAll(_eventsForDepartment(department: Department.All, displayName: "For All"))
-                ..addAll(_eventsForDepartment(department: Department.AerospaceAndAutomotive, displayName: "Aerospace and Automative"))
-                ..addAll(_eventsForDepartment(department: Department.ComputerScience, displayName: "Computer Science"))
-                ..addAll(_eventsForDepartment(department: Department.ElectricAndElectronics, displayName: "Electrical and Electronics"))
-                ..addAll(_eventsForDepartment(department: Department.Design, displayName: "Design"))
-                ..addAll(_eventsForDepartment(department: Department.Mechanical, displayName: "Mechanical"))
+                ..addAll(_eventsForDepartment(department: Department.All, displayName: Strings.eventsForAll))
+                ..addAll(_eventsForDepartment(department: Department.AerospaceAndAutomotive, displayName: Strings.aeroAndAuto))
+                ..addAll(_eventsForDepartment(department: Department.ComputerScience, displayName: Strings.cse))
+                ..addAll(_eventsForDepartment(department: Department.ElectricAndElectronics, displayName: Strings.electricAndElectronics))
+                ..addAll(_eventsForDepartment(department: Department.Design, displayName: Strings.design))
+                ..addAll(_eventsForDepartment(department: Department.Mechanical, displayName: Strings.mechanical))
                 ..add(SizedBox(height: 100,))
                 ,
               ),
@@ -164,7 +164,7 @@ class _EventsPageContentsState extends State<EventsPageContents> {
                       // gap
                       SizedBox(height: 10,)
                   )
-                : Text("No Events"), // else display a text saying "no events"
+                : Text(Strings.noEventsMessage), // else display a text saying "no events"
       ),
 
       // gap

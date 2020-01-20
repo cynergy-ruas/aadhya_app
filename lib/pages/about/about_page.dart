@@ -1,5 +1,8 @@
+import 'package:dwimay/pages/faq/faq_page.dart';
 import 'package:dwimay/strings.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 /// The about page. Contains the introduction to the fest.
 class AboutPage extends StatefulWidget {
@@ -26,15 +29,29 @@ class _AboutPageState extends State<AboutPage> {
                 height: 20,
               ), 
 
-              // the title
-              Text(
-                Strings.festName,
-                style: Theme.of(context).textTheme.title,
+              // the title and FAQ button
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      Strings.festName,
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                  ),
+
+                  IconButton(
+                    padding: const EdgeInsets.all(0),
+                    icon: Icon(FontAwesomeIcons.questionCircle),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => FAQPage())
+                    ),
+                  )
+                ],
               ),
 
               // gap
               SizedBox(
-                height: 20,
+                height: 10,
               ),
 
               // the about content, fills the rest of the space.

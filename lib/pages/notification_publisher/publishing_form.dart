@@ -1,3 +1,4 @@
+import 'package:dwimay/strings.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -59,7 +60,7 @@ class PublishingFormState extends State<PublishingForm> {
         children: <Widget>[
           // title of the field
           Text(
-            "Title",
+            Strings.titleFieldTitle,
             style: Theme.of(context).textTheme.subhead.copyWith(
               color: Colors.white
             ),
@@ -70,11 +71,11 @@ class PublishingFormState extends State<PublishingForm> {
 
           // Form field for title
           TextFormField(
-            decoration: InputDecoration(hintText: "Title of the notification"),
+            decoration: InputDecoration(hintText: Strings.titleFieldHint),
             style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
             validator: (String value) {
               if (value.length == 0)
-                return "Title cannot be empty";
+                return Strings.titleFieldEmpty;
               return null;
             },
             onSaved: (String value) => _title = value.trim(),
@@ -85,7 +86,7 @@ class PublishingFormState extends State<PublishingForm> {
 
           // title of the field
           Text(
-            "Subtitle",
+            Strings.subtitleFieldTitle,
             style: Theme.of(context).textTheme.subhead.copyWith(
               color: Colors.white
             ),
@@ -97,10 +98,10 @@ class PublishingFormState extends State<PublishingForm> {
           // Form field for substitle
           TextFormField(
             style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
-            decoration: InputDecoration(hintText: "Short, one line description"),
+            decoration: InputDecoration(hintText: Strings.subtitleFieldHint),
             validator: (String value) {
               if (value.length == 0)
-                return "Subtitle cannot be empty";
+                return Strings.subtitleFieldEmpty;
               return null;
             },
             onSaved: (String value) => _subtitle = value.trim(),
@@ -111,7 +112,7 @@ class PublishingFormState extends State<PublishingForm> {
 
           // title of the field
           Text(
-            "Details",
+            Strings.detailsFieldTitle,
             style: Theme.of(context).textTheme.subhead.copyWith(
               color: Colors.white
             ),
@@ -125,7 +126,7 @@ class PublishingFormState extends State<PublishingForm> {
             maxLines: 10,
             style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
             decoration: InputDecoration(
-              hintText: "Long description",
+              hintText: Strings.detailsFieldHint,
               contentPadding: EdgeInsets.all(10)
             ),
             onSaved: (String value) => _description = value.trim()
@@ -135,7 +136,7 @@ class PublishingFormState extends State<PublishingForm> {
           SizedBox(height: 40,),
 
           Text(
-            "Event to publish for",
+            Strings.eventsFieldTitle,
             style: Theme.of(context).textTheme.subhead.copyWith(
               color: Colors.white
             ),
@@ -149,7 +150,7 @@ class PublishingFormState extends State<PublishingForm> {
             // configuring the field
             textFieldConfiguration: TextFieldConfiguration(
               decoration: InputDecoration(
-                hintText: "The event"
+                hintText: Strings.eventsFieldHint,
               ),
               style: Theme.of(context).textTheme.body1.copyWith(
                 color: Colors.white,
@@ -178,7 +179,7 @@ class PublishingFormState extends State<PublishingForm> {
             noItemsFoundBuilder: (BuildContext context) => 
               ListTile(
                 title: Text(
-                  "No events found.",
+                  Strings.noEventsFound,
                   style: TextStyle(color: Colors.grey),
                 ),
               ),
@@ -190,11 +191,11 @@ class PublishingFormState extends State<PublishingForm> {
             // validator
             validator: (String selected) {
               if (selected.isEmpty) {
-                return "Please select a city";
+                return Strings.eventsFieldEmpty;
               }
 
               if (widget.events.where((event) => event.name == selected).length == 0) {
-                return "Please select a valid event";
+                return Strings.notValidEvent;
               }
 
               return null;

@@ -1,4 +1,5 @@
 import 'package:dwimay/pages/clearance_modifier/clearance_modifier_form.dart';
+import 'package:dwimay/strings.dart';
 import 'package:dwimay/widgets/build_button.dart';
 import 'package:dwimay/widgets/confirmation_dialog.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
@@ -38,7 +39,7 @@ class ClearanceModifier extends StatelessWidget {
 
                     // title
                     Text(
-                      "Update Clearance",
+                      Strings.clearancePageTitle,
                       style: Theme.of(context).textTheme.title.copyWith(
                         color: Colors.white
                       ),
@@ -74,8 +75,8 @@ class ClearanceModifier extends StatelessWidget {
       barrierDismissible: false,
       builder: (BuildContext context) => 
         ConfirmationDialog(
-          title: "Update Clearance",
-          successMessage: "Clearance updated.",
+          title: Strings.clearancePageTitle,
+          successMessage: Strings.clearancePageSuccess,
           future: () async {
             Map<String, dynamic> res = Map<String, dynamic>.from(await CloudFunctions.instance.updateClearanceForUser(
               email: email,
@@ -108,7 +109,7 @@ class ClearanceModifier extends StatelessWidget {
         SizedBox(
           width: 120,
           child: BuildButton(
-            data: "Back",
+            data: Strings.backButton,
             onPressed: onBackPress,
           ),
         ),
@@ -120,7 +121,7 @@ class ClearanceModifier extends StatelessWidget {
         SizedBox(
           width: 120,
           child: BuildButton(
-            data: "Confirm",
+            data: Strings.confirmButton,
             onPressed: () => formKey.currentState.saveForm(),
           ),
         ),

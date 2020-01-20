@@ -1,4 +1,5 @@
 import 'package:dwimay/pages/notification_publisher/publishing_form.dart';
+import 'package:dwimay/strings.dart';
 import 'package:dwimay/widgets/build_button.dart';
 import 'package:dwimay/widgets/confirmation_dialog.dart';
 import 'package:dwimay/widgets/loading_widget.dart';
@@ -57,7 +58,7 @@ class _NotificationPublisherState extends State<NotificationPublisher> {
         Scaffold.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.red,
-            content: ListTile(title: Text("Check your internet connection."))
+            content: ListTile(title: Text(Strings.networkError))
           )
         ),
 
@@ -88,7 +89,7 @@ class _NotificationPublisherState extends State<NotificationPublisher> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => ConfirmationDialog(
-        title: "Publish Notification",
+        title: Strings.notificationPublishTitle,
         future: () => CloudFunctions.instance.publishNotification(
           topic: topic,
           announcement: Announcement.fromRaw(
@@ -139,7 +140,7 @@ class _Contents extends StatelessWidget {
 
           // title
           Text(
-            "Publish Notification",
+            Strings.notificationPublishTitle,
             style: Theme.of(context).textTheme.title.copyWith(
               color: Colors.white
             ),
@@ -161,7 +162,7 @@ class _Contents extends StatelessWidget {
               SizedBox(
                 width: 120,
                 child: BuildButton(
-                  data: "Back",
+                  data: Strings.backButton,
                   onPressed: onBackPressed,
                 ),
               ),
@@ -173,7 +174,7 @@ class _Contents extends StatelessWidget {
               SizedBox(
                 width: 120,
                 child: BuildButton(
-                  data: "Publish",
+                  data: Strings.confirmButton,
                   onPressed: () => formKey.currentState.saveForm(),
                 ),
               ),

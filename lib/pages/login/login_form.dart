@@ -1,3 +1,4 @@
+import 'package:dwimay/strings.dart';
 import 'package:dwimay/widgets/build_button.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +155,7 @@ class _LoginFormState extends State<LoginForm> {
 
             // build login button
             BuildButton(
-              data: "LOGIN",
+              data: Strings.loginButton,
               onPressed: () => BackendProvider.of<AuthBloc>(context).login(
                   email: emailController.text,
                   password: passwordController.text),

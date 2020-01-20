@@ -1,10 +1,8 @@
+import 'package:dwimay/strings.dart';
 import 'package:dwimay/widgets/build_button.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
 import 'dart:convert';
-import 'dart:async';
-import 'package:flutter/services.dart';
 
 /// The profile page. The user logs in using the login page.
 /// The details of the user and the QR code for entering will
@@ -15,7 +13,7 @@ import 'package:flutter/services.dart';
 class ProfileContents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // get the emial id of the logged in user
+    // get the email id of the logged in user
     final _email = User.instance.getEmailID();
     // get the clearance level of the logged in user
     final level = User.instance.getClearanceLevel();
@@ -27,7 +25,7 @@ class ProfileContents extends StatelessWidget {
       return base64Str;
     }
 
-    /// functuion to decrypt the [string]
+    /// function to decrypt the [string]
     /// encoded by [encrypt]
     decrypt(String base64Str) {
       var len = base64Str.length;
@@ -36,17 +34,9 @@ class ProfileContents extends StatelessWidget {
       return output;
     }
 
-    // await the load of the image to be embedded in the Qr code
-    Future<ui.Image> _loadOverlayImage() async {
-      final completer = Completer<ui.Image>();
-      final byteData = await rootBundle.load('assets/images/talk.png');
-      ui.decodeImageFromList(byteData.buffer.asUint8List(), completer.complete);
-      return completer.future;
-    }
-
     // building the Qr code scanner button
     final _buildQrReader = BuildButton(
-      data: "SCAN",
+      data: Strings.scanButton,
       onPressed: () async {
         // the output of the scan is stored in res
         // if  scan is successful then
@@ -59,6 +49,8 @@ class ProfileContents extends StatelessWidget {
         // if the scan doesnt complete then
         // decrypt returns "INVALID"
         String result = decrypt(res);
+
+        // TODO: check with registered events and show result
         print(result);
       },
       verticalPadding: 25.0,
@@ -66,39 +58,30 @@ class ProfileContents extends StatelessWidget {
     );
 
     //building the Qr code
-    final qrFutureBuilder = FutureBuilder(
-      future: _loadOverlayImage(),
-      builder: (ctx, snapshot) {
-        // the size of the Qr code
-        final size = 250.0;
-        if (!snapshot.hasData) {
-          return Container(width: size, height: size);
-        }
-        return CustomPaint(
-          size: Size.square(size),
-          painter: QrPainter(
-            // the data of the Qr code
-            data: encrypt(_email),
-            version: QrVersions.auto,
+    final _qrCode = QrImage(
+      // the data of the Qr code
+      data: encrypt(_email),
 
-            // the main color of the code
-            color: Colors.black,
+      // the size
+      size: 280,
 
-            // the color of the empty part
-            emptyColor: Color(0x00),
+      // the background color
+      backgroundColor: Colors.white,
 
-            embeddedImage: snapshot.data,
-            embeddedImageStyle: QrEmbeddedImageStyle(
-              size: Size.square(60),
-            ),
-          ),
-        );
-      },
+      // TODO: Use fest logo
+      embeddedImage: AssetImage(
+        "assets/images/talk.png",
+      ),
+
+      // the style of the embedded image
+      embeddedImageStyle: QrEmbeddedImageStyle(
+        size: Size.square(60),
+      ),
     );
 
     // build the logout button
     final _logoutButton = BuildButton(
-      data: "LOGOUT",
+      data: Strings.logoutButton,
       onPressed: () {
         BackendProvider.of<AuthBloc>(context).logout();
       },
@@ -108,61 +91,79 @@ class ProfileContents extends StatelessWidget {
 
     // if user is participant then build a Qr Code
     // else build a Qr scanner
-    final pass = (level == 0) ? qrFutureBuilder : _buildQrReader;
+    final pass = (level == 0) ? _qrCode : _buildQrReader;
 
     return Center(
       child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,
-        padding: EdgeInsets.symmetric(vertical: 25.0),
+        padding: const EdgeInsets.only(bottom: 30.0, left: 20.0, right: 20.0),
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // Title of profile page
-              Text(
-                "Welcome " + _email.substring(0, _email.indexOf('@')),
-                style: Theme.of(context).textTheme.title.copyWith(
-                      color: Colors.white,
-                    ),
-              ),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // Title of profile page. Wrapping with [Row] to center it
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Welcome " + _email.substring(0, _email.indexOf('@')),
+                  style: Theme.of(context).textTheme.title.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
 
-              // gap
-              SizedBox(height: 30),
+            // gap
+            SizedBox(height: 30),
+          ]
+          ..addAll(
+            (level == 0)
+            // widgets for normal user
+            ? [
+                // the title for the qr code
+                Text(
+                  Strings.qrTitle,
+                  style: Theme.of(context).textTheme.body1.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
 
-              // if user participant display entry pass else empty
-              (level == 0)
-                  ? Text(
-                      "Your Pass: ",
-                      style: Theme.of(context).textTheme.body1.copyWith(
-                            color: Colors.white,
-                          ),
-                    )
-                  : Container(),
+                // gap
+                SizedBox(height: 15),
 
-              // gap
-              (level == 0) ? SizedBox(height: 15) : Container(),
+                // the qr code
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[pass],
+                ),
 
-              // if user is participant then build a Qr Code
-              // else build a Qr scanner
-              pass,
+                // gap
+                SizedBox(height: 25),
 
-              // gap
-              (level == 0) ? SizedBox(height: 25) : Container(),
+                // the title for registered events
+                Text(
+                  Strings.registeredEvents,
+                  style: Theme.of(context).textTheme.body1.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
 
-              // display the events of participants
-              (level == 0)
-                  ? Text(
-                      "Your Events: ",
-                      style: Theme.of(context).textTheme.body1.copyWith(
-                            color: Colors.white,
-                          ),
-                    )
-                  : Container(),
+                // TODO: add registered events UI
 
-              // TODO: actually print the events registerd
+                // logout button
+                _logoutButton
+              ]
+            // UI for coordinators and above
+            : [ 
+                // the scanner
+                pass,
 
-              // logout button
-              _logoutButton,
-            ]),
+                // the logout button
+                _logoutButton
+              ]
+          ),
+        ),
       ),
     );
   }
