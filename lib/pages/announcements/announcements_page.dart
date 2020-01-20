@@ -49,33 +49,18 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
                         Strings.noAnnouncementsText
                       ),
                     );
-                  
+
+                  // reversing the announcements list
+                  announcements = announcements.reversed.toList();
+
                   // displaying the list of announcements
                   return ListView.builder(
                     physics: BouncingScrollPhysics(),
                     itemCount: announcements.length,
                     itemBuilder: (BuildContext context, int index) =>
-                      Dismissible(
-                        // giving a key so that everything works
-                        key: ValueKey(announcements[index]),
-
-                        // setting the direction that can be dismissed from
-                        direction: DismissDirection.endToStart,
-
-                        // widget
-                        child: AnnouncementCard(announcement: announcements[index],),
-
-                        // the background, a trash symbol with a red background
-                        background: Container(
-                          alignment: Alignment.centerRight,
-                          color: Colors.red,
-                          padding: EdgeInsets.only(right: 20),
-                          child: Icon(Icons.delete, color: Colors.white,),
-                        ),
-
-                        // action to perform when item is dismissed
-                        onDismissed: (DismissDirection direction) =>
-                          BackendProvider.of<NotificationBloc>(context).removeFromPool(index: index),
+                      AnnouncementCard(
+                        announcement: announcements[index],
+                        index: index,
                       ),
                   );
                 }

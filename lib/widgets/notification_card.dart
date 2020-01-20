@@ -18,6 +18,7 @@ class NotificationCard extends StatelessWidget {
           elevation: 5.0,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
           child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             title: Text(
               message['notification']['title'],
               style: TextStyle(color: Colors.white),
