@@ -1,8 +1,8 @@
 import 'package:dwimay/pages/clearance_modifier/clearance_modifier_page.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
-import 'package:dwimay/pages/login_profile/profile_contents.dart';
-import 'package:dwimay/pages/login_profile/tools_fab.dart';
+import 'profile_contents.dart';
+import 'tools_fab.dart';
 import 'package:dwimay/pages/notification_publisher/notification_publisher.dart';
 
 

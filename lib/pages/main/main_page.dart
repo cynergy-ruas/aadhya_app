@@ -1,7 +1,7 @@
 import 'package:dwimay/pages/about/about_page.dart';
 import 'package:dwimay/pages/announcements/announcements_page.dart';
 import 'package:dwimay/pages/events/events_page.dart';
-import 'package:dwimay/pages/login_profile/login_page.dart';
+import 'package:dwimay/pages/login/login_page.dart';
 import 'package:dwimay/pages/main/collapsed_contents.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';

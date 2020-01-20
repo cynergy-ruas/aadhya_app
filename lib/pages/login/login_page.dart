@@ -1,8 +1,9 @@
+import 'package:dwimay/pages/profile/profile_page.dart';
 import 'package:dwimay/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
+
 import 'login_form.dart';
-import 'profile_page.dart';
 
 /// The login page
 class LoginPage extends StatefulWidget {
