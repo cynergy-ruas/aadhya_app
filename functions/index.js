@@ -2,9 +2,11 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 admin.initializeApp();
-admin.firestore().settings({
+const db = admin.firestore();
+db.settings({
     timestampsInSnapshots: true
 });
+
 
 /**
  * Function to update the clearance level of a user.
@@ -134,6 +136,62 @@ exports.publishNotification = functions.https.onCall(async (data, context) => {
         };
     }
 });
+
+/**
+ * end point that is used to add a registered event to the list of registered events
+ * for a user.
+ */
+exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
+    try {
+        
+        // updating data
+
+        // townscript api can send an array of dictionaries containing the data.
+        // therefore updating the data for all of the given users
+        if (Array.isArray(req.body)) {
+            req.body.forEach(async (data) => {
+                console.log(`received request with email: ${data.userEmailId}`);
+                await updateDataForUser({emailid: data.userEmailId, eventCode: data.eventCode})
+            });
+        }
+        else {
+            console.log(`received request with email: ${req.body.userEmailId}`);
+            await updateDataForUser({emailid: req.body.userEmailId, eventCode: req.body.eventCode});
+        }
+
+        // sending status 200 and closing the connection
+        res.status(200).send();
+    } catch (err) {
+        console.log(`error occurred while updating events for user.`);
+        console.log(err);
+
+        if (err instanceof TypeError)
+            res.status(404).send();
+        else
+            res.status(500).send();
+    }
+});
+
+/**
+ * Updates the registered events for a user.
+ * @param emailid The email id of the user.
+ * @param eventCode The event code to be added.
+ */
+async function updateDataForUser({emailid, eventCode}) {
+    // getting reference to user document
+    const docRef = db.collection("users").doc(emailid);
+
+    // getting the registered events from the document
+    const regEvents = (await docRef.get()).data().regEvents;
+
+    // appending event code from request to `regEvents`
+    regEvents.push(eventCode);
+
+    // updating the document
+    await docRef.update({
+        regEvents: regEvents
+    });
+}
 
 /**
  * Constructs the notification payload.
