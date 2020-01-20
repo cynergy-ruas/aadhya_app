@@ -158,7 +158,7 @@ class PublishingFormState extends State<PublishingForm> {
           SizedBox(height: 40,),
 
           Text(
-            Strings.eventsFieldTitle,
+            Strings.notificationsPublishEventsFieldTitle,
             style: Theme.of(context).textTheme.subhead.copyWith(
               color: Colors.white
             ),

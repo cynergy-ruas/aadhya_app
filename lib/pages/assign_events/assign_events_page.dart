@@ -1,22 +1,41 @@
-import 'package:dwimay/pages/clearance_modifier/clearance_modifier_form.dart';
 import 'package:dwimay/strings.dart';
 import 'package:dwimay/widgets/build_button.dart';
 import 'package:dwimay/widgets/confirmation_dialog.dart';
+import 'package:dwimay/widgets/loading_widget.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
+import 'assign_events_form.dart';
 
-/// The page where the user can modify clearance level of 
-/// users.
-class ClearanceModifier extends StatelessWidget {
+/// The page where the user can assign events to other level 1 users
+class AssignEvents extends StatefulWidget {
 
   /// The function to execute when the backbutton is pressed
   final void Function() onBackPress;
 
-  /// The key for the form
-  final GlobalKey<ClearanceModifierFormState> formKey;
+  AssignEvents({@required this.onBackPress});
 
-  ClearanceModifier({@required this.onBackPress}) : 
-    formKey = GlobalKey<ClearanceModifierFormState>();
+  @override
+  _AssignEventsState createState() => _AssignEventsState();
+}
+
+class _AssignEventsState extends State<AssignEvents> {
+
+  /// The event load bloc
+  EventLoadBloc _bloc;
+
+  /// The key for the form
+  GlobalKey<AssignEventsFormState> _formKey;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // initializing the bloc
+    _bloc = EventLoadBloc();
+
+    // initializing the form key
+    _formKey = GlobalKey<AssignEventsFormState>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +58,7 @@ class ClearanceModifier extends StatelessWidget {
 
                     // title
                     Text(
-                      Strings.clearancePageTitle,
+                      Strings.assignEventsPageTitle,
                       style: Theme.of(context).textTheme.title.copyWith(
                         color: Colors.white
                       ),
@@ -49,11 +68,18 @@ class ClearanceModifier extends StatelessWidget {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
-                        child: ClearanceModifierForm(
-                          key: formKey,
-                          onSaved: (String email, int clearance) =>
-                            _onSaved(context, email, clearance),
-                        ),
+                        child: EventLoader(
+                          beginLoad: true,
+                          bloc: _bloc,
+                          onLoading: Center(child: LoadingWidget(),),
+                          onLoaded: (List<Event> events) => 
+                            AssignEventsForm(
+                            key: _formKey,
+                            events: events,
+                            onSaved: (String email, String eventID) =>
+                              _onSaved(context, email, eventID),
+                          ),
+                        )
                       ),
                     ),
 
@@ -69,18 +95,18 @@ class ClearanceModifier extends StatelessWidget {
   }
 
   /// shows the confirmation dialog
-  void _onSaved(BuildContext context, String email, int clearance) {
+  void _onSaved(BuildContext context, String email, String eventID) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => 
         ConfirmationDialog(
-          title: Strings.clearancePageTitle,
-          successMessage: Strings.clearancePageSuccess,
+          title: Strings.assignEventsPageTitle,
+          successMessage: Strings.assignEventsSuccess,
           future: () async {
-            Map<String, dynamic> res = Map<String, dynamic>.from(await CloudFunctions.instance.updateClearanceForUser(
+            Map<String, dynamic> res = Map<String, dynamic>.from(await CloudFunctions.instance.assignEventToUser(
               email: email,
-              clearance: clearance
+              eventID: eventID
             ));
 
             // checking if the result of the operation was successful
@@ -100,7 +126,6 @@ class ClearanceModifier extends StatelessWidget {
     );
   }
 
-  /// the back and submit buttons
   Widget _buttonBar() => 
     // Back button
     Row(
@@ -110,7 +135,7 @@ class ClearanceModifier extends StatelessWidget {
           width: 120,
           child: BuildButton(
             data: Strings.backButton,
-            onPressed: onBackPress,
+            onPressed: widget.onBackPress,
           ),
         ),
 
@@ -122,9 +147,17 @@ class ClearanceModifier extends StatelessWidget {
           width: 120,
           child: BuildButton(
             data: Strings.confirmButton,
-            onPressed: () => formKey.currentState.saveForm(),
+            onPressed: () => _formKey.currentState.saveForm(),
           ),
         ),
       ],
     );
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    // closing the bloc
+    _bloc.close();
+  }
 }

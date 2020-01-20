@@ -1,3 +1,4 @@
+import 'package:dwimay/pages/assign_events/assign_events_page.dart';
 import 'package:dwimay/pages/clearance_modifier/clearance_modifier_page.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,13 @@ class _ProfilePageState extends State<ProfilePage> {
           onClearanceModifierButtonPressed: () {
             setState(() {
               _body = ClearanceModifier(
+                onBackPress: toProfileContents,
+              );
+            });
+          },
+          onAssignEventsButtonPressed: () {
+            setState(() {
+              _body = AssignEvents(
                 onBackPress: toProfileContents,
               );
             });
