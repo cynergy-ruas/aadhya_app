@@ -33,11 +33,17 @@ exports.updateClearance = functions.https.onCall(async (data, context) => {
     try {
         // getting user from firebase
         const user = await admin.auth().getUserByEmail(email);
+        
+        // getting the claims
+        let claims = {};
+        if (user.customClaims !== undefined && clearance !== 0)
+            claims = user.customClaims;
+
+        // adding clearance level to claims
+        claims.clearance = clearance;
 
         // setting the clearance level
-        await admin.auth().setCustomUserClaims(user.uid, {
-            clearance: clearance
-        });
+        await admin.auth().setCustomUserClaims(user.uid, claims);
     } catch (err) {
         console.log(err);
         return {
@@ -48,6 +54,60 @@ exports.updateClearance = functions.https.onCall(async (data, context) => {
     return {
         status: 200
     };
+});
+
+/**
+ * Function that assigns level 1 users to events.
+ */
+exports.assignEventToUser = functions.https.onCall(async (data, context) => {
+    console.log(`request initiated by: ${context.auth.token.email}`);
+
+    // checking if the user attempting to change the clearance has permissions
+    if (context.auth.token.clearance < 1) {
+        console.log(`Attempting to assign event with insufficient permissions: ${context.auth.token.email}`);
+        return {
+            status: 401
+        };
+    }
+
+    console.log(`assigning ${data.eventID} to ${data.email}`);
+
+    try {
+        // getting the clearance level of the user
+        const user = await admin.auth().getUserByEmail(data.email);
+
+        // assigning event to user only if clearance level is 1
+        if (user.customClaims.clearance === 1) {
+            
+            // getting current claims
+            let claims = {};
+            if (user.customClaims !== undefined) {
+                claims = user.customClaims;
+            }
+            
+            // assigning event
+            claims.eventID = data.eventID;
+
+            // updating claims
+            await admin.auth().setCustomUserClaims(user.uid, claims);
+            
+            // returning success
+            return {
+                status: 200
+            };
+        } else {
+            console.log(`user ${data.email} is not a level 1 user (user is a ${user.customClaims.clearance} level user).`);
+            return {
+                status: 401
+            }
+        }
+    } catch (err) {
+        console.log("error occured.");
+        console.log(err);
+        return {
+            status: 500
+        };
+    }
 });
 
 /**
