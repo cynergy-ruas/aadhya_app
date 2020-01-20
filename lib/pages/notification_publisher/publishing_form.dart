@@ -44,6 +44,21 @@ class PublishingFormState extends State<PublishingForm> {
     // sorting the list of events received as parameter
     widget.events.sort((Event a, Event b) => a.name.compareTo(b.name));
 
+    // adding the general topic as an event
+    widget.events
+    .add(
+      Event(
+        datetimes: null,
+        department: null,
+        description: "general channel",
+        id: "general",
+        name: "General",
+        speaker: null,
+        type: null,
+        venue: null,
+      )
+    );
+
     // initializing global key for form
     formKey = GlobalKey<FormState>();
 
