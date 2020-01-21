@@ -104,7 +104,7 @@ class _AssignEventsState extends State<AssignEvents> {
           title: Strings.assignEventsPageTitle,
           successMessage: Strings.assignEventsSuccess,
           future: () async {
-            Map<String, dynamic> res = Map<String, dynamic>.from(await CloudFunctions.instance.assignEventToUser(
+            Map<String, dynamic> res = Map<String, dynamic>.from(await CloudFunctions.instance.assignEventsToUser(
               email: email,
               eventID: eventID
             ));
