@@ -103,23 +103,14 @@ class _AssignEventsState extends State<AssignEvents> {
         ConfirmationDialog(
           title: Strings.assignEventsPageTitle,
           successMessage: Strings.assignEventsSuccess,
+          useSnapshotErrorMessage: true,
           future: () async {
-            Map<String, dynamic> res = Map<String, dynamic>.from(await CloudFunctions.instance.assignEventsToUser(
+            await CloudFunctions.instance.assignEventsToUser(
               email: email,
               eventID: eventID
-            ));
+            );
 
-            // checking if the result of the operation was successful
-            if (res["status"] != 200) {
-              if (res["status"] == 401)
-                throw Exception("Insufficient permissions");
-              if (res["status"] == 500)
-                throw Exception("User may not exist");
-              else
-                throw Exception("Unknown error");  
-            }
-
-            // return true to indicate success
+            // returning true to indicate success
             return true;
           },
         )

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'loading_widget.dart';
 
+import 'package:cloud_functions/cloud_functions.dart';
+
 /// A dialog box that executes a [Future] when the user
 /// presses the confirm button, shows a loading screen
 /// and an appropriate message after the [Future] finishes
@@ -21,12 +23,17 @@ class ConfirmationDialog extends StatefulWidget {
   /// The message showed when an error occurs
   final String errorMessage;
 
+  /// boolean that decides whether the error message in the exception 
+  /// should be used in place of [errorMessage].
+  final bool useSnapshotErrorMessage;
+
   /// The function that returns the future to wait on
   final Future<dynamic> Function() future;
 
   ConfirmationDialog({
     @required this.title,
     @required this.future,
+    this.useSnapshotErrorMessage = false,
     this.confirmationMessage = "Do you want to proceed?",
     this.successMessage = "Complete.",
     this.errorMessage = "Error occured. Please try again."
@@ -60,6 +67,7 @@ class _ConfirmationDialogState extends State<ConfirmationDialog> {
         confirmationMessage: widget.confirmationMessage,
         successMessage: widget.successMessage,
         errorMessage: widget.errorMessage,
+        useSnapshotErrorMessage: widget.useSnapshotErrorMessage,
       ),
       actions: <Widget>[]
       ..addAll(
@@ -104,6 +112,10 @@ class _DialogContents extends StatelessWidget {
   /// The message showed when an error occurs
   final String errorMessage;
 
+  /// boolean that decides whether the error message in the exception 
+  /// should be used in place of [errorMessage].
+  final bool useSnapshotErrorMessage;
+
   /// The function that returns the future to wait on
   final Future<dynamic> Function() future;
 
@@ -113,6 +125,7 @@ class _DialogContents extends StatelessWidget {
     @required this.confirmationMessage,
     @required this.successMessage,
     @required this.errorMessage,
+    @required this.useSnapshotErrorMessage,
   });
 
   @override
@@ -132,9 +145,18 @@ class _DialogContents extends StatelessWidget {
         }
 
         if (snapshot.hasError) {
+          print(snapshot.error);
           Future.delayed(Duration(seconds: 3)).then((_) => Navigator.of(context).pop());
           
-          return Text(errorMessage);
+          if (! useSnapshotErrorMessage)
+            return Text(errorMessage);
+          else {
+            if (snapshot.error.runtimeType == CloudFunctionsException) {
+              return Text((snapshot.error as CloudFunctionsException).message);
+            }
+            
+            return Text("Error: " + snapshot.error.toString());
+          }
         }
 
         else 
