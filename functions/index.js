@@ -17,9 +17,10 @@ exports.updateClearance = functions.https.onCall(async (data, context) => {
     // checking if the user attempting to change the clearance has permissions
     if (context.auth.token.clearance < 1) {
         console.log(`Attempting to update clearance with insufficient permissions: ${context.auth.token.email}`);
-        return {
-            status: 401
-        };
+        throw new functions.https.HttpsError(
+            'permission-denied', 
+            'Attempting to update clearance with insufficient permissions'
+        );
     }
 
     console.log(`changing clearance for ${data.email} to ${data.clearance}`);
@@ -28,46 +29,46 @@ exports.updateClearance = functions.https.onCall(async (data, context) => {
     const email = data.email;
 
     // getting clearance level to be set
-    const clearance = data.clearance;
+    const newClearance = data.clearance;
 
     try {
         // getting user from firebase
         const user = await admin.auth().getUserByEmail(email);
+        const oldClearance = user.customClaims.clearance;
         
-        // getting the claims
+        // getting the claims. The claims are reset if the new clearance level
+        // is lower than the old clearance level.
         let claims = {};
-        if (user.customClaims !== undefined && clearance !== 0)
+        if (user.customClaims !== undefined && newClearance >= oldClearance)
             claims = user.customClaims;
 
         // adding clearance level to claims
-        claims.clearance = clearance;
+        claims.clearance = newClearance;
 
         // setting the clearance level
         await admin.auth().setCustomUserClaims(user.uid, claims);
     } catch (err) {
         console.log(err);
-        return {
-            status: 500
-        };
+        throw new functions.https.HttpsError(
+            'internal',
+            err.toString()
+        );
     }
-
-    return {
-        status: 200
-    };
 });
 
 /**
  * Function that assigns level 1 users to events.
  */
-exports.assignEventToUser = functions.https.onCall(async (data, context) => {
+exports.assignEventsToUser = functions.https.onCall(async (data, context) => {
     console.log(`request initiated by: ${context.auth.token.email}`);
 
     // checking if the user attempting to change the clearance has permissions
     if (context.auth.token.clearance < 1) {
         console.log(`Attempting to assign event with insufficient permissions: ${context.auth.token.email}`);
-        return {
-            status: 401
-        };
+        throw new functions.https.HttpsError(
+            'permission-denied', 
+            'Attempting to assign event with insufficient permissions'
+        );
     }
 
     console.log(`assigning ${data.eventID} to ${data.email}`);
@@ -76,37 +77,41 @@ exports.assignEventToUser = functions.https.onCall(async (data, context) => {
         // getting the clearance level of the user
         const user = await admin.auth().getUserByEmail(data.email);
 
-        // assigning event to user only if clearance level is 1
-        if (user.customClaims.clearance === 1) {
+        // assigning event to user only if clearance level is greater than 0
+        if (user.customClaims.clearance !== undefined && user.customClaims.clearance !== 0) {
             
             // getting current claims
-            let claims = {};
-            if (user.customClaims !== undefined) {
-                claims = user.customClaims;
-            }
+            const claims = user.customClaims;
+            
+            // checking if level 1 user is to be assigned management over all events of a department
+            if (claims.clearance === 1 && 
+                (data.eventID === "ASE" || data.eventID === "CSE" || data.eventID === "ECE" || data.eventID === "DS"
+                || data.eventID === "ME" || data.eventID === "ALL")) {
+                    console.log(`Invalid request. Cannot assign level 1 user to events: ${data.eventID}`);
+                    throw new functions.https.HttpsError(
+                        'invalid-argument', 
+                        `Cannot assign level 1 user to events: ${data.eventID}`
+                    );
+                }
             
             // assigning event
             claims.eventID = data.eventID;
 
             // updating claims
             await admin.auth().setCustomUserClaims(user.uid, claims);
-            
-            // returning success
-            return {
-                status: 200
-            };
         } else {
-            console.log(`user ${data.email} is not a level 1 user (user is a ${user.customClaims.clearance} level user).`);
-            return {
-                status: 401
-            }
+            console.log(`user ${data.email} is a level 0 user. Cannot assign event(s).`);
+            throw new functions.https.HttpsError(
+                'invalid-argument', 
+                'Cannot assign level 0 user to an event.',
+            );
         }
     } catch (err) {
-        console.log("error occured.");
         console.log(err);
-        return {
-            status: 500
-        };
+        throw new functions.https.HttpsError(
+            'internal',
+            err.toString()
+        );
     }
 });
 
