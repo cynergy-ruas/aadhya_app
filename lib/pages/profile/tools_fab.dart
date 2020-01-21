@@ -33,7 +33,7 @@ class ToolsFAB extends StatelessWidget {
         )
       ]
       ..addAll(
-        (User.instance.getClearanceLevel() > 2)
+        (User.instance.getClearanceLevel() > 1)
         ? [
             // button for clearance modifier
             UnicornButton(

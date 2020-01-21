@@ -24,6 +24,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
     // intializing the body to profile contents.
     _body = ProfileContents();
+
+    print(User.instance.claims);
   }
 
   @override

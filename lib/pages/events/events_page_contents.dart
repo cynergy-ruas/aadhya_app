@@ -124,10 +124,10 @@ class _EventsPageContentsState extends State<EventsPageContents> {
   }
 
   /// Builds the title and the list of events per department
-  List<Widget> _eventsForDepartment({@required String department, @required String displayName}) {
+  List<Widget> _eventsForDepartment({@required Department department, @required String displayName}) {
 
     // getting the events that belong to the [department]
-    List<Event> _events = events.where((e) => e.department == department).toList();
+    List<Event> _events = events.where((e) => e.department == department.id).toList();
     
     return [
 

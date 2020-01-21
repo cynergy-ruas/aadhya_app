@@ -32,6 +32,9 @@ class AssignEventsFormState extends State<AssignEventsForm> {
   /// Controller for the events field
   TextEditingController _eventsController;
 
+  /// The event names
+  List<String> eventNames;
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +44,41 @@ class AssignEventsFormState extends State<AssignEventsForm> {
 
     // initializing the controller
     _eventsController = TextEditingController();
+
+    // getting the event names
+    eventNames = widget.events.where(
+      (event) {
+        // if the user is a level 3 or above user
+        if (User.instance.getClearanceLevel() > 2)
+          return true;
+        
+        // if the user is a level 2 user, only return the events
+        // of that user's department
+        if (User.instance.getClearanceLevel() == 2 && 
+            (User.instance.claims["eventID"] == event.department || 
+            (event.department == Department.All.id && User.instance.claims["eventID"] != null)))
+          return true;
+
+        // else return false
+        return false; 
+      }
+    )
+    .map((event) => event.name)
+    .toList()
+    // adding the departments if the user is of a high clearance level
+    ..addAll(
+      (User.instance.getClearanceLevel() > 2) 
+      ? [
+          Department.AerospaceAndAutomotive.name,
+          Department.All.name,
+          Department.ComputerScience.name,
+          Department.Design.name,
+          Department.ElectricAndElectronics.name,
+          Department.Mechanical.name,
+        ]
+      : []
+    );
+
   }
 
   @override
@@ -92,7 +130,7 @@ class AssignEventsFormState extends State<AssignEventsForm> {
             SizedBox(height: 20,),
 
             // Suggestions field for events
-            TypeAheadFormField<Event>(
+            TypeAheadFormField<String>(
               // configuring the field
               textFieldConfiguration: TextFieldConfiguration(
                 decoration: InputDecoration(
@@ -111,14 +149,15 @@ class AssignEventsFormState extends State<AssignEventsForm> {
               // used to get the suggestions from the string user has 
               // typed
               suggestionsCallback: (String pattern) =>
-                widget.events.where(
-                  (event) => event.name.toLowerCase().contains(pattern.toLowerCase())
-                ).toList(),
+                eventNames.where(
+                  (names) => names.toLowerCase().contains(pattern.toLowerCase())
+                )
+                .toList(),
 
               // used to build the UI for each suggestion
-              itemBuilder: (BuildContext context, Event suggestion) =>
+              itemBuilder: (BuildContext context, String suggestion) =>
                 ListTile(
-                  title: Text(suggestion.name),
+                  title: Text(suggestion),
                 ),
               
               // Used to build the UI when no matching suggestion is found
@@ -131,8 +170,8 @@ class AssignEventsFormState extends State<AssignEventsForm> {
                 ),
 
               // defines what to do when a suggestion is tapped
-              onSuggestionSelected: (Event suggestion) => 
-                _eventsController.text = suggestion.name,
+              onSuggestionSelected: (String suggestion) => 
+                _eventsController.text = suggestion,
 
               // validator
               validator: (String selected) {
@@ -140,7 +179,7 @@ class AssignEventsFormState extends State<AssignEventsForm> {
                   return Strings.eventsFieldEmpty;
                 }
 
-                if (widget.events.where((event) => event.name == selected).length == 0) {
+                if (eventNames.where((name) => name == selected).length == 0) {
                   return Strings.notValidEvent;
                 }
 
@@ -149,7 +188,10 @@ class AssignEventsFormState extends State<AssignEventsForm> {
 
               // defines what to do when the form is saved
               onSaved: (String value) =>
-                _eventid = widget.events.firstWhere((event) => event.name == value).id,
+                _eventid = widget.events.firstWhere(
+                  (event) => event.name == value,
+                  orElse: () => null,
+                )?.id ?? DepartmentExtras.getIdFromName(value),
 
             ),
           ],

@@ -8,7 +8,7 @@ class PublishingForm extends StatefulWidget {
 
   final List<Event> events;
 
-  final void Function(Event, String, String, String) onSaved;
+  final void Function(String, String, String, String) onSaved;
 
   PublishingForm({Key key, @required this.events, @required this.onSaved}) : super(key: key);
 
@@ -27,15 +27,11 @@ class PublishingFormState extends State<PublishingForm> {
   /// The description of the notification
   String _description;
 
-  /// The controller used in the auto suggestion
-  /// events field
-  TextEditingController _eventsController;
-
   /// The global key for the form
   GlobalKey<FormState> formKey;
 
   /// The event to send notifications for.
-  Event _event;
+  String _eventid;
 
   /// The list of events, to store a separate copy
   List<Event> events;
@@ -65,8 +61,10 @@ class PublishingFormState extends State<PublishingForm> {
     // initializing global key for form
     formKey = GlobalKey<FormState>();
 
-    // initializing the events controller
-    _eventsController = TextEditingController();
+    // if the user is a coordinator, setting [_eventid] to the event
+    // the coordinator is managing
+    if (User.instance.getClearanceLevel() == 1)
+      _eventid = User.instance.claims["eventID"];
   }
 
   @override
@@ -75,163 +73,131 @@ class PublishingFormState extends State<PublishingForm> {
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          // title of the field
-          Text(
-            Strings.titleFieldTitle,
-            style: Theme.of(context).textTheme.subhead.copyWith(
-              color: Colors.white
-            ),
-          ),
-
-          // gap
-          SizedBox(height: 20,),
-
-          // Form field for title
-          TextFormField(
-            decoration: InputDecoration(hintText: Strings.titleFieldHint),
-            textCapitalization: TextCapitalization.sentences,
-            style: Theme.of(context).textTheme.body1.copyWith(
-              color: Colors.white,
-            ),
-            validator: (String value) {
-              if (value.length == 0)
-                return Strings.titleFieldEmpty;
-              return null;
-            },
-            onSaved: (String value) => _title = value.trim(),
-          ),
-
-          // gap
-          SizedBox(height: 40,),
-
-          // title of the field
-          Text(
-            Strings.subtitleFieldTitle,
-            style: Theme.of(context).textTheme.subhead.copyWith(
-              color: Colors.white
-            ),
-          ),
-
-          // gap
-          SizedBox(height: 20,),
-
-          // Form field for substitle
-          TextFormField(
-            style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
-            textCapitalization: TextCapitalization.sentences,
-            decoration: InputDecoration(hintText: Strings.subtitleFieldHint),
-            validator: (String value) {
-              if (value.length == 0)
-                return Strings.subtitleFieldEmpty;
-              return null;
-            },
-            onSaved: (String value) => _subtitle = value.trim(),
-          ),
-
-          // gap
-          SizedBox(height: 40,),
-
-          // title of the field
-          Text(
-            Strings.detailsFieldTitle,
-            style: Theme.of(context).textTheme.subhead.copyWith(
-              color: Colors.white
-            ),
-          ),
-
-          // gap
-          SizedBox(height: 20,),
-
-          // Form field for description
-          TextFormField(
-            maxLines: 10,
-            style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
-            decoration: InputDecoration(
-              hintText: Strings.detailsFieldHint,
-              contentPadding: EdgeInsets.all(10)
-            ),
-            onSaved: (String value) => _description = value.trim()
-          ),
-
-          // gap
-          SizedBox(height: 40,),
-
-          Text(
-            Strings.notificationsPublishEventsFieldTitle,
-            style: Theme.of(context).textTheme.subhead.copyWith(
-              color: Colors.white
-            ),
-          ),
-
-          // gap
-          SizedBox(height: 20,),
-
-          // Suggestions field for events
-          TypeAheadFormField<Event>(
-            // configuring the field
-            textFieldConfiguration: TextFieldConfiguration(
-              decoration: InputDecoration(
-                hintText: Strings.eventsFieldHint,
-              ),
-              style: Theme.of(context).textTheme.body1.copyWith(
-                color: Colors.white,
-              ),
-              controller: _eventsController
-            ),
-            
-            suggestionsBoxDecoration: SuggestionsBoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
-
-            // used to get the suggestions from the string user has 
-            // typed
-            suggestionsCallback: (String pattern) =>
-              events.where(
-                (event) => event.name.toLowerCase().contains(pattern.toLowerCase())
-              ).toList(),
-
-            // used to build the UI for each suggestion
-            itemBuilder: (BuildContext context, Event suggestion) =>
-              ListTile(
-                title: Text(suggestion.name),
-              ),
-            
-            // Used to build the UI when no matching suggestion is found
-            noItemsFoundBuilder: (BuildContext context) => 
-              ListTile(
-                title: Text(
-                  Strings.noEventsFound,
-                  style: TextStyle(color: Colors.grey),
+        children: <Widget>[]
+        ..addAll(
+          (User.instance.getClearanceLevel() > 1) 
+          ? []
+          : [
+              Text(
+                "Publishing notification for: " + events.firstWhere((event) => event.id == _eventid).name,
+                style: Theme.of(context).textTheme.subhead.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
 
-            // defines what to do when a suggestion is tapped
-            onSuggestionSelected: (Event suggestion) => 
-              _eventsController.text = suggestion.name,
+              SizedBox(height: 40,),
+            ]
+        )
+        ..addAll(
+          [
+            // title of the title field
+            Text(
+              Strings.titleFieldTitle,
+              style: Theme.of(context).textTheme.subhead.copyWith(
+                color: Colors.white
+              ),
+            ),
 
-            // validator
-            validator: (String selected) {
-              if (selected.isEmpty) {
-                return Strings.eventsFieldEmpty;
-              }
+            // gap
+            SizedBox(height: 20,),
 
-              if (events.where((event) => event.name == selected).length == 0) {
-                return Strings.notValidEvent;
-              }
+            // Form field for title
+            TextFormField(
+              decoration: InputDecoration(hintText: Strings.titleFieldHint),
+              textCapitalization: TextCapitalization.sentences,
+              style: Theme.of(context).textTheme.body1.copyWith(
+                color: Colors.white,
+              ),
+              validator: (String value) {
+                if (value.length == 0)
+                  return Strings.titleFieldEmpty;
+                return null;
+              },
+              onSaved: (String value) => _title = value.trim(),
+            ),
 
-              return null;
-            },
+            // gap
+            SizedBox(height: 40,),
 
-            // defines what to do when the form is saved
-            onSaved: (String value) =>
-              _event = events.firstWhere((event) => event.name == value),
+            // title of the field
+            Text(
+              Strings.subtitleFieldTitle,
+              style: Theme.of(context).textTheme.subhead.copyWith(
+                color: Colors.white
+              ),
+            ),
 
-          ),
+            // gap
+            SizedBox(height: 20,),
 
-          // gap
-          SizedBox(height: 40,)
-        ],
+            // Form field for substitle
+            TextFormField(
+              style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
+              textCapitalization: TextCapitalization.sentences,
+              decoration: InputDecoration(hintText: Strings.subtitleFieldHint),
+              validator: (String value) {
+                if (value.length == 0)
+                  return Strings.subtitleFieldEmpty;
+                return null;
+              },
+              onSaved: (String value) => _subtitle = value.trim(),
+            ),
+
+            // gap
+            SizedBox(height: 40,),
+
+            // title of the field
+            Text(
+              Strings.detailsFieldTitle,
+              style: Theme.of(context).textTheme.subhead.copyWith(
+                color: Colors.white
+              ),
+            ),
+
+            // gap
+            SizedBox(height: 20,),
+
+            // Form field for description
+            TextFormField(
+              maxLines: 10,
+              style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: Strings.detailsFieldHint,
+                contentPadding: EdgeInsets.all(10)
+              ),
+              onSaved: (String value) => _description = value.trim()
+            ),
+          ]
+        )
+        ..addAll(
+          (User.instance.getClearanceLevel() > 1)
+          ? [
+              // gap
+              SizedBox(height: 40,),
+
+              Text(
+                Strings.notificationsPublishEventsFieldTitle,
+                style: Theme.of(context).textTheme.subhead.copyWith(
+                  color: Colors.white
+                ),
+              ),
+
+              // gap
+              SizedBox(height: 20,),
+
+              EventSuggestionField(
+                events: events,
+                onSaved: (String id) => _eventid = id,
+              ),
+
+              // gap
+              SizedBox(height: 40,),
+            ]
+          : [
+              SizedBox(height: 40,),
+            ]
+        ),
       ),
     );
   }
@@ -240,10 +206,125 @@ class PublishingFormState extends State<PublishingForm> {
   void saveForm() {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-      widget.onSaved(_event, _title, _subtitle, _description);
+      widget.onSaved(_eventid, _title, _subtitle, _description);
       formKey.currentState.reset();
-      _eventsController.text = "";
     }
   }
 
+}
+
+class EventSuggestionField extends StatefulWidget {
+
+  /// The list of events
+  final List<Event> events;
+
+  /// Function to call when the form is saved
+  final void Function(String) onSaved;
+
+  EventSuggestionField({@required this.events, @required this.onSaved});
+
+  @override
+  _EventSuggestionFieldState createState() => _EventSuggestionFieldState();
+}
+
+class _EventSuggestionFieldState extends State<EventSuggestionField> {
+
+  /// The controller used in the auto suggestion
+  /// events field
+  TextEditingController _eventsController;
+
+  /// The list of events
+  List<Event> _events;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // initializing the events controller
+    _eventsController = TextEditingController();
+
+    // filtering events based on clearance level and department being handled by user
+    _events = widget.events.where(
+      (event) {
+
+        // if the user is a level 3 user or above, include the event
+        if (User.instance.getClearanceLevel() > 2)
+          return true;
+
+        if (User.instance.getClearanceLevel() == 2 && 
+            (User.instance.claims["eventID"] == event.department || 
+            (event.department == Department.All.id && User.instance.claims["eventID"] != null) ||
+            event.id == "general"))
+          return true;
+
+        return false;
+      }
+    )
+    .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TypeAheadFormField<Event>(
+      
+      // configuring the field
+      textFieldConfiguration: TextFieldConfiguration(
+        decoration: InputDecoration(
+          hintText: Strings.eventsFieldHint,
+        ),
+        style: Theme.of(context).textTheme.body1.copyWith(
+          color: Colors.white,
+        ),
+        controller: _eventsController
+      ),
+      
+      suggestionsBoxDecoration: SuggestionsBoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+      ),
+
+      // used to get the suggestions from the string user has 
+      // typed
+      suggestionsCallback: (String pattern) =>
+        _events.where(
+          (event) => event.name.toLowerCase().contains(pattern.toLowerCase())
+        ).toList(),
+
+      // used to build the UI for each suggestion
+      itemBuilder: (BuildContext context, Event suggestion) =>
+        ListTile(
+          title: Text(suggestion.name),
+        ),
+      
+      // Used to build the UI when no matching suggestion is found
+      noItemsFoundBuilder: (BuildContext context) => 
+        ListTile(
+          title: Text(
+            Strings.noEventsFound,
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+
+      // defines what to do when a suggestion is tapped
+      onSuggestionSelected: (Event suggestion) => 
+        _eventsController.text = suggestion.name,
+
+      // validator
+      validator: (String selected) {
+        if (selected.isEmpty) {
+          return Strings.eventsFieldEmpty;
+        }
+
+        if (_events.where((event) => event.name == selected).length == 0) {
+          return Strings.notValidEvent;
+        }
+
+        return null;
+      },
+
+      // defines what to do when the form is saved
+      onSaved: (String value) =>
+        widget.onSaved(_events.firstWhere((event) => event.name == value).id),
+
+    );
+  }
 }

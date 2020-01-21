@@ -79,8 +79,8 @@ class _NotificationPublisherState extends State<NotificationPublisher> {
   }
 
   /// Called when the form is saved
-  void onSaved(Event event, String title, String subtitle, String description) =>
-    _showDialog(event.id, title, subtitle, description);
+  void onSaved(String eventid, String title, String subtitle, String description) =>
+    _showDialog(eventid, title, subtitle, description);
   
 
   /// Shows the confirmation dialog. Upon confirmation, the notification is published.

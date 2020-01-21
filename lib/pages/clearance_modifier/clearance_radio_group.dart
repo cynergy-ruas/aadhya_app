@@ -1,3 +1,4 @@
+import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 
 /// The radio button group used to select the clearance level
@@ -71,7 +72,7 @@ class _ClearanceRadioFormFieldState extends State<ClearanceRadioFormField> {
             // gap
             Expanded(child: Container(),),
 
-            // button for level 0
+            // button for level 3
             ..._radioButtonEntry(level: 3, state: state),
             // gap
             SizedBox(width: 20,),
@@ -81,24 +82,29 @@ class _ClearanceRadioFormFieldState extends State<ClearanceRadioFormField> {
     );
 
   /// A radio button plus its label
-  List<Widget> _radioButtonEntry({@required int level, @required FormFieldState<int> state}) =>
-    [
-      // the button
-      Radio<int> (
-        value: level,
-        groupValue: _group,
-        onChanged: (int value) {
-          state.didChange(level);
-          setState(() => _group = value);
-        },
-      ),
-
-      // Text describing the button
-      Text(
-        "Level " + level.toString(),
-          style: Theme.of(context).textTheme.subhead.copyWith(
-          color: Colors.white
+  List<Widget> _radioButtonEntry({@required int level, @required FormFieldState<int> state}) {
+    if (User.instance.getClearanceLevel() > level)
+      return [
+        // the button
+        Radio<int> (
+          value: level,
+          groupValue: _group,
+          onChanged: (int value) {
+            state.didChange(level);
+            setState(() => _group = value);
+          },
         ),
-      ),
-    ];
+
+        // Text describing the button
+        Text(
+          "Level " + level.toString(),
+            style: Theme.of(context).textTheme.subhead.copyWith(
+            color: Colors.white
+          ),
+        ),
+      ];
+
+    else 
+      return [Container()];
+  }
 }
