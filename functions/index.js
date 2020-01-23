@@ -207,33 +207,49 @@ exports.publishNotification = functions.https.onCall(async (data, context) => {
  * for a user.
  */
 exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
-    try {
-        
-        // updating data
 
-        // townscript api can send an array of dictionaries containing the data.
-        // therefore updating the data for all of the given users
-        if (Array.isArray(req.body)) {
-            req.body.forEach(async (data) => {
-                console.log(`received request with email: ${data.userEmailId}`);
-                await updateDataForUser({emailid: data.userEmailId, eventCode: data.eventCode})
-            });
-        }
-        else {
+    async function updateData({emailid, eventCode}) {
+
+        // updating the data for the user
+        await updateDataForUser({emailid: emailid, eventCode: eventCode});
+
+        // sending update data message to the user's device
+        await sendDataMessageToUser({emailid: emailid, data: {eventID: eventCode}});
+    }
+
+    // updating data
+
+    // townscript api can send an array of dictionaries containing the data.
+    // therefore updating the data for all of the given users
+    if (Array.isArray(req.body)) {
+        let statusCode = 200;
+
+        req.body.forEach(async (data) => {
+            try {
+                console.log(`received request with email: ${emailid}`);
+                await updateData({emailid: data.userEmailId, eventCode: data.eventCode});
+            }
+            catch (err) {
+                console.log(`error updating events for the user ${data.userEmailId}`);
+                console.log(err);
+                statusCode = 202;
+            }
+        });
+
+        res.status(statusCode).send();
+    }
+    else {
+
+        try {
             console.log(`received request with email: ${req.body.userEmailId}`);
-            await updateDataForUser({emailid: req.body.userEmailId, eventCode: req.body.eventCode});
+            await updateData({emailid: req.body.userEmailId, eventCode: req.body.eventCode});
+            res.status(200).send();
         }
-
-        // sending status 200 and closing the connection
-        res.status(200).send();
-    } catch (err) {
-        console.log(`error occurred while updating events for user.`);
-        console.log(err);
-
-        if (err instanceof TypeError)
-            res.status(404).send();
-        else
+        catch (err) {
+            console.log(err);
             res.status(500).send();
+        }
+        
     }
 });
 
@@ -259,6 +275,37 @@ async function updateDataForUser({emailid, eventCode}) {
 }
 
 /**
+ * Sends a data message to the user. The device token is 
+ * retrieved from the firestore database.
+ * @param emailid the email id of the user
+ * @param data the data to be sent. 
+ */
+async function sendDataMessageToUser({emailid, data}) {
+
+    try {
+        // sending a data message to the mobile phone of the user
+        const user = await admin.auth().getUserByEmail(emailid)
+        // getting the document reference of the user
+        const docRef = db.collection("users").doc(user.email);
+
+        // getting the device token of the user
+        const deviceToken = (await docRef.get()).data().deviceToken;
+
+        const payload = constructNotificationPayload({data: data, token: deviceToken});
+
+        // sending data notification to the device
+        await admin.messaging().send(payload);
+        
+        // logging
+        console.log(`sent data message to ${emailid}`);
+    }
+    catch (err) {
+        console.log(`error sending data message to ${emailid}`);
+        console.log(err);
+    }
+}
+
+/**
  * Constructs the notification payload.
  * 
  * @param title The title of the notification.
@@ -266,18 +313,59 @@ async function updateDataForUser({emailid, eventCode}) {
  * @param data The data of the notification.
  * @param topic The topic to send to the notification to.
  */
-function constructNotificationPayload({title, body, data, topic}) {
-    return {
+function constructNotificationPayload({title, body, data, topic, token}) {
+
+    console.log(`title: ${title}, body: ${body}, data: ${data}, topic: ${topic}, token: ${token}`);
+    
+    // defining setting for sending notification to android devices
+    const androidSettings = {
         notification: {
-            title: title,
-            body: body,
-        },
-        data: data,
-        android: {
-            notification: {
-                click_action: "FLUTTER_NOTIFICATION_CLICK"
+            click_action: "FLUTTER_NOTIFICATION_CLICK"
+        }
+    }
+    
+    // sending data message
+    if (title === undefined && body === undefined) {
+        if (topic === undefined) {
+            return {
+                token: token,
+                data: data,
+                android: androidSettings
             }
-        },
-        topic: topic
-    };
+        }
+        else {
+            return {
+                topic: topic,
+                data: data,
+                android: androidSettings
+            }
+        }
+    }
+
+    // sending notification
+    else {
+        if (topic === undefined) {
+            return {
+                notification: {
+                    title: title,
+                    body: body,
+                },
+                data: data,
+                android: androidSettings,
+                token: token
+            }
+        }
+
+        else {
+            return {
+                notification: {
+                    title: title,
+                    body: body,
+                },
+                data: data,
+                android: androidSettings,
+                topic: topic
+            }
+        }
+    }
 }
