@@ -209,12 +209,18 @@ exports.publishNotification = functions.https.onCall(async (data, context) => {
 exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
 
     async function updateData({emailid, eventCode}) {
+        // checking if the user document exists in users collection, and 
+        // creating the same if it does not exist.
+        const created = await checkAndCreateUserDocument({emailid: emailid});
 
         // updating the data for the user
         await updateDataForUser({emailid: emailid, eventCode: eventCode});
 
-        // sending update data message to the user's device
-        await sendDataMessageToUser({emailid: emailid, data: {eventID: eventCode}});
+        // sending update data message to the user's device, only if the user
+        // document was not created just now. This is because, there will not be
+        // any device token when the document was just created.
+        if (! created)
+            await sendDataMessageToUser({emailid: emailid, data: {eventID: eventCode}});
     }
 
     // updating data
@@ -224,18 +230,18 @@ exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
     if (Array.isArray(req.body)) {
         let statusCode = 200;
 
-        req.body.forEach(async (data) => {
-            try {
-                console.log(`received request with email: ${emailid}`);
-                await updateData({emailid: data.userEmailId, eventCode: data.eventCode});
-            }
-            catch (err) {
-                console.log(`error updating events for the user ${data.userEmailId}`);
-                console.log(err);
+        const promises = req.body.map((data) => {
+            console.log(`received request with email: ${data.userEmailId}`);
+            return updateData({emailid: data.userEmailId, eventCode: data.eventCode})
+            .catch((err) => {
                 statusCode = 202;
-            }
+                console.log(`error updating events for the user ${data.userEmailId}`);
+                return console.log(err);
+            });
         });
 
+
+        await Promise.all(promises)
         res.status(statusCode).send();
     }
     else {
@@ -252,6 +258,27 @@ exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
         
     }
 });
+
+/**
+ * Checks if the user document exists and if it doesnt, creates the 
+ * document.
+ * @param emailid The email id of the user.
+ * @returns true, if the user did not exist and the corresponding document 
+ * was created, false otherwise.
+ */
+async function checkAndCreateUserDocument({emailid}) {
+    try {
+        await db.collection("users").doc(emailid).create({
+            regEvents: [],
+            deviceToken: ""
+        })
+        return true;
+    }
+    catch (err) {
+        console.log(`Document for ${emailid} exists`);
+        return false;
+    }
+}
 
 /**
  * Updates the registered events for a user.
@@ -314,8 +341,6 @@ async function sendDataMessageToUser({emailid, data}) {
  * @param topic The topic to send to the notification to.
  */
 function constructNotificationPayload({title, body, data, topic, token}) {
-
-    console.log(`title: ${title}, body: ${body}, data: ${data}, topic: ${topic}, token: ${token}`);
     
     // defining setting for sending notification to android devices
     const androidSettings = {
