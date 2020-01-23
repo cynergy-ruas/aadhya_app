@@ -259,6 +259,39 @@ exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
     }
 });
 
+exports.registerUser = functions.https.onCall(async (data, context) => {
+    // getting the email id
+    const emailid = data.emailid;
+
+    // getting the password
+    const password = data.password;
+
+    // logging
+    console.log(`received registration request from ${emailid}`);
+
+    // checking if the user document exists. If the user document exists,
+    // that means that the user has paid for atleast one event. If this is
+    // the case, the user should be allowed to register. If not, the registration
+    // request should be rejected.
+    if (! (await db.collection("users").doc(emailid).get()).exists) {
+        console.log(`user ${emailid} request for registration has been rejected.`);
+        throw new functions.https.HttpsError(
+            "invalid-argument",
+            "The user has not paid for any event."
+        );
+    }
+
+    // creating the user with the given email id and password
+    await admin.auth().createUser({
+        email: emailid,
+        password: password,
+        emailVerified: false,
+        disabled: false
+    });
+
+    console.log(`Successfully created user ${emailid}`);
+});
+
 /**
  * Checks if the user document exists and if it doesnt, creates the 
  * document.
