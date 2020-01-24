@@ -193,7 +193,7 @@ exports.publishNotification = functions.https.onCall(async (data, context) => {
     } catch (err) {
         // logging
         console.log(`error sending sending notification to topic ${data.topic}`);
-        console.log(error);
+        console.log(err);
 
         // returning error status code
         return {
@@ -208,7 +208,7 @@ exports.publishNotification = functions.https.onCall(async (data, context) => {
  */
 exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
 
-    async function updateData({emailid, eventCode}) {
+    async function updateData({emailid, eventCode, eventName}) {
         // checking if the user document exists in users collection, and 
         // creating the same if it does not exist.
         const created = await checkAndCreateUserDocument({emailid: emailid});
@@ -220,7 +220,7 @@ exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
         // document was not created just now. This is because, there will not be
         // any device token when the document was just created.
         if (! created)
-            await sendDataMessageToUser({emailid: emailid, data: {eventID: eventCode}});
+            await notifyUserOnRegisteredEvent({emailid: emailid, data: {eventID: eventCode}, eventName: eventName});
     }
 
     // updating data
@@ -232,7 +232,7 @@ exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
 
         const promises = req.body.map((data) => {
             console.log(`received request with email: ${data.userEmailId}`);
-            return updateData({emailid: data.userEmailId, eventCode: data.eventCode})
+            return updateData({emailid: data.userEmailId, eventCode: data.eventCode, eventName: data.eventName})
             .catch((err) => {
                 statusCode = 202;
                 console.log(`error updating events for the user ${data.userEmailId}`);
@@ -248,7 +248,7 @@ exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
 
         try {
             console.log(`received request with email: ${req.body.userEmailId}`);
-            await updateData({emailid: req.body.userEmailId, eventCode: req.body.eventCode});
+            await updateData({emailid: req.body.userEmailId, eventCode: req.body.eventCode, eventName: req.body.eventName});
             res.status(200).send();
         }
         catch (err) {
@@ -339,8 +339,9 @@ async function updateDataForUser({emailid, eventCode}) {
  * retrieved from the firestore database.
  * @param emailid the email id of the user
  * @param data the data to be sent. 
+ * @param eventName the name of the event the user registered for
  */
-async function sendDataMessageToUser({emailid, data}) {
+async function notifyUserOnRegisteredEvent({emailid, data, eventName}) {
 
     try {
         // sending a data message to the mobile phone of the user
@@ -351,7 +352,12 @@ async function sendDataMessageToUser({emailid, data}) {
         // getting the device token of the user
         const deviceToken = (await docRef.get()).data().deviceToken;
 
-        const payload = constructNotificationPayload({data: data, token: deviceToken});
+        const payload = constructNotificationPayload({
+            title: "Registration",
+            body: `You have registered for the event ${eventName}`,
+            data: data, 
+            token: deviceToken
+        });
 
         // sending data notification to the device
         await admin.messaging().send(payload);
@@ -374,6 +380,11 @@ async function sendDataMessageToUser({emailid, data}) {
  * @param topic The topic to send to the notification to.
  */
 function constructNotificationPayload({title, body, data, topic, token}) {
+
+    // checking if topic and token both are given at the same time.
+    // if it so, throw an error.
+    if (topic !== undefined && token !== undefined) 
+        throw new Error("topic and token both cannot be specified at the same time.");
     
     // defining setting for sending notification to android devices
     const androidSettings = {
@@ -382,48 +393,25 @@ function constructNotificationPayload({title, body, data, topic, token}) {
         }
     }
     
-    // sending data message
-    if (title === undefined && body === undefined) {
-        if (topic === undefined) {
-            return {
-                token: token,
-                data: data,
-                android: androidSettings
-            }
-        }
-        else {
-            return {
-                topic: topic,
-                data: data,
-                android: androidSettings
-            }
-        }
+    // the body of the notification
+    const payload = {
+        notification: {
+            title: title,
+            body: body
+        },
+
+        data: data,
+
+        android: androidSettings
     }
 
-    // sending notification
-    else {
-        if (topic === undefined) {
-            return {
-                notification: {
-                    title: title,
-                    body: body,
-                },
-                data: data,
-                android: androidSettings,
-                token: token
-            }
-        }
 
-        else {
-            return {
-                notification: {
-                    title: title,
-                    body: body,
-                },
-                data: data,
-                android: androidSettings,
-                topic: topic
-            }
-        }
-    }
+    // adding the topic or token, depending on what is given.
+    if (token !== undefined)
+        payload.token = token;
+    else if (topic !== undefined)
+        payload.topic = topic;
+
+    return payload;
+
 }
