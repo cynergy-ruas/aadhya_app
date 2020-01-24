@@ -24,7 +24,7 @@ class ClearanceModifier extends StatelessWidget {
     // and [IntrinsicHeight] is used so that [Expanded] can be used inside a 
     // [SingleChildScrollView].
     return Padding(
-      padding: const EdgeInsets.only(bottom: 30.0, left: 20.0, right: 20.0),
+      padding: const EdgeInsets.only(left: 20.0, right: 20.0),
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) => 
           SingleChildScrollView(
@@ -59,6 +59,9 @@ class ClearanceModifier extends StatelessWidget {
 
                     // the back and submit button
                     _buttonBar(),
+
+                    // gap
+                    SizedBox(height: 30,),
                   ],
                 ),
               ),
