@@ -11,25 +11,31 @@ class BuildButton extends StatelessWidget {
   final void Function() onPressed;
   final double verticalPadding;
   final double horizontalPadding;
-  BuildButton(
-      {@required this.data,
-      @required this.onPressed,
-      this.verticalPadding = 0.0,
-      this.horizontalPadding = 0.0});
+  final double borderRadius;
+
+  BuildButton({
+    @required this.data,
+    @required this.onPressed,
+    this.verticalPadding = 0.0,
+    this.horizontalPadding = 0.0,
+    this.borderRadius = 20.0,
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-          vertical: verticalPadding, horizontal: horizontalPadding),
+        vertical: verticalPadding, 
+        horizontal: horizontalPadding,
+      ),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
         onPressed: onPressed,
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
-        color: Colors.white,
+        color: Color(0xff2F3857),
         child: Text(
           data,
           style: Style.buttonTextStyle,

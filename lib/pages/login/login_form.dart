@@ -38,37 +38,67 @@ class _LoginFormState extends State<LoginForm> {
         Text(
           'Email',
           style: Theme.of(context).textTheme.body1.copyWith(
-                color: Colors.white,
-              ),
+            color: Colors.white,
+          ),
         ),
 
         // gap
         SizedBox(height: 10.0),
 
-        // the actual email tf
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: boxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              // the prefix icon in the email tf
-              prefixIcon: Icon(
-                Icons.email,
-                color: Colors.white,
+        // the leading icon and the text field
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+
+            // the leading icon
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              decoration: BoxDecoration(
+                color: Color(0xff2F3857),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                )
               ),
-              hintText: 'Enter your Email',
+              child: Icon(Icons.person, color: Colors.white,),
             ),
-            controller: emailController,
-          ),
-        ),
+
+            // the actual email tf
+            Flexible(
+              child: Container(
+                decoration: boxDecorationStyle,
+                child: TextFormField(
+                  style: Theme.of(context).textTheme.subhead.copyWith(
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.left,
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    // padding
+                    hintText: 'Enter your Email',
+
+                    // The border to display when the InputDecorator is disabled and is not showing an error.
+                    disabledBorder: (Theme.of(context).inputDecorationTheme.disabledBorder as OutlineInputBorder).copyWith(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
+                    ),
+
+                    // The border to display when the InputDecorator is enabled and is not showing an error.
+                    enabledBorder:  (Theme.of(context).inputDecorationTheme.enabledBorder as OutlineInputBorder).copyWith(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        )
       ],
     );
   }
@@ -82,36 +112,64 @@ class _LoginFormState extends State<LoginForm> {
         Text(
           'Password',
           style: Theme.of(context).textTheme.body1.copyWith(
-                color: Colors.white,
-              ),
+            color: Colors.white,
+          ),
         ),
 
         // gap
         SizedBox(height: 10.0),
 
-        // the actual password tf
-        Container(
-          alignment: Alignment.centerLeft,
-          // decoration: BoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            obscureText: true,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              // the prefix icon in the password tf
-              prefixIcon: Icon(
-                Icons.lock,
-                color: Colors.white,
+        // the leading icon and the text field
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            // the leading icon
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              decoration: BoxDecoration(
+                color: Color(0xff2F3857),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                )
               ),
-              hintText: 'Enter your Password',
+              child: Icon(Icons.lock, color: Colors.white,),
             ),
-            controller: passwordController,
-          ),
+
+            // the actual password tf
+            Flexible(
+              child: Container(
+                decoration: boxDecorationStyle,
+                child: TextFormField(
+                  obscureText: true,
+                  controller: passwordController,
+                  style: Theme.of(context).textTheme.subhead.copyWith(
+                    color: Colors.white,
+                  ),
+                  decoration: InputDecoration(
+                    // hint text
+                    hintText: 'Enter your Password',
+                                
+                    // The border to display when the InputDecorator is disabled and is not showing an error.
+                    disabledBorder: (Theme.of(context).inputDecorationTheme.disabledBorder as OutlineInputBorder).copyWith(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
+                    ),
+
+                    // The border to display when the InputDecorator is enabled and is not showing an error.
+                    enabledBorder: (Theme.of(context).inputDecorationTheme.enabledBorder as OutlineInputBorder).copyWith(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -153,15 +211,42 @@ class _LoginFormState extends State<LoginForm> {
             // building password field
             _buildPasswordTF(),
 
-            // build login button
-            BuildButton(
-              data: Strings.loginButton,
-              onPressed: () => BackendProvider.of<AuthBloc>(context).login(
-                  email: emailController.text,
-                  password: passwordController.text),
-              verticalPadding: 25.0,
-              horizontalPadding: 0.0,
-            ),
+            // gap
+            SizedBox(height: 30,),
+
+            // build login and register button
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                // register button
+                Flexible(
+                  child: BuildButton(
+                    data: Strings.registerButton,
+                    verticalPadding: 25.0,
+                    onPressed: () => BackendProvider.of<AuthBloc>(context).register(
+                      email: emailController.text.trim(),
+                      password: passwordController.text.trim(),
+                    ),
+                  ),
+                ),
+
+                // gap
+                SizedBox(width: 40),
+              
+                // login button
+                Flexible(
+                  child: BuildButton(
+                    data: Strings.loginButton,
+                    verticalPadding: 25.0,
+                    onPressed: () => BackendProvider.of<AuthBloc>(context).login(
+                      email: emailController.text.trim(),
+                      password: passwordController.text.trim(),
+                    ),
+                  ),
+                ),
+
+              ],
+            )
           ],
         ),
       ),

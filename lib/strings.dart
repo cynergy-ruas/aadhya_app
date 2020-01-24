@@ -7,13 +7,16 @@ class Strings {
   static const confirmButton = "Confirm";
 
   /// login button text
-  static const loginButton = "LOGIN";
+  static const loginButton = "Login";
+
+  /// Register button text
+  static const registerButton = "Register";
 
   /// logout button text
-  static const logoutButton = "LOGOUT";
+  static const logoutButton = "Logout";
 
   /// The scan buton text
-  static const scanButton = "SCAN";
+  static const scanButton = "Scan";
 
   /// Content of the about page
   static const aboutContent = '''

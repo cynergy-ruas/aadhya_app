@@ -53,15 +53,20 @@ ThemeData dwimayTheme = ThemeData(
     // The padding for the input decoration's container.
     contentPadding: EdgeInsets.only(left: 12, right: 12),
 
+    // The border to draw around the field
+    border: InputBorder.none,
+
     // The border to display when the InputDecorator is disabled and is not showing an error.
     disabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        borderSide: BorderSide(color: Colors.transparent, width: 1.0)),
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(color: Colors.transparent, width: 1.0),
+    ),
 
     // The border to display when the InputDecorator is enabled and is not showing an error.
     enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        borderSide: BorderSide(color: Colors.transparent, width: 1.0)),
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(color: Colors.transparent, width: 1.0),
+    ),
 
     // style for hint text.
     hintStyle: TextStyle(
@@ -70,12 +75,13 @@ ThemeData dwimayTheme = ThemeData(
     ),
 
     labelStyle: TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-        fontFamily: 'OpenSans'),
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontFamily: 'OpenSans',
+    ),
 
     // The color to fill the decoration's container with, if filled is true
-    fillColor: Color(0xff4c4c4c),
+    fillColor: Color(0xff161824),
 
     // If true the decoration's container is filled with fillColor
     filled: true,
@@ -101,7 +107,7 @@ class Style {
   static final headerTextStyle = baseTextStyle.copyWith(
       color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w400);
   static final buttonTextStyle = TextStyle(
-    color: Color(0xFF527DAA),
+    color: Colors.white,
     letterSpacing: 1.5,
     fontSize: 18.0,
     fontWeight: FontWeight.bold,
