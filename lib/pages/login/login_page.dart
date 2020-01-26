@@ -1,8 +1,10 @@
 import 'package:dwimay/pages/login/password_reset_page.dart';
 import 'package:dwimay/pages/profile/profile_page.dart';
+import 'package:dwimay/strings.dart';
 import 'package:dwimay/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
+import 'package:flutter/services.dart';
 
 import 'login_form.dart';
 
@@ -68,9 +70,25 @@ class _LoginPageState extends State<LoginPage> {
               // callback to execute when an error occurs during the
               // authentication process
               onError: (BuildContext context, dynamic e) {
+                String message; 
+                print(e.toString());
+                try {
+                  // type casting
+                  PlatformException err = (e as PlatformException);
+
+                  // customizing message based on error
+                  if (err.code == "ERROR_INVALID_EMAIL")
+                    message = Strings.invalidEmailMessage;
+                  else if (err.code == "ERROR_WRONG_PASSWORD")
+                    message = Strings.wrongPasswordMessage;
+                  else 
+                    message = Strings.unknownError;
+                } catch (e) {
+                  message =  Strings.unknownError;
+                }
                 Scaffold.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('${e.toString()}'),
+                    content: Text(message),
                     backgroundColor: Colors.red,
                   ),
                 );

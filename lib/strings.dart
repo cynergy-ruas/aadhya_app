@@ -58,6 +58,15 @@ class Strings {
     },
   ];
 
+  /// Wrong email address error message
+  static const invalidEmailMessage = "Looks like the email address is wrong. Please try again.";
+
+  /// Wrong password error message
+  static const wrongPasswordMessage = "Oops! Wrong password. Please Try again.";
+
+  /// Unknown error message
+  static const unknownError = "Error occurred. Please try again";
+
   /// Password reset page title
   static const passwordResetPageTitle = "Reset Password";
 
