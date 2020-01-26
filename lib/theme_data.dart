@@ -54,18 +54,40 @@ ThemeData dwimayTheme = ThemeData(
     contentPadding: EdgeInsets.only(left: 12, right: 12),
 
     // The border to draw around the field
-    border: InputBorder.none,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+    ),
+
+    // border when the field is focused and has error
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+    ),
+
+    // The border to display when the InputDecorator has the focus and is not showing an error.
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+    ),
 
     // The border to display when the InputDecorator is disabled and is not showing an error.
     disabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(10)),
-      borderSide: BorderSide(color: Colors.transparent, width: 1.0),
+      borderSide: BorderSide(color: Colors.transparent, width: 0.0),
     ),
 
     // The border to display when the InputDecorator is enabled and is not showing an error.
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(10)),
-      borderSide: BorderSide(color: Colors.transparent, width: 1.0),
+      borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+    ),
+
+    // The border to display when an error occurs
+    // The border to display when the InputDecorator is enabled and is not showing an error.
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(color: Colors.transparent, width: 0.0),
     ),
 
     // style for hint text.
@@ -85,11 +107,6 @@ ThemeData dwimayTheme = ThemeData(
 
     // If true the decoration's container is filled with fillColor
     filled: true,
-
-    // The border to display when the InputDecorator has the focus and is not showing an error.
-    focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        borderSide: BorderSide(color: Colors.transparent, width: 1.0)),
   ),
 );
 

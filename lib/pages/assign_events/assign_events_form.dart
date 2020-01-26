@@ -1,4 +1,5 @@
 import 'package:dwimay/strings.dart';
+import 'package:dwimay/widgets/text_field_shadow.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -104,15 +105,18 @@ class AssignEventsFormState extends State<AssignEventsForm> {
             SizedBox(height: 20,),
 
             // Text field for email id
-            TextFormField(
-              style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
-              decoration: InputDecoration(hintText: Strings.formEmailHint),
-              validator: (String value) {
-                if (value.length == 0)
-                  return Strings.formEmailEmpty;
-                return null;
-              },
-              onSaved: (String value) => _emailid = value.trim(),
+            Container(
+              decoration: TextFormFieldShadow(),
+              child: TextFormField(
+                style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
+                decoration: InputDecoration(hintText: Strings.formEmailHint),
+                validator: (String value) {
+                  if (value.length == 0)
+                    return Strings.formEmailEmpty;
+                  return null;
+                },
+                onSaved: (String value) => _emailid = value.trim(),
+              ),
             ),
 
             // gap
@@ -130,69 +134,72 @@ class AssignEventsFormState extends State<AssignEventsForm> {
             SizedBox(height: 20,),
 
             // Suggestions field for events
-            TypeAheadFormField<String>(
-              // configuring the field
-              textFieldConfiguration: TextFieldConfiguration(
-                decoration: InputDecoration(
-                  hintText: Strings.eventsFieldHint,
-                ),
-                style: Theme.of(context).textTheme.body1.copyWith(
-                  color: Colors.white,
-                ),
-                controller: _eventsController
-              ),
-              
-              suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-              ),
-
-              // used to get the suggestions from the string user has 
-              // typed
-              suggestionsCallback: (String pattern) =>
-                eventNames.where(
-                  (names) => names.toLowerCase().contains(pattern.toLowerCase())
-                )
-                .toList(),
-
-              // used to build the UI for each suggestion
-              itemBuilder: (BuildContext context, String suggestion) =>
-                ListTile(
-                  title: Text(suggestion),
-                ),
-              
-              // Used to build the UI when no matching suggestion is found
-              noItemsFoundBuilder: (BuildContext context) => 
-                ListTile(
-                  title: Text(
-                    Strings.noEventsFound,
-                    style: TextStyle(color: Colors.grey),
+            Container(
+              decoration: TextFormFieldShadow(),
+              child: TypeAheadFormField<String>(
+                // configuring the field
+                textFieldConfiguration: TextFieldConfiguration(
+                  decoration: InputDecoration(
+                    hintText: Strings.eventsFieldHint,
                   ),
+                  style: Theme.of(context).textTheme.body1.copyWith(
+                    color: Colors.white,
+                  ),
+                  controller: _eventsController
+                ),
+                
+                suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
                 ),
 
-              // defines what to do when a suggestion is tapped
-              onSuggestionSelected: (String suggestion) => 
-                _eventsController.text = suggestion,
+                // used to get the suggestions from the string user has 
+                // typed
+                suggestionsCallback: (String pattern) =>
+                  eventNames.where(
+                    (names) => names.toLowerCase().contains(pattern.toLowerCase())
+                  )
+                  .toList(),
 
-              // validator
-              validator: (String selected) {
-                if (selected.isEmpty) {
-                  return Strings.eventsFieldEmpty;
-                }
+                // used to build the UI for each suggestion
+                itemBuilder: (BuildContext context, String suggestion) =>
+                  ListTile(
+                    title: Text(suggestion),
+                  ),
+                
+                // Used to build the UI when no matching suggestion is found
+                noItemsFoundBuilder: (BuildContext context) => 
+                  ListTile(
+                    title: Text(
+                      Strings.noEventsFound,
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
 
-                if (eventNames.where((name) => name == selected).length == 0) {
-                  return Strings.notValidEvent;
-                }
+                // defines what to do when a suggestion is tapped
+                onSuggestionSelected: (String suggestion) => 
+                  _eventsController.text = suggestion,
 
-                return null;
-              },
+                // validator
+                validator: (String selected) {
+                  if (selected.isEmpty) {
+                    return Strings.eventsFieldEmpty;
+                  }
 
-              // defines what to do when the form is saved
-              onSaved: (String value) =>
-                _eventid = widget.events.firstWhere(
-                  (event) => event.name == value,
-                  orElse: () => null,
-                )?.id ?? DepartmentExtras.getIdFromName(value),
+                  if (eventNames.where((name) => name == selected).length == 0) {
+                    return Strings.notValidEvent;
+                  }
 
+                  return null;
+                },
+
+                // defines what to do when the form is saved
+                onSaved: (String value) =>
+                  _eventid = widget.events.firstWhere(
+                    (event) => event.name == value,
+                    orElse: () => null,
+                  )?.id ?? DepartmentExtras.getIdFromName(value),
+
+              ),
             ),
           ],
         ),

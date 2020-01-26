@@ -18,6 +18,12 @@ class Strings {
   /// The scan buton text
   static const scanButton = "Scan";
 
+  /// The forgot password text
+  static const forgotPassword = "forgot password?";
+
+  /// The password field hint
+  static const passwordHint = "password";
+
   /// Content of the about page
   static const aboutContent = '''
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -51,6 +57,12 @@ class Strings {
       "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     },
   ];
+
+  /// Password reset page title
+  static const passwordResetPageTitle = "Reset Password";
+
+  /// The message to display while resetting the password
+  static const passwordResetPageMessage = "Please enter the email id associated with your account. A password reset email will be sent to that email id.";
 
   /// The title of the qr code
   static const qrTitle = "Your Pass";
@@ -113,6 +125,9 @@ class Strings {
   /// The error message to show when the email id field is empty in
   /// the clearance modifier form
   static const formEmailEmpty = "email id cannot be empty";
+
+  /// The error message when password field is empty
+  static const formPasswordEmpty = "password cannot be empty";
 
   /// The title of the clearance level radio buttons in the clearance modifier
   /// form

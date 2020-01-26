@@ -1,3 +1,4 @@
+import 'package:dwimay/pages/login/password_reset_page.dart';
 import 'package:dwimay/pages/profile/profile_page.dart';
 import 'package:dwimay/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +52,18 @@ class _LoginPageState extends State<LoginPage> {
 
               // the login form
               loginForm: LoginForm(),
+
+              // the password reset form
+              passwordResetForm: PasswordResetPage(),
+
+              // callback to execute when the password reset is successful
+              onPasswordResetSuccess: (BuildContext context) {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Password reset email sent."),
+                  ),
+                );
+              },
 
               // callback to execute when an error occurs during the
               // authentication process

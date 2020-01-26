@@ -1,6 +1,6 @@
 import 'package:dwimay/pages/notification_publisher/publishing_form.dart';
 import 'package:dwimay/strings.dart';
-import 'package:dwimay/widgets/build_button.dart';
+import 'package:dwimay/widgets/back_confirm_button_bar.dart';
 import 'package:dwimay/widgets/confirmation_dialog.dart';
 import 'package:dwimay/widgets/loading_widget.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
@@ -155,30 +155,10 @@ class _Contents extends StatelessWidget {
           // gap
           SizedBox(height: 10,),
 
-          // back button
-          Row(
-            children: <Widget>[
-              // back button
-              SizedBox(
-                width: 120,
-                child: BuildButton(
-                  data: Strings.backButton,
-                  onPressed: onBackPressed,
-                ),
-              ),
-
-              // center gap
-              Expanded(child: Container(),),
-
-              // the publish button
-              SizedBox(
-                width: 120,
-                child: BuildButton(
-                  data: Strings.confirmButton,
-                  onPressed: () => formKey.currentState.saveForm(),
-                ),
-              ),
-            ],
+          // back and confirm button
+          BackConfirmButtonBar(
+            onConfirmPressed: () => formKey.currentState.saveForm(),
+            onBackPressed: onBackPressed,
           ),
         ]
       )

@@ -1,5 +1,5 @@
 import 'package:dwimay/strings.dart';
-import 'package:dwimay/widgets/build_button.dart';
+import 'package:dwimay/widgets/back_confirm_button_bar.dart';
 import 'package:dwimay/widgets/confirmation_dialog.dart';
 import 'package:dwimay/widgets/loading_widget.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
@@ -74,17 +74,20 @@ class _AssignEventsState extends State<AssignEvents> {
                           onLoading: Center(child: LoadingWidget(),),
                           onLoaded: (List<Event> events) => 
                             AssignEventsForm(
-                            key: _formKey,
-                            events: events,
-                            onSaved: (String email, String eventID) =>
-                              _onSaved(context, email, eventID),
+                              key: _formKey,
+                              events: events,
+                              onSaved: (String email, String eventID) =>
+                                _onSaved(context, email, eventID),
                           ),
                         )
                       ),
                     ),
 
                     // the back and submit button
-                    _buttonBar(),
+                    BackConfirmButtonBar(
+                      onConfirmPressed: () => _formKey.currentState.saveForm(),
+                      onBackPressed: widget.onBackPress,
+                    ),
 
                     // gap
                     SizedBox(height: 30,),
@@ -119,34 +122,7 @@ class _AssignEventsState extends State<AssignEvents> {
         )
     );
   }
-
-  Widget _buttonBar() => 
-    // Back button
-    Row(
-      children: <Widget>[
-        // back button
-        SizedBox(
-          width: 120,
-          child: BuildButton(
-            data: Strings.backButton,
-            onPressed: widget.onBackPress,
-          ),
-        ),
-
-        // center gap
-        Expanded(child: Container(),),
-
-        // the confirm button
-        SizedBox(
-          width: 120,
-          child: BuildButton(
-            data: Strings.confirmButton,
-            onPressed: () => _formKey.currentState.saveForm(),
-          ),
-        ),
-      ],
-    );
-
+  
   @override
   void dispose() {
     super.dispose();

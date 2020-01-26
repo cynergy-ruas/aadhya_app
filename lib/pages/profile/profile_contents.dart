@@ -53,8 +53,7 @@ class ProfileContents extends StatelessWidget {
         // TODO: check with registered events and show result
         print(result);
       },
-      verticalPadding: 25.0,
-      horizontalPadding: 100.0,
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 35),
     );
 
     //building the Qr code
@@ -85,8 +84,8 @@ class ProfileContents extends StatelessWidget {
       onPressed: () {
         BackendProvider.of<AuthBloc>(context).logout();
       },
-      verticalPadding: 25.0,
-      horizontalPadding: 100.0,
+
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 35),
     );
 
     // if user is participant then build a Qr Code
@@ -100,6 +99,7 @@ class ProfileContents extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 30.0, left: 20.0, right: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             // Title of profile page. Wrapping with [Row] to center it
             Row(
@@ -151,16 +151,21 @@ class ProfileContents extends StatelessWidget {
 
                 // TODO: add registered events UI
 
+                // gap
+                SizedBox(height: 40,),
+
                 // logout button
-                _logoutButton
+                Center(child: _logoutButton,)
               ]
             // UI for coordinators and above
             : [ 
-                // the scanner
-                pass,
+                Flexible(child: Center(child: pass)),
+
+                // gap
+                SizedBox(height: 20,),
 
                 // the logout button
-                _logoutButton
+                Flexible(child: Center(child: _logoutButton))
               ]
           ),
         ),

@@ -1,6 +1,6 @@
 import 'package:dwimay/pages/clearance_modifier/clearance_modifier_form.dart';
 import 'package:dwimay/strings.dart';
-import 'package:dwimay/widgets/build_button.dart';
+import 'package:dwimay/widgets/back_confirm_button_bar.dart';
 import 'package:dwimay/widgets/confirmation_dialog.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +58,10 @@ class ClearanceModifier extends StatelessWidget {
                     ),
 
                     // the back and submit button
-                    _buttonBar(),
+                    BackConfirmButtonBar(
+                      onConfirmPressed: () => formKey.currentState.saveForm(),
+                      onBackPressed: onBackPress,
+                    ),
 
                     // gap
                     SizedBox(height: 30,),
@@ -93,32 +96,4 @@ class ClearanceModifier extends StatelessWidget {
         )
     );
   }
-
-  /// the back and submit buttons
-  Widget _buttonBar() => 
-    // Back button
-    Row(
-      children: <Widget>[
-        // back button
-        SizedBox(
-          width: 120,
-          child: BuildButton(
-            data: Strings.backButton,
-            onPressed: onBackPress,
-          ),
-        ),
-
-        // center gap
-        Expanded(child: Container(),),
-
-        // the confirm button
-        SizedBox(
-          width: 120,
-          child: BuildButton(
-            data: Strings.confirmButton,
-            onPressed: () => formKey.currentState.saveForm(),
-          ),
-        ),
-      ],
-    );
 }
