@@ -94,6 +94,9 @@ class Strings {
   /// The title for the registered events
   static const registeredEvents = "Your Events";
 
+  /// The message to display when there are no registered events for a user
+  static const noRegEvents = "You have not paid for any event yet.";
+
   /// The title of the collapsed sheet
   static const collapsedSheetTitle = "Pass";
 

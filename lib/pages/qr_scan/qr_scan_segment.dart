@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:dwimay/strings.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -38,32 +36,35 @@ class _QrScanSegmentState extends State<QrScanSegment> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        // the scan button
-        SizedBox(
-          height: _buttonSize,
-          width: _buttonSize,
-          child: FloatingActionButton(
-            heroTag: "the_actual_scan_button",
-            elevation: 10,
-            child: Icon(MdiIcons.qrcodeScan, size: _buttonSize / 2,),
-            onPressed: _scan,
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          // the scan button
+          SizedBox(
+            height: _buttonSize,
+            width: _buttonSize,
+            child: FloatingActionButton(
+              heroTag: "the_actual_scan_button",
+              elevation: 10,
+              child: Icon(MdiIcons.qrcodeScan, size: _buttonSize / 2,),
+              onPressed: _scan,
+            ),
           ),
-        ),
 
-        // gap
-        SizedBox(height: 20,),
+          // gap
+          SizedBox(height: 20,),
 
-        // the result of scanning
-        Text(
-          widget.displayText,
-          style: Theme.of(context).textTheme.headline.copyWith(
-            color: widget.textColor,
+          // the result of scanning
+          Text(
+            widget.displayText,
+            style: Theme.of(context).textTheme.headline.copyWith(
+              color: widget.textColor,
+            )
           )
-        )
-      ],
+        ],
+      ),
     );
   }
 

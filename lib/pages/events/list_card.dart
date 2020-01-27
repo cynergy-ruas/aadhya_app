@@ -15,7 +15,10 @@ class ListCard extends StatefulWidget {
   /// the list of datetimes in the [Event].
   final int day;
 
-  ListCard({@required this.event, @required this.day});
+  /// Defines whether to use a hero widget or not
+  final bool useHero;
+
+  ListCard({@required this.event, @required this.day, this.useHero = true});
 
   @override
   _ListCardState createState() => _ListCardState();
@@ -74,6 +77,7 @@ class _ListCardState extends State<ListCard> {
           pageBuilder: (_, __, ___) => DetailPage(
             event: widget.event,
             day: index,
+            useHero: widget.useHero,
           ),
           transitionsBuilder:
               (context, animation, secondaryAnimation, child) =>
@@ -119,15 +123,22 @@ class _ListCardState extends State<ListCard> {
     );
 
   /// The top content. Contains the thumbnail image
-  Widget _topContent() =>
-    Hero(
-      tag: widget.event,
-      child: Image.asset(
-        "assets/images/${widget.event.type}.png",
-        width: imageHeight,
-        height: imageWidth,
-      )
+  Widget _topContent() {
+
+    Widget content = Image.asset(
+      "assets/images/${widget.event.type}.png",
+      width: imageHeight,
+      height: imageWidth,
     );
+
+    if (widget.useHero)
+      return Hero(
+        tag: widget.event,
+        child: content,
+      );
+
+    return content;
+  }
 
   /// The separator between the event name and the venue
   /// in the card's content.

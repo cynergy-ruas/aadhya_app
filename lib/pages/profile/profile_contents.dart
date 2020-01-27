@@ -128,28 +128,100 @@ class _MemberContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 30.0, left: 20.0, right: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          // Title of profile page, along with the logout button
-          _TitleAndLogout(email: email,),
+    return EventLoader(
+      beginLoad: true,
+      onLoading: LoadingWidget(),
+      onError: (BuildContext context, dynamic error) =>
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Error occurred. Please try again."),
+            backgroundColor: Colors.red
+          )
+        ),
+      onLoaded: (List<Event> events) {
+        // getting the matching [Event] object
+        Event event = events.firstWhere((event) => event.id == User.instance.getEventId(), orElse: () => null);
 
-          // gap
-          SizedBox(height: 5,),
+        String firstLine;
+        String secondLine;
+        String assetPath;
 
-          // something
-          Expanded(
-            child: Container(),
+        if (User.instance.getClearanceLevel() > 2) {
+          firstLine = "You are managing\n";
+          secondLine = Strings.festName;
+          assetPath = "assets/images/talk.png"; // TODO: Use fest logo
+        }
+
+        else if (User.instance.getClearanceLevel() == 2) {
+          firstLine = "You are managing the events for\n";
+          secondLine = DepartmentExtras.getNameFromId(User.instance.getEventId());
+          assetPath = "assets/images/workshop.png"; // TODO: Use deparment image
+        } 
+        else {
+          firstLine = "You are managing the event\n";
+          secondLine = event.name;
+          assetPath = "assets/images/${event.type}.png";
+        }
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 30.0, left: 20.0, right: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              // Title of profile page, along with the logout button
+              _TitleAndLogout(email: email,),
+
+              // something
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      // thumbnail
+                      Image.asset(
+                        assetPath,
+                        width: 90,
+                        height: 90,
+                      ),
+
+                      // gap
+                      SizedBox(height: 20,),
+
+                      // info
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          text: firstLine,
+                          style: Theme.of(context).textTheme.subtitle.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,             
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: secondLine,
+                              style:  Theme.of(context).textTheme.headline.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                                height: 1.5
+                              ),
+                            )
+                          ]
+                        ),
+                      ),
+                    ],
+                  )
+                ),
+              ),
+
+              // gap
+              SizedBox(height: 30,),
+            ],
           ),
-
-          // gap
-          SizedBox(height: 20,),
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -40,6 +40,16 @@ class RegisteredEventsPage extends StatelessWidget {
               child: RegisteredEventsLoader(
                 onLoading: Container(),
                 onLoaded: (BuildContext context, List<String> eventIds) {
+                  if (eventIds == null || eventIds.length == 0) {
+                    return Center(
+                      child: Text(
+                        Strings.noRegEvents,
+                        style: Theme.of(context).textTheme.body2.copyWith(
+                          color: Colors.white
+                        ),
+                      ),
+                    );
+                  }
                   return ListView.separated(
                     shrinkWrap: true,
                     physics: BouncingScrollPhysics(),
@@ -51,6 +61,7 @@ class RegisteredEventsPage extends StatelessWidget {
                         child: ListCard(
                           event: event,
                           day: 0,
+                          useHero: false,
                         ),
                       );
                     },

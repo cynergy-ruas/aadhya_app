@@ -21,7 +21,10 @@ class DetailPage extends StatelessWidget {
   /// The width of the page header thumbnail
   final double thumbnailWidth = 80;
 
-  DetailPage({@required this.event, @required this.day});
+  /// Defines whether to use a hero widget or not
+  final bool useHero;
+
+  DetailPage({@required this.event, @required this.day, this.useHero = true});
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +143,7 @@ class DetailPage extends StatelessWidget {
               height: thumbnailWidth,
             ),
 
-            heroTag: event,
+            heroTag: (useHero) ? event : null,
 
             thumbnailHeight: thumbnailHeight,
 
