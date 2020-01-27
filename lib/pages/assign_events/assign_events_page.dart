@@ -20,18 +20,12 @@ class AssignEvents extends StatefulWidget {
 
 class _AssignEventsState extends State<AssignEvents> {
 
-  /// The event load bloc
-  EventLoadBloc _bloc;
-
   /// The key for the form
   GlobalKey<AssignEventsFormState> _formKey;
 
   @override
   void initState() {
     super.initState();
-
-    // initializing the bloc
-    _bloc = EventLoadBloc();
 
     // initializing the form key
     _formKey = GlobalKey<AssignEventsFormState>();
@@ -70,7 +64,6 @@ class _AssignEventsState extends State<AssignEvents> {
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
                         child: EventLoader(
                           beginLoad: true,
-                          bloc: _bloc,
                           onLoading: Center(child: LoadingWidget(),),
                           onLoaded: (List<Event> events) => 
                             AssignEventsForm(
@@ -121,13 +114,5 @@ class _AssignEventsState extends State<AssignEvents> {
           },
         )
     );
-  }
-  
-  @override
-  void dispose() {
-    super.dispose();
-
-    // closing the bloc
-    _bloc.close();
   }
 }

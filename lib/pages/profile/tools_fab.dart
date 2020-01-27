@@ -1,6 +1,7 @@
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:unicorndial/unicorndial.dart';
 
 class ToolsFAB extends StatelessWidget {
@@ -8,11 +9,13 @@ class ToolsFAB extends StatelessWidget {
   final void Function() onNotificationCreatorButtonPressed;
   final void Function() onClearanceModifierButtonPressed;
   final void Function() onAssignEventsButtonPressed;
+  final void Function() onQrScanButtonPressed;
 
   ToolsFAB({
     @required this.onNotificationCreatorButtonPressed,
     @required this.onClearanceModifierButtonPressed,
     @required this.onAssignEventsButtonPressed,
+    @required this.onQrScanButtonPressed,
   });
 
   @override
@@ -29,6 +32,16 @@ class ToolsFAB extends StatelessWidget {
             child: Icon(FontAwesomeIcons.bell),
             mini: true,
             onPressed: onNotificationCreatorButtonPressed,
+          ),
+        ),
+
+        // button for qr scanner
+        UnicornButton(
+          currentButton: FloatingActionButton(
+            heroTag: "scan_qr",
+            child: Icon(MdiIcons.qrcodeScan),
+            mini: true,
+            onPressed: onQrScanButtonPressed,
           ),
         )
       ]

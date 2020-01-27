@@ -1,5 +1,8 @@
 import 'package:dwimay/pages/assign_events/assign_events_page.dart';
 import 'package:dwimay/pages/clearance_modifier/clearance_modifier_page.dart';
+import 'package:dwimay/pages/profile/user_fab.dart';
+import 'package:dwimay/pages/qr_scan/qr_scan_page.dart';
+import 'package:dwimay/pages/registered_events/registered_events_page.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 import 'profile_contents.dart';
@@ -29,36 +32,59 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
 
+    Widget fab;
+
+    // show the tools FAB if the user has the appropriate clearance level and if 
+    // the current page being shown is the [ProfileContents] page
+    if (User.instance.getClearanceLevel() > 0 && _body.runtimeType == ProfileContents) {
+      fab = ToolsFAB(
+        onNotificationCreatorButtonPressed: () {
+          setState(() {
+            _body = NotificationPublisher(
+              onBackPressed: toProfileContents
+            );
+          });
+        },
+        onClearanceModifierButtonPressed: () {
+          setState(() {
+            _body = ClearanceModifier(
+              onBackPress: toProfileContents,
+            );
+          });
+        },
+        onAssignEventsButtonPressed: () {
+          setState(() {
+            _body = AssignEvents(
+              onBackPress: toProfileContents,
+            );
+          });
+        },
+        onQrScanButtonPressed: () {
+          setState(() {
+            _body = QrScanPage(
+              onBackPressed: toProfileContents,
+            );
+          });
+        },
+      );
+    }
+
+    // showing FAB for user
+    else if (User.instance.getClearanceLevel() == 0 && _body.runtimeType == ProfileContents) {
+      fab = UserFAB(
+        onPressed: () {
+          setState(() {
+            _body = RegisteredEventsPage(
+              onBackPressed: toProfileContents,
+            );
+          });
+        },
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.transparent,
-
-      // show the FAB if the user has the appropriate clearance level and if 
-      // the current page being shown is the [ProfileContents] page
-      floatingActionButton: (User.instance.getClearanceLevel() > 0 && _body.runtimeType == ProfileContents)
-        ? ToolsFAB(
-          onNotificationCreatorButtonPressed: () {
-            setState(() {
-              _body = NotificationPublisher(
-                onBackPressed: toProfileContents
-              );
-            });
-          },
-          onClearanceModifierButtonPressed: () {
-            setState(() {
-              _body = ClearanceModifier(
-                onBackPress: toProfileContents,
-              );
-            });
-          },
-          onAssignEventsButtonPressed: () {
-            setState(() {
-              _body = AssignEvents(
-                onBackPress: toProfileContents,
-              );
-            });
-          },
-        )
-        : null,
+      floatingActionButton: fab,
 
       // the body. Enables a user with high clearance level to go to 
       // the appropriate pages using a slide transition

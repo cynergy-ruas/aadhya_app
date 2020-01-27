@@ -1,5 +1,6 @@
 import 'package:dwimay/strings.dart';
 import 'package:dwimay/widgets/build_button.dart';
+import 'package:dwimay/widgets/loading_widget.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -8,168 +9,181 @@ import 'dart:convert';
 /// The details of the user and the QR code for entering will
 /// be present after logging in.
 /// if the user is not a participant then a qr code will be present
-/// if the users clearence level is higher than 3,
-/// then the user can edit the event data
 class ProfileContents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // get the email id of the logged in user
-    final _email = User.instance.getEmailID();
+    final String email = User.instance.getEmailID();
+    
     // get the clearance level of the logged in user
-    final level = User.instance.getClearanceLevel();
+    final int level = User.instance.getClearanceLevel();
 
-    /// function to encrypt a [string]
-    encrypt(message) {
-      var bytes = utf8.encode(message);
-      var base64Str = base64.encode(bytes);
-      return base64Str;
+    // returning user UI if level 0 user
+    if (level == 0) {
+      return Center(
+        child: _UserContents(
+          email: email,
+        ),
+      );
     }
 
-    /// function to decrypt the [string]
-    /// encoded by [encrypt]
-    decrypt(String base64Str) {
-      var len = base64Str.length;
-      var output =
-          (len % 4 == 0) ? utf8.decode(base64Decode(base64Str)) : "INVALID";
-      return output;
-    }
-
-    // building the Qr code scanner button
-    final _buildQrReader = BuildButton(
-      data: Strings.scanButton,
-      onPressed: () async {
-        // the output of the scan is stored in res
-        // if  scan is successful then
-        // the string in the Qr code is stored
-        // or else the string about the error is stored
-        String res = await QrScanner.scan();
-
-        // if the scan is successful then we decrypt the code
-        // the decrypted code is stored in result
-        // if the scan doesnt complete then
-        // decrypt returns "INVALID"
-        String result = decrypt(res);
-
-        // TODO: check with registered events and show result
-        print(result);
-      },
-      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 35),
+    // returning member UI for level 1+ user
+    return _MemberContents(
+      email: email,
     );
+  }
+}
 
-    //building the Qr code
-    final _qrCode = QrImage(
-      // the data of the Qr code
-      data: encrypt(_email),
+/// The contents of the profile page for a level 0 user
+class _UserContents extends StatelessWidget {
 
-      // the size
-      size: 280,
+  /// The email id of the level 0 user
+  final String email;
 
-      // the background color
-      backgroundColor: Colors.white,
+  _UserContents({@required this.email});
 
-      // TODO: Use fest logo
-      embeddedImage: AssetImage(
-        "assets/images/talk.png",
-      ),
+  @override
+  Widget build(BuildContext context) {
 
-      // the style of the embedded image
-      embeddedImageStyle: QrEmbeddedImageStyle(
-        size: Size.square(60),
-      ),
-    );
+    // size of the QR code
+    final double qrCodeSize = MediaQuery.of(context).size.width * 0.7;
 
-    // build the logout button
-    final _logoutButton = BuildButton(
-      data: Strings.logoutButton,
-      onPressed: () {
-        BackendProvider.of<AuthBloc>(context).logout();
-      },
+    return RegisteredEventsLoader(
+      onLoading: LoadingWidget(),
+      onLoaded: (BuildContext context, List<String> regEventIds) =>
+        SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 30.0, left: 20.0, right: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
 
-      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 35),
-    );
+              // Title of profile page, along with the logout button
+              _TitleAndLogout(email: email,),
 
-    // if user is participant then build a Qr Code
-    // else build a Qr scanner
-    final pass = (level == 0) ? _qrCode : _buildQrReader;
+              // The title for the QR code
+              Text(
+                Strings.qrTitle,
+                style: Theme.of(context).textTheme.body1.copyWith(
+                  color: Colors.white,
+                ),
+              ),
 
-    return Center(
-      child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        padding: const EdgeInsets.only(bottom: 30.0, left: 20.0, right: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            // Title of profile page. Wrapping with [Row] to center it
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Welcome " + _email.substring(0, _email.indexOf('@')),
-                  style: Theme.of(context).textTheme.title.copyWith(
-                    color: Colors.white,
+              // gap
+              SizedBox(height: 30),
+
+              // the QR code
+              Flexible(
+                child: Center(
+                  child: QrImage(
+                    // the data being represented as a QR code
+                    data: _encrypt(
+                      email.substring(0, email.indexOf("@")) + "," + (regEventIds?.join(",") ?? "")
+                    ),
+
+                    // the size
+                    size: qrCodeSize,
+
+                    // the background color
+                    backgroundColor: Colors.white,
+
+                    // TODO: Use fest logo
+                    embeddedImage: AssetImage(
+                      "assets/images/talk.png",
+                    ),
+
+                    // the style of the embedded image
+                    embeddedImageStyle: QrEmbeddedImageStyle(
+                      size: Size.square(qrCodeSize * 0.2),
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
 
-            // gap
-            SizedBox(height: 30),
-          ]
-          ..addAll(
-            (level == 0)
-            // widgets for normal user
-            ? [
-                // the title for the qr code
-                Text(
-                  Strings.qrTitle,
-                  style: Theme.of(context).textTheme.body1.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-
-                // gap
-                SizedBox(height: 15),
-
-                // the qr code
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[pass],
-                ),
-
-                // gap
-                SizedBox(height: 25),
-
-                // the title for registered events
-                Text(
-                  Strings.registeredEvents,
-                  style: Theme.of(context).textTheme.body1.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-
-                // TODO: add registered events UI
-
-                // gap
-                SizedBox(height: 40,),
-
-                // logout button
-                Center(child: _logoutButton,)
-              ]
-            // UI for coordinators and above
-            : [ 
-                Flexible(child: Center(child: pass)),
-
-                // gap
-                SizedBox(height: 20,),
-
-                // the logout button
-                Flexible(child: Center(child: _logoutButton))
-              ]
+              // gap
+              SizedBox(height: 55,)
+            ],
           ),
         ),
+    );
+  }
+
+  /// function to encrypt a [string]
+  String _encrypt(message) {
+    var bytes = utf8.encode(message);
+    var base64Str = base64.encode(bytes);
+    return base64Str;
+  }
+}
+
+
+/// The contents of the profile page for a level 1+ user
+class _MemberContents extends StatelessWidget {
+
+  /// The email id of the user
+  final String email;
+
+  _MemberContents({@required this.email});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 30.0, left: 20.0, right: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          // Title of profile page, along with the logout button
+          _TitleAndLogout(email: email,),
+
+          // gap
+          SizedBox(height: 5,),
+
+          // something
+          Expanded(
+            child: Container(),
+          ),
+
+          // gap
+          SizedBox(height: 20,),
+        ],
       ),
+    );
+  }
+}
+
+/// The title and the logout button
+class _TitleAndLogout extends StatelessWidget {
+
+  /// The email id of the user
+  final String email;
+
+  _TitleAndLogout({@required this.email});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Text(
+            "Welcome " + email.substring(0, email.indexOf('@')) + "!",
+            style: Theme.of(context).textTheme.title.copyWith(
+              color: Colors.white,
+            ),
+          ),
+        ),
+
+        // logout button
+        BuildButton(
+          data: Strings.logoutButton,
+          onPressed: () {
+            BackendProvider.of<AuthBloc>(context).logout();
+          },
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        ),
+      ],
     );
   }
 }

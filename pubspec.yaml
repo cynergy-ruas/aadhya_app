@@ -22,6 +22,7 @@ dependencies:
   
   unicorndial: ^1.1.5
   font_awesome_flutter: ^8.5.0
+  material_design_icons_flutter: 3.4.4795
   sliding_up_panel: ^0.3.6
   flutter_typeahead: ^1.7.0
   expandable: ^4.0.2

@@ -26,22 +26,9 @@ class NotificationPublisher extends StatefulWidget {
 
 class _NotificationPublisherState extends State<NotificationPublisher> {
 
-  /// The event loading bloc
-  EventLoadBloc _bloc;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // initializing the bloc
-    _bloc = EventLoadBloc();
-  }
-
   @override
   Widget build(BuildContext context) {
     return EventLoader(
-      bloc: _bloc,
-
       beginLoad: true,
 
       // widget to display when loading
@@ -102,12 +89,6 @@ class _NotificationPublisherState extends State<NotificationPublisher> {
         )
       )
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _bloc.close();
   }
 }
 

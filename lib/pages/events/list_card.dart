@@ -31,6 +31,10 @@ class _ListCardState extends State<ListCard> {
 
   @override
   Widget build(BuildContext context) {
+
+    // returning empty container if [event] is null
+    if (widget.event == null)
+      return Container();
     
     // calculating the index of the [datetimes] list 
     // which contain the correct date and time given 

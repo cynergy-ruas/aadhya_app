@@ -56,8 +56,8 @@ class AssignEventsFormState extends State<AssignEventsForm> {
         // if the user is a level 2 user, only return the events
         // of that user's department
         if (User.instance.getClearanceLevel() == 2 && 
-            (User.instance.claims["eventID"] == event.department || 
-            (event.department == Department.All.id && User.instance.claims["eventID"] != null)))
+            (User.instance.getEventId() == event.department || 
+            (event.department == Department.All.id && User.instance.getEventId() != null)))
           return true;
 
         // else return false

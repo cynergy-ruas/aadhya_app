@@ -74,7 +74,22 @@ class Strings {
   static const passwordResetPageMessage = "Please enter the email id associated with your account. A password reset email will be sent to that email id.";
 
   /// The title of the qr code
-  static const qrTitle = "Your Pass";
+  static const qrTitle = "Your pass for the events:";
+
+  /// Title of the QR scan page
+  static const qrScanPageTitle = "Scan QR code";
+
+  /// Success message after scanning qr code
+  static const qrScanSuccess = "shall pass!";
+
+  /// Failure message after scanning qr code
+  static const qrScanFail = "shall not pass!";
+
+  /// The title of the field in the Qr scan form, to select the event to scan for
+  static const qrScanFormEventFieldTitle = "Select the event to scan for";
+
+  /// The message to display when no event is selected in the QR scan form
+  static const noEventSelected = "Please select an event.";
 
   /// The title for the registered events
   static const registeredEvents = "Your Events";
