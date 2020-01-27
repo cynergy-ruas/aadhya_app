@@ -64,6 +64,9 @@ class Strings {
   /// Wrong password error message
   static const wrongPasswordMessage = "Oops! Wrong password. Please Try again.";
 
+  /// User not found error
+  static const userNotFoundMessage = "Looks like you haven't registered yet. Please try registering first";
+
   /// Unknown error message
   static const unknownError = "Error occurred. Please try again";
 

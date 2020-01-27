@@ -66,19 +66,20 @@ class _NotificationPublisherState extends State<NotificationPublisher> {
   }
 
   /// Called when the form is saved
-  void onSaved(String eventid, String title, String subtitle, String description) =>
-    _showDialog(eventid, title, subtitle, description);
+  void onSaved(String eventid, String departmentid, String title, String subtitle, String description) =>
+    _showDialog(eventid, departmentid, title, subtitle, description);
   
 
   /// Shows the confirmation dialog. Upon confirmation, the notification is published.
-  void _showDialog(String topic, String title, String subtitle, String description) {
+  void _showDialog(String eventid, String departmentid, String title, String subtitle, String description) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => ConfirmationDialog(
         title: Strings.notificationPublishTitle,
         future: () => CloudFunctions.instance.publishNotification(
-          topic: topic,
+          eventId: eventid,
+          departmentid: departmentid,
           announcement: Announcement.fromRaw(
             title: title,
             body: subtitle,

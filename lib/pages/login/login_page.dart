@@ -81,6 +81,8 @@ class _LoginPageState extends State<LoginPage> {
                     message = Strings.invalidEmailMessage;
                   else if (err.code == "ERROR_WRONG_PASSWORD")
                     message = Strings.wrongPasswordMessage;
+                  else if (err.code == "ERROR_USER_NOT_FOUND")
+                    message = Strings.userNotFoundMessage;
                   else 
                     message = Strings.unknownError;
                 } catch (e) {

@@ -8,7 +8,7 @@ class PublishingForm extends StatefulWidget {
 
   final List<Event> events;
 
-  final void Function(String, String, String, String) onSaved;
+  final void Function(String, String, String, String, String) onSaved;
 
   PublishingForm({Key key, @required this.events, @required this.onSaved}) : super(key: key);
 
@@ -31,7 +31,7 @@ class PublishingFormState extends State<PublishingForm> {
   GlobalKey<FormState> formKey;
 
   /// The event to send notifications for.
-  String _eventid;
+  Event _event;
 
   /// The list of events, to store a separate copy
   List<Event> events;
@@ -64,7 +64,7 @@ class PublishingFormState extends State<PublishingForm> {
     // if the user is a coordinator, setting [_eventid] to the event
     // the coordinator is managing
     if (User.instance.getClearanceLevel() == 1)
-      _eventid = User.instance.claims["eventID"];
+      _event = events.firstWhere((event) => event.id == User.instance.claims["eventID"]);
   }
 
   @override
@@ -79,7 +79,7 @@ class PublishingFormState extends State<PublishingForm> {
           ? []
           : [
               Text(
-                "Publishing notification for: " + events.firstWhere((event) => event.id == _eventid).name,
+                "Publishing notification for: " + _event.name,
                 style: Theme.of(context).textTheme.subhead.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -188,7 +188,7 @@ class PublishingFormState extends State<PublishingForm> {
 
               EventSuggestionField(
                 events: events,
-                onSaved: (String id) => _eventid = id,
+                onSaved: (Event event) => _event = event,
               ),
 
               // gap
@@ -206,7 +206,7 @@ class PublishingFormState extends State<PublishingForm> {
   void saveForm() {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-      widget.onSaved(_eventid, _title, _subtitle, _description);
+      widget.onSaved(_event.id, _event.department, _title, _subtitle, _description);
       formKey.currentState.reset();
     }
   }
@@ -219,7 +219,7 @@ class EventSuggestionField extends StatefulWidget {
   final List<Event> events;
 
   /// Function to call when the form is saved
-  final void Function(String) onSaved;
+  final void Function(Event) onSaved;
 
   EventSuggestionField({@required this.events, @required this.onSaved});
 
@@ -323,7 +323,7 @@ class _EventSuggestionFieldState extends State<EventSuggestionField> {
 
       // defines what to do when the form is saved
       onSaved: (String value) =>
-        widget.onSaved(_events.firstWhere((event) => event.name == value).id),
+        widget.onSaved(_events.firstWhere((event) => event.name == value)),
 
     );
   }
