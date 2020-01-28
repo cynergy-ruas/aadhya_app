@@ -20,61 +20,64 @@ class ToolsFAB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UnicornDialer(
-      backgroundColor: Colors.transparent,
-      parentButton: Icon(FontAwesomeIcons.tools),
-      childButtons: <UnicornButton> [
-        
-        // button for notification creator
-        UnicornButton(
-          currentButton: FloatingActionButton(
-            heroTag: "unicorn_notification_creator",
-            child: Icon(FontAwesomeIcons.bell),
-            mini: true,
-            onPressed: onNotificationCreatorButtonPressed,
-          ),
-        ),
-
-        // button for qr scanner
-        UnicornButton(
-          currentButton: FloatingActionButton(
-            heroTag: "scan_qr",
-            child: Icon(MdiIcons.qrcodeScan),
-            mini: true,
-            onPressed: onQrScanButtonPressed,
-          ),
-        )
-      ]
-      ..addAll(
-        (User.instance.getClearanceLevel() > 1)
-        ? [
-            // button for clearance modifier
-            UnicornButton(
-              currentButton: FloatingActionButton(
-                heroTag: "unicorn_clearance_modifier",
-                child: Icon(
-                  FontAwesomeIcons.userCog,
-                  size: 20,
-                ),
-                mini: true,
-                onPressed: onClearanceModifierButtonPressed,
-              ),
+    return SizedBox(
+      height: 300,
+      child: UnicornDialer(
+        backgroundColor: Colors.transparent,
+        parentButton: Icon(FontAwesomeIcons.tools),
+        childButtons: <UnicornButton> [
+          
+          // button for notification creator
+          UnicornButton(
+            currentButton: FloatingActionButton(
+              heroTag: "unicorn_notification_creator",
+              child: Icon(FontAwesomeIcons.bell),
+              mini: true,
+              onPressed: onNotificationCreatorButtonPressed,
             ),
+          ),
 
-            // button for assigning events to coordinators / volunteers
-            UnicornButton(
-              currentButton: FloatingActionButton(
-                heroTag: "unicorn_assign_events",
-                child: Icon(
-                  FontAwesomeIcons.userTag,
-                  size: 20
-                ),
-                mini: true,
-                onPressed: onAssignEventsButtonPressed,
-              ),
-            )     
+          // button for qr scanner
+          UnicornButton(
+            currentButton: FloatingActionButton(
+              heroTag: "scan_qr",
+              child: Icon(MdiIcons.qrcodeScan),
+              mini: true,
+              onPressed: onQrScanButtonPressed,
+            ),
+          )
         ]
-        : []
+        ..addAll(
+          (User.instance.getClearanceLevel() > 1)
+          ? [
+              // button for clearance modifier
+              UnicornButton(
+                currentButton: FloatingActionButton(
+                  heroTag: "unicorn_clearance_modifier",
+                  child: Icon(
+                    FontAwesomeIcons.userCog,
+                    size: 20,
+                  ),
+                  mini: true,
+                  onPressed: onClearanceModifierButtonPressed,
+                ),
+              ),
+
+              // button for assigning events to coordinators / volunteers
+              UnicornButton(
+                currentButton: FloatingActionButton(
+                  heroTag: "unicorn_assign_events",
+                  child: Icon(
+                    FontAwesomeIcons.userTag,
+                    size: 20
+                  ),
+                  mini: true,
+                  onPressed: onAssignEventsButtonPressed,
+                ),
+              )     
+          ]
+          : []
+        ),
       ),
     );
   }

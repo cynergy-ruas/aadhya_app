@@ -4,6 +4,7 @@ import 'package:dwimay/widgets/multiline_subtitle.dart';
 import 'package:dwimay/widgets/page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 /// The page displaying the details of an event
 class DetailPage extends StatelessWidget {
@@ -33,7 +34,7 @@ class DetailPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          // expan to fit the device
+          // expand to fit the device
           constraints: BoxConstraints.expand(),
           // background color
           color: Color(0xFF3E3963),
@@ -75,7 +76,7 @@ class DetailPage extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: <Color>[
-            // the transperent color
+            // the transparent color
             Color(0x003E3963),
             // the main color
             Color(0xFF3E3963),
@@ -168,10 +169,12 @@ class DetailPage extends StatelessWidget {
                 separator(),
 
                 // event description
-                Text(
-                  event.description,
-                  style: Style.commonTextStyle,
-                ),
+                MarkdownBody(
+                  data: event.description,
+                  styleSheet: MarkdownStyleSheet(
+                    p: Style.commonTextStyle,
+                  ),
+                )
               ],
             ),
           )

@@ -26,6 +26,7 @@ dependencies:
   sliding_up_panel: ^0.3.6
   flutter_typeahead: ^1.7.0
   expandable: ^4.0.2
+  flutter_markdown: ^0.3.2
   dwimay_backend:
     git: https://github.com/cynergy-ruas/dwimay_app_backend.git
 

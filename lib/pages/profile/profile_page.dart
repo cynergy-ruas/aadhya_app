@@ -82,26 +82,33 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      floatingActionButton: fab,
+    else {
+      fab = Container(width: 0, height: 0,);
+    }
 
-      // the body. Enables a user with high clearance level to go to 
-      // the appropriate pages using a slide transition
-      body: AnimatedSwitcher(
-        duration: Duration(milliseconds: 500,),
-        child: _body,
-        switchInCurve: Curves.easeInOutQuart,
-        switchOutCurve: Curves.easeInOutQuart,
-        transitionBuilder: (Widget child, Animation<double> anim) =>
-          SlideTransition(
-            position: Tween<Offset>(
-              begin: (child.runtimeType == ProfileContents) ? Offset(-1.0, 0) : Offset(1.0, 0),
-              end: Offset(0, 0)
-            ).animate(anim),
-            child: child,
-          ),
-      )
+    return Stack(
+      children: <Widget>[
+        AnimatedSwitcher(
+          duration: Duration(milliseconds: 500,),
+          child: _body,
+          switchInCurve: Curves.easeInOutQuart,
+          switchOutCurve: Curves.easeInOutQuart,
+          transitionBuilder: (Widget child, Animation<double> anim) =>
+            SlideTransition(
+              position: Tween<Offset>(
+                begin: (child.runtimeType == ProfileContents) ? Offset(-1.0, 0) : Offset(1.0, 0),
+                end: Offset(0, 0)
+              ).animate(anim),
+              child: child,
+            ),
+        ),
+
+        Positioned(
+          right: 20,
+          bottom: 20,
+          child: fab,
+        ),
+      ],
     );
   }
 
