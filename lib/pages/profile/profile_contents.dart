@@ -5,6 +5,8 @@ import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
+import 'package:flutter_svg/flutter_svg.dart';
+
 /// The profile page. The user logs in using the login page.
 /// The details of the user and the QR code for entering will
 /// be present after logging in.
@@ -142,27 +144,32 @@ class _MemberContents extends StatelessWidget {
 
         String firstLine;
         String secondLine;
-        String assetPath;
-        double assetWidth = 90;
-        double assetHeight = 90;
+        Widget thumbnail;
 
         if (User.instance.getClearanceLevel() > 2) {
           firstLine = "You are managing\n";
           secondLine = Strings.festName;
-          assetPath = "assets/images/fest_logo.png";
-          assetHeight = 150;
-          assetWidth = 200;
+          thumbnail = SvgPicture.asset(
+            "assets/svg/fest_logo.svg",
+            width: 250
+          );
         }
 
         else if (User.instance.getClearanceLevel() == 2) {
           firstLine = "You are managing the events for\n";
           secondLine = DepartmentExtras.getNameFromId(User.instance.getEventId());
-          assetPath = "assets/images/workshop.png"; // TODO: Use deparment image
+          thumbnail = Image.asset(
+            "assets/images/competition.png",
+            width: 90,
+          );// TODO: Use deparment image
         } 
         else {
           firstLine = "You are managing the event\n";
           secondLine = event.name;
-          assetPath = "assets/images/${event.type}.png";
+          thumbnail = Image.asset(
+            "assets/images/${event.type}.png",
+            width: 90,
+          );
         }
 
         return Padding(
@@ -182,11 +189,7 @@ class _MemberContents extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       // thumbnail
-                      Image.asset(
-                        assetPath,
-                        width: assetWidth,
-                        height: assetHeight,
-                      ),
+                      thumbnail,
 
                       // gap
                       SizedBox(height: 20,),

@@ -2,6 +2,7 @@ import 'package:dwimay/pages/faq/faq_page.dart';
 import 'package:dwimay/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 /// The about page. Contains the introduction to the fest.
@@ -32,8 +33,8 @@ class _AboutPageState extends State<AboutPage> {
               // the title and FAQ button
               Row(
                 children: <Widget>[
-                  Image.asset(
-                    "assets/images/fest_logo.png",
+                  SvgPicture.asset(
+                    "assets/svg/fest_logo.svg",
                     width: 150,
                   ),
 

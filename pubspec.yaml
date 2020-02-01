@@ -27,6 +27,7 @@ dependencies:
   flutter_typeahead: ^1.7.0
   expandable: ^4.0.2
   flutter_markdown: ^0.3.2
+  flutter_svg: ^0.17.1
   dwimay_backend:
     git: https://github.com/cynergy-ruas/dwimay_app_backend.git
 
@@ -53,7 +54,7 @@ flutter:
     - assets/images/talk.png
     - assets/images/workshop.png
     - assets/images/faq.png
-    - assets/images/fest_logo.png
+    - assets/svg/fest_logo.svg
   fonts:
     - family: glacial-indifference
       fonts:
