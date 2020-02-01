@@ -164,7 +164,7 @@ class Style {
   static final buttonTextStyle = TextStyle(
     color: Colors.white,
     letterSpacing: 1.5,
-    fontSize: 18.0,
+    fontSize: 16.0,
     fontWeight: FontWeight.bold,
     fontFamily: 'OpenSans',
   );

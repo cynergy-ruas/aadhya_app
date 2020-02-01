@@ -27,7 +27,7 @@ class BuildButton extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
       ),
-      color: Color(0xff2F3857),
+      color: Color(0xff24213B),
       child: Text(
         data,
         style: Style.buttonTextStyle,
