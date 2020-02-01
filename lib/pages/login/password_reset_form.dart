@@ -42,9 +42,7 @@ class PasswordResetFormState extends State<PasswordResetForm> {
           // the title of the field
           Text(
             Strings.passwordResetPageMessage,
-            style: Theme.of(context).textTheme.subhead.copyWith(
-              color: Colors.white
-            ),
+            style: Theme.of(context).textTheme.subhead,
           ),
 
           // gap
@@ -53,12 +51,10 @@ class PasswordResetFormState extends State<PasswordResetForm> {
           // The text field
           TextFormField(
             keyboardType: TextInputType.emailAddress,
-            style: Theme.of(context).textTheme.subhead.copyWith(
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.subhead,
             decoration: TextFormFieldPrefix(
               hintText: Strings.formEmailHint,
-              icon: Icon(Icons.person, color: Colors.white,)
+              icon: Icon(Icons.person,)
             ),
             validator: (String value) {
               if (value.length == 0)

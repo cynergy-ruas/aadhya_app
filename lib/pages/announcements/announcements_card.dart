@@ -112,7 +112,7 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
         alignment: Alignment.centerRight,
         color: Colors.red,
         padding: EdgeInsets.only(right: 20),
-        child: Icon(Icons.delete, color: Colors.white,),
+        child: Icon(Icons.delete),
       ),
 
       // action to perform when item is dismissed

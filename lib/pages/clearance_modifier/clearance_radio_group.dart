@@ -98,9 +98,7 @@ class _ClearanceRadioFormFieldState extends State<ClearanceRadioFormField> {
         // Text describing the button
         Text(
           "Level " + level.toString(),
-            style: Theme.of(context).textTheme.subhead.copyWith(
-            color: Colors.white
-          ),
+            style: Theme.of(context).textTheme.subhead,
         ),
       ];
 

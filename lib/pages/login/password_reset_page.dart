@@ -30,9 +30,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
           // the title
           Text(
             Strings.passwordResetPageTitle,
-            style: Theme.of(context).textTheme.title.copyWith(
-              color: Colors.white
-            ),
+            style: Theme.of(context).textTheme.title,
           ),
 
           // gap

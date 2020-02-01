@@ -20,6 +20,9 @@ class PageHeader extends StatelessWidget {
 
   /// the width of the thumbnail
   final double thumbnailWidth;
+
+  /// The height of the card
+  final double height;
   
   PageHeader({
     @required this.title,
@@ -28,19 +31,20 @@ class PageHeader extends StatelessWidget {
     this.heroTag,
     this.thumbnailHeight = 80,
     this.thumbnailWidth = 80,
+    this.height = 170
   });
 
   @override
   Widget build(BuildContext context) {
 
     return SizedBox(
-      height: 170,
+      height: height,
       child: CustomMultiChildLayout(
         delegate: RelativeDelegate(objectCenter: FractionalOffset(0.5, 0)),
         children: <Widget>[
           LayoutId(
             id: Slot.bottom,
-            child: _bottomContent(),
+            child: _bottomContent(context),
           ),
           LayoutId(
             id: Slot.top,
@@ -63,10 +67,10 @@ class PageHeader extends StatelessWidget {
 
   /// The content on the bottom. Consists of the title, venue
   /// and data
-  Widget _bottomContent() => 
+  Widget _bottomContent(BuildContext context) => 
     Card(
       elevation: 10,
-      color: Color(0xFF434273),
+      color: Theme.of(context).backgroundColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -79,7 +83,7 @@ class PageHeader extends StatelessWidget {
           ),
 
           // gap
-          SizedBox(height: 20,),
+          SizedBox(height: 10,),
         ]
         // adding separator if subtitle is present
         ..addAll(

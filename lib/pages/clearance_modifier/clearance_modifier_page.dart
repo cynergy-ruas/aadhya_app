@@ -40,9 +40,7 @@ class ClearanceModifier extends StatelessWidget {
                     // title
                     Text(
                       Strings.clearancePageTitle,
-                      style: Theme.of(context).textTheme.title.copyWith(
-                        color: Colors.white
-                      ),
+                      style: Theme.of(context).textTheme.title,
                     ),
 
                     // the forms

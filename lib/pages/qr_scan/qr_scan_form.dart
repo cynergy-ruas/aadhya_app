@@ -57,9 +57,7 @@ class _QrScanFormState extends State<QrScanForm> {
       children: <Widget>[
         Text(
           Strings.qrScanFormEventFieldTitle + ":",
-          style: Theme.of(context).textTheme.subhead.copyWith(
-            color: Colors.white
-          ),
+          style: Theme.of(context).textTheme.subhead,
         ),
 
         // gap
@@ -72,9 +70,7 @@ class _QrScanFormState extends State<QrScanForm> {
             decoration: InputDecoration(
               hintText: Strings.eventsFieldHint,
             ),
-            style: Theme.of(context).textTheme.body1.copyWith(
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.body1,
             controller: _eventsController
           ),
           

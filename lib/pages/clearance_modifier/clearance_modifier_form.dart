@@ -46,9 +46,7 @@ class ClearanceModifierFormState extends State<ClearanceModifierForm> {
             // title of the field
             Text(
               Strings.formEmailTitle,
-              style: Theme.of(context).textTheme.subhead.copyWith(
-                color: Colors.white
-              ),
+              style: Theme.of(context).textTheme.subhead,
             ),
 
             // gap
@@ -56,7 +54,7 @@ class ClearanceModifierFormState extends State<ClearanceModifierForm> {
 
             // Text field for email id
             TextFormField(
-              style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
+              style: Theme.of(context).textTheme.body1,
               decoration: InputDecoration(hintText: Strings.formEmailHint),
               validator: (String value) {
                 if (value.length == 0)
@@ -72,9 +70,7 @@ class ClearanceModifierFormState extends State<ClearanceModifierForm> {
             // title of the "choose clearance level" section
             Text(
               Strings.clearanceFormLevelTitle,
-              style: Theme.of(context).textTheme.subhead.copyWith(
-                color: Colors.white
-              ),
+              style: Theme.of(context).textTheme.subhead,
             ),
 
             // gap

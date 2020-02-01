@@ -21,11 +21,9 @@ class NotificationCard extends StatelessWidget {
             contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             title: Text(
               message['notification']['title'],
-              style: TextStyle(color: Colors.white),
             ),
             subtitle: Text(
               message['notification']['body'],
-              style: TextStyle(color: Colors.white),
             ),
           ),
         ),

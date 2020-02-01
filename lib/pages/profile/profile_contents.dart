@@ -65,9 +65,7 @@ class _UserContents extends StatelessWidget {
               // The title for the QR code
               Text(
                 Strings.qrTitle,
-                style: Theme.of(context).textTheme.body1.copyWith(
-                  color: Colors.white,
-                ),
+                style: Theme.of(context).textTheme.body1,
               ),
 
               // gap
@@ -195,14 +193,12 @@ class _MemberContents extends StatelessWidget {
                         text: TextSpan(
                           text: firstLine,
                           style: Theme.of(context).textTheme.subtitle.copyWith(
-                            color: Colors.white,
                             fontWeight: FontWeight.normal,             
                           ),
                           children: <TextSpan>[
                             TextSpan(
                               text: secondLine,
                               style:  Theme.of(context).textTheme.headline.copyWith(
-                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
                                 height: 1.5
@@ -241,9 +237,7 @@ class _TitleAndLogout extends StatelessWidget {
         Expanded(
           child: Text(
             "Welcome " + email.substring(0, email.indexOf('@')) + "!",
-            style: Theme.of(context).textTheme.title.copyWith(
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.title,
           ),
         ),
 

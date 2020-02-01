@@ -26,9 +26,7 @@ class RegisteredEventsPage extends StatelessWidget {
               padding: const EdgeInsets.only(left: 20.0, right: 20.0),
               child: Text(
                 Strings.registeredEvents,
-                style: Theme.of(context).textTheme.title.copyWith(
-                  color: Colors.white,
-                ),
+                style: Theme.of(context).textTheme.title,
               ),
             ),
 
@@ -44,9 +42,7 @@ class RegisteredEventsPage extends StatelessWidget {
                     return Center(
                       child: Text(
                         Strings.noRegEvents,
-                        style: Theme.of(context).textTheme.body2.copyWith(
-                          color: Colors.white
-                        ),
+                        style: Theme.of(context).textTheme.body2,
                       ),
                     );
                   }

@@ -45,9 +45,7 @@ class _LoginFormState extends State<LoginForm> {
           children: <Widget>[
             Text(
               'Sign In',
-              style: Theme.of(context).textTheme.title.copyWith(
-                    color: Colors.white,
-                  ),
+              style: Theme.of(context).textTheme.title,
             ),
 
             // gap
@@ -177,14 +175,12 @@ class _LoginFormState extends State<LoginForm> {
     return Container(
       decoration: TextFormFieldShadow(),
       child: TextFormField(
-        style: Theme.of(context).textTheme.subhead.copyWith(
-          color: Colors.white,
-        ),
+        style: Theme.of(context).textTheme.subhead,
         textAlign: TextAlign.left,
         keyboardType: TextInputType.emailAddress,
         decoration: TextFormFieldPrefix(
           hintText: Strings.formEmailHint,
-          icon: Icon(Icons.person, color: Colors.white,)
+          icon: Icon(Icons.person,)
         ),
         validator: (String value) {
           if (value.length == 0)
@@ -202,12 +198,10 @@ class _LoginFormState extends State<LoginForm> {
       decoration: TextFormFieldShadow(),
       child: TextFormField(
         obscureText: true,
-        style: Theme.of(context).textTheme.subhead.copyWith(
-          color: Colors.white,
-        ),
+        style: Theme.of(context).textTheme.subhead,
         decoration: TextFormFieldPrefix(
           hintText: Strings.passwordHint,
-          icon: Icon(Icons.lock, color: Colors.white,)
+          icon: Icon(Icons.lock,)
         ),
         validator: (String value) {
           if (value.length == 0)

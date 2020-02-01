@@ -92,7 +92,6 @@ class _ListCardState extends State<ListCard> {
   Widget _bottomContent({@required int index}) =>
     Card(
       elevation: 10.0,
-      color: Color(0xFF434273),
       child: Padding(
         padding: EdgeInsets.only(left: imageWidth / 2 + 10, right: 10),
         child: Column(

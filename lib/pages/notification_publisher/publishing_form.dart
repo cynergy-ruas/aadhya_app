@@ -81,7 +81,6 @@ class PublishingFormState extends State<PublishingForm> {
               Text(
                 "Publishing notification for: " + _event.name,
                 style: Theme.of(context).textTheme.subhead.copyWith(
-                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -94,9 +93,7 @@ class PublishingFormState extends State<PublishingForm> {
             // title of the title field
             Text(
               Strings.titleFieldTitle,
-              style: Theme.of(context).textTheme.subhead.copyWith(
-                color: Colors.white
-              ),
+              style: Theme.of(context).textTheme.subhead,
             ),
 
             // gap
@@ -106,9 +103,7 @@ class PublishingFormState extends State<PublishingForm> {
             TextFormField(
               decoration: InputDecoration(hintText: Strings.titleFieldHint),
               textCapitalization: TextCapitalization.sentences,
-              style: Theme.of(context).textTheme.body1.copyWith(
-                color: Colors.white,
-              ),
+              style: Theme.of(context).textTheme.body1,
               validator: (String value) {
                 if (value.length == 0)
                   return Strings.titleFieldEmpty;
@@ -123,9 +118,7 @@ class PublishingFormState extends State<PublishingForm> {
             // title of the field
             Text(
               Strings.subtitleFieldTitle,
-              style: Theme.of(context).textTheme.subhead.copyWith(
-                color: Colors.white
-              ),
+              style: Theme.of(context).textTheme.subhead,
             ),
 
             // gap
@@ -133,7 +126,7 @@ class PublishingFormState extends State<PublishingForm> {
 
             // Form field for substitle
             TextFormField(
-              style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
+              style: Theme.of(context).textTheme.body1,
               textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(hintText: Strings.subtitleFieldHint),
               validator: (String value) {
@@ -150,9 +143,7 @@ class PublishingFormState extends State<PublishingForm> {
             // title of the field
             Text(
               Strings.detailsFieldTitle,
-              style: Theme.of(context).textTheme.subhead.copyWith(
-                color: Colors.white
-              ),
+              style: Theme.of(context).textTheme.subhead,
             ),
 
             // gap
@@ -161,7 +152,7 @@ class PublishingFormState extends State<PublishingForm> {
             // Form field for description
             TextFormField(
               maxLines: 10,
-              style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
+              style: Theme.of(context).textTheme.body1,
               decoration: InputDecoration(
                 hintText: Strings.detailsFieldHint,
                 contentPadding: EdgeInsets.all(10)
@@ -178,9 +169,7 @@ class PublishingFormState extends State<PublishingForm> {
 
               Text(
                 Strings.notificationsPublishEventsFieldTitle,
-                style: Theme.of(context).textTheme.subhead.copyWith(
-                  color: Colors.white
-                ),
+                style: Theme.of(context).textTheme.subhead,
               ),
 
               // gap
@@ -272,9 +261,7 @@ class _EventSuggestionFieldState extends State<EventSuggestionField> {
         decoration: InputDecoration(
           hintText: Strings.eventsFieldHint,
         ),
-        style: Theme.of(context).textTheme.body1.copyWith(
-          color: Colors.white,
-        ),
+        style: Theme.of(context).textTheme.body1,
         controller: _eventsController
       ),
       

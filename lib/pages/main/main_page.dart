@@ -63,6 +63,11 @@ class _MainPageState extends State<MainPage> {
             // the index of the highlighted item
             currentIndex: _currentPage,
 
+            // theme of unselected icon
+            unselectedIconTheme: IconThemeData(
+              color: Theme.of(context).backgroundColor,
+            ),
+
             // the icons in the nav bar
             items: <BottomNavigationBarItem> [
 

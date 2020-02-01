@@ -22,6 +22,12 @@ class DetailPage extends StatelessWidget {
   /// The width of the page header thumbnail
   final double thumbnailWidth = 80;
 
+  /// The height of the graident
+  final double gradientHeight = 110;
+
+  /// The height of the header
+  final double headerHeight = 170;
+
   /// Defines whether to use a hero widget or not
   final bool useHero;
 
@@ -30,6 +36,8 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final double gradientStart = MediaQuery.of(context).size.height * 0.20;
+
     // building the detail page
     return SafeArea(
       child: Scaffold(
@@ -37,15 +45,15 @@ class DetailPage extends StatelessWidget {
           // expand to fit the device
           constraints: BoxConstraints.expand(),
           // background color
-          color: Color(0xFF3E3963),
+          color: Theme.of(context).backgroundColor,
           child: Stack(
             children: <Widget>[
               // the background image of the detail page
-              _buildBackground(),
+              _buildBackground(context, gradientStart: gradientStart),
               // building the coustom gradient color
-              _buildGradient(),
+              _buildGradient(context, startPos: gradientStart),
               // the content of the detail page
-              _buildContent(),
+              _buildContent(context, gradientStartPos: gradientStart),
               // the toolbar (back button)
               _buildToolbar(context),
             ],
@@ -56,30 +64,31 @@ class DetailPage extends StatelessWidget {
   }
 
   /// the background image of the detail page
-  Widget _buildBackground() {
+  Widget _buildBackground(BuildContext context, {@required double gradientStart}) {
     return Container(
       // TODO: use  [Image.asset] instead of network image
       child: Image.network(
         "https://www.sxsw.com/wp-content/uploads/2019/06/2019-Hackathon-Photo-by-Randy-and-Jackie-Smith.jpg",
         fit: BoxFit.cover,
-        height: 300.0,
+        height: gradientStart + gradientHeight,
+        color: Theme.of(context).backgroundColor.withAlpha(128),
+        colorBlendMode: BlendMode.hardLight,
       ),
-      constraints: new BoxConstraints.expand(height: 295.0),
     );
   }
 
   /// building the background gradient color that covers the bg-image
-  Widget _buildGradient() {
+  Widget _buildGradient(BuildContext context, {@required double startPos}) {
     return Container(
-      margin: EdgeInsets.only(top: 190.0),
-      height: 110.0,
+      margin: EdgeInsets.only(top: startPos),
+      height: gradientHeight,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: <Color>[
             // the transparent color
-            Color(0x003E3963),
+            Theme.of(context).backgroundColor.withAlpha(0),
             // the main color
-            Color(0xFF3E3963),
+            Theme.of(context).backgroundColor,
           ],
           stops: [0.0, 0.9],
           // The offset at which stop 0.0 of the gradient is placed
@@ -107,18 +116,16 @@ class DetailPage extends StatelessWidget {
   }
 
   /// the main content of the detail page
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context, {@required double gradientStartPos}) {
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20.0, 72.0, 20.0, 0.0),
+      padding: EdgeInsets.fromLTRB(20.0, gradientStartPos + gradientHeight - headerHeight, 20.0, 0.0),
       child: Column(
         children: <Widget>[
-          
-          // gap
-          SizedBox(height: 60,),
 
           // the header card
           PageHeader(
+            height: headerHeight,
             title: Text(
               event.name,
               style: Style.titleTextStyle,
@@ -172,7 +179,7 @@ class DetailPage extends StatelessWidget {
                 MarkdownBody(
                   data: event.description,
                   styleSheet: MarkdownStyleSheet(
-                    p: Style.commonTextStyle,
+                    p: Theme.of(context).textTheme.body1,
                   ),
                 )
               ],
@@ -188,7 +195,7 @@ class DetailPage extends StatelessWidget {
   Widget _buildToolbar(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-      child: BackButton(color: Colors.white),
+      child: BackButton(),
     );
   }
 }

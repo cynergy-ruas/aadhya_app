@@ -27,9 +27,7 @@ class EventsPage extends StatelessWidget {
             backgroundColor: Colors.red,
             content: Text(
               "Error loading events. Please try again.",
-              style: Theme.of(context).textTheme.body1.copyWith(
-                color: Colors.white
-              ),
+              style: Theme.of(context).textTheme.body1,
             ),
           ),
         );

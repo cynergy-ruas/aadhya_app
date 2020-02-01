@@ -31,9 +31,7 @@ class CollapsedContents extends StatelessWidget {
           // title
           Text(
             Strings.collapsedSheetTitle,
-            style: Theme.of(context).textTheme.title.copyWith(
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.title,
           ),
         ],
       ),

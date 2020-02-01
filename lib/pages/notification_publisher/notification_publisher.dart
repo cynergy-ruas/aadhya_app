@@ -123,9 +123,7 @@ class _Contents extends StatelessWidget {
           // title
           Text(
             Strings.notificationPublishTitle,
-            style: Theme.of(context).textTheme.title.copyWith(
-              color: Colors.white
-            ),
+            style: Theme.of(context).textTheme.title,
           ),
 
           // gap

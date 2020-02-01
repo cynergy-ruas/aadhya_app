@@ -105,11 +105,11 @@ class _EventsPageContentsState extends State<EventsPageContents> {
   Widget _allEventsCarousel() {
     return SizedBox( 
       // constraining the size of the [ListView]
-      height: MediaQuery.of(context).size.height * 0.25,
+      height: MediaQuery.of(context).size.height * 0.25 + 8,
 
       // the list view
-      child: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+      child: ListView.separated(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: events.length,
@@ -119,6 +119,8 @@ class _EventsPageContentsState extends State<EventsPageContents> {
             child: CarouselCard(event: events[index],)
           );
         },
+        separatorBuilder: (BuildContext context, int index) => 
+          SizedBox(width: 25),
       ),
     );
   }
@@ -184,7 +186,7 @@ class _EventsPageContentsState extends State<EventsPageContents> {
           child: Text(
             "Day " + day.toString(),
             style: Theme.of(context).textTheme.subhead.copyWith(
-              color: (_selected == day) ? Theme.of(context).accentColor : Theme.of(context).textTheme.body2.color,
+              color: (_selected == day) ? Theme.of(context).primaryColor : Theme.of(context).textTheme.body2.color,
               fontWeight: FontWeight.bold,
             ),
           ),

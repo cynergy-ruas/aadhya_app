@@ -53,9 +53,7 @@ class _AssignEventsState extends State<AssignEvents> {
                     // title
                     Text(
                       Strings.assignEventsPageTitle,
-                      style: Theme.of(context).textTheme.title.copyWith(
-                        color: Colors.white
-                      ),
+                      style: Theme.of(context).textTheme.title,
                     ),
 
                     // the forms

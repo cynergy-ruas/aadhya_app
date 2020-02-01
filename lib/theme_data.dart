@@ -1,50 +1,84 @@
 import 'package:flutter/material.dart';
 
+const Color shadowColor = Color(0xffe5e5e5);
+
 ThemeData dwimayTheme = ThemeData(
   // The background color for major parts of the app (toolbars, tab bars, etc).
-  primaryColor: Color(0xff222831),
+  primaryColor: Color(0xff50d890),
 
   // A color that contrasts with the primaryColor, e.g. used as the remaining part of a progress bar.
-  backgroundColor: Color(0xffeeeeee),
+  backgroundColor: Color(0xff11161a),
 
   // The default color of the Material that underlies the Scaffold.
   // The background color for a typical material app or a page within the app.
-  scaffoldBackgroundColor: Color(0xffeeeeee),
+  scaffoldBackgroundColor: Color(0xff11161a),
 
   // The foreground color for widgets (knobs, text, overscroll edge effect, etc).
-  accentColor: Color(0xff00adb5),
+  accentColor: Color(0xff1089ff),
+
+  // The color of Material when it is used as a Card.
+  cardColor: Color(0xff11161a),
 
   // Text with a color that contrasts with the card and canvas colors.
   textTheme: TextTheme(
     // Used for the default text style for Material.
-    body1: TextStyle(),
+    body1: TextStyle(
+      fontFamily: "glacial-indifference",
+      color: Color(0xffe5e5e5),
+    ),
 
     // Used for emphasizing text that would otherwise be body1.
-    body2: TextStyle(),
+    body2: TextStyle(
+      fontFamily: "glacial-indifference",
+      color: Color(0xffe5e5e5),
+    ),
 
     // Used for text on RaisedButton and FlatButton.
-    button: TextStyle(),
+    button: TextStyle(
+      fontFamily: "glacial-indifference",
+      color: Color(0xffe5e5e5),
+    ),
 
     // Used for auxiliary text associated with images.
-    caption: TextStyle(),
+    caption: TextStyle(
+      fontFamily: "glacial-indifference",
+      color: Color(0xffe5e5e5),
+    ),
 
     // Used for large text in dialogs (e.g., the month and year in the dialog shown by showDatePicker).
-    headline: TextStyle(),
+    headline: TextStyle(
+      fontFamily: "glacial-indifference",
+      color: Color(0xffe5e5e5),
+    ),
 
     // The smallest style. Typically used for captions or to introduce a (larger) headline.
-    overline: TextStyle(),
+    overline: TextStyle(
+      fontFamily: "glacial-indifference",
+      color: Color(0xffe5e5e5),
+    ),
 
     // Used for the primary text in lists (e.g., ListTile.title).
-    subhead: TextStyle(),
+    subhead: TextStyle(
+      fontFamily: "glacial-indifference",
+      color: Color(0xffe5e5e5),
+    ),
 
     // For medium emphasis text that's a little smaller than subhead.
     subtitle: TextStyle(
       fontSize: 18,
+      fontFamily: "glacial-indifference",
       fontWeight: FontWeight.bold,
+      color: Color(0xffe5e5e5),
     ),
 
     // Used for the primary text in app bars and dialogs (e.g., AppBar.title and AlertDialog.title).
-    title: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, height: 1),
+    title: TextStyle(
+      fontFamily: "glacial-indifference",
+      fontSize: 28,
+      fontWeight: FontWeight.bold,
+      height: 1,
+      color: Color(0xffe5e5e5),
+    ),
   ),
 
   // The default InputDecoration values for InputDecorator, TextField, and
@@ -92,14 +126,14 @@ ThemeData dwimayTheme = ThemeData(
 
     // style for hint text.
     hintStyle: TextStyle(
-      color: Colors.white54,
-      fontFamily: 'OpenSans',
+      color: Colors.grey,
+      fontFamily: "glacial-indifference",
     ),
 
     labelStyle: TextStyle(
-      color: Colors.white,
+      color: Color(0xffe5e5e5),
       fontWeight: FontWeight.bold,
-      fontFamily: 'OpenSans',
+      fontFamily: "glacial-indifference",
     ),
 
     // The color to fill the decoration's container with, if filled is true
@@ -108,6 +142,10 @@ ThemeData dwimayTheme = ThemeData(
     // If true the decoration's container is filled with fillColor
     filled: true,
   ),
+
+  iconTheme: IconThemeData(
+    color: Color(0xffe5e5e5),
+  )
 );
 
 class Style {
