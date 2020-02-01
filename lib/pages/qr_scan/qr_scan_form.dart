@@ -89,7 +89,10 @@ class _QrScanFormState extends State<QrScanForm> {
           // used to build the UI for each suggestion
           itemBuilder: (BuildContext context, Event suggestion) =>
             ListTile(
-              title: Text(suggestion.name),
+              title: Text(
+                suggestion.name,
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           
           // Used to build the UI when no matching suggestion is found
