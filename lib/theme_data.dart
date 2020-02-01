@@ -14,10 +14,13 @@ ThemeData dwimayTheme = ThemeData(
   scaffoldBackgroundColor: Color(0xff11161a),
 
   // The foreground color for widgets (knobs, text, overscroll edge effect, etc).
-  accentColor: Color(0xff1089ff),
+  accentColor: Color(0xff50d890),
 
   // The color of Material when it is used as a Card.
   cardColor: Color(0xff11161a),
+
+  // background color for dialogs
+  dialogBackgroundColor: Color(0xff24213B),
 
   // Text with a color that contrasts with the card and canvas colors.
   textTheme: TextTheme(

@@ -3,7 +3,6 @@ import 'package:dwimay/pages/announcements/announcements_page.dart';
 import 'package:dwimay/pages/events/events_page.dart';
 import 'package:dwimay/pages/login/login_page.dart';
 import 'package:dwimay/pages/main/collapsed_contents.dart';
-import 'package:dwimay/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -109,12 +108,7 @@ class _MainPageState extends State<MainPage> {
             topLeft: Radius.circular(14.0),
             topRight: Radius.circular(14.0)
           ),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              blurRadius: 8.0,
-              color: shadowColor
-            )
-          ],
+
           // contents of the panel when collapsed, clipped at the 
           // top corners
           collapsed: ClipRRect(
@@ -145,7 +139,7 @@ class _MainPageState extends State<MainPage> {
           
 
           // not rendering the sheet
-          renderPanelSheet: true,
+          renderPanelSheet: false,
 
           // setting the parallax effect
           parallaxEnabled: true,

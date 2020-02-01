@@ -133,6 +133,7 @@ class AssignEventsFormState extends State<AssignEventsForm> {
             Container(
               decoration: TextFormFieldShadow(),
               child: TypeAheadFormField<String>(
+                direction: AxisDirection.up,
                 // configuring the field
                 textFieldConfiguration: TextFieldConfiguration(
                   decoration: InputDecoration(
@@ -157,7 +158,10 @@ class AssignEventsFormState extends State<AssignEventsForm> {
                 // used to build the UI for each suggestion
                 itemBuilder: (BuildContext context, String suggestion) =>
                   ListTile(
-                    title: Text(suggestion),
+                    title: Text(
+                      suggestion,
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                 
                 // Used to build the UI when no matching suggestion is found

@@ -1,4 +1,3 @@
-import 'package:dwimay/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 
@@ -12,41 +11,29 @@ class CarouselCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Card(
-        elevation: 5.0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0),),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // the date
-              Text(
-                event.getTime()
-              ),
+    return Card(
+      elevation: 5.0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0),),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // the date
+            Text(
+              event.getTime()
+            ),
 
-              // gap
-              SizedBox(height: 10,),
+            // gap
+            SizedBox(height: 10,),
 
-              // the title
-              Text(
-                event.name,
-                textAlign: TextAlign.center,
-              )
-            ],
-          ),
+            // the title
+            Text(
+              event.name,
+              textAlign: TextAlign.center,
+            )
+          ],
         ),
-      ),
-
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.0), 
-        boxShadow: [
-          BoxShadow(
-            color: shadowColor,
-            blurRadius: 8.0,
-          )
-        ]
       ),
     );
   }

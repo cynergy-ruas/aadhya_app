@@ -60,6 +60,9 @@ class _ConfirmationDialogState extends State<ConfirmationDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))
+      ),
       title: Text(widget.title),
       content: _DialogContents(
         future: widget.future,
@@ -74,7 +77,10 @@ class _ConfirmationDialogState extends State<ConfirmationDialog> {
         (! _confirmed)
         ? [
           FlatButton(
-            child: Text("Confirm"),
+            child: Text(
+              "Confirm",
+              style: TextStyle(color: Theme.of(context).accentColor),
+            ),
             onPressed: () => setState(() => _confirmed = true),
           )
         ]
@@ -84,7 +90,10 @@ class _ConfirmationDialogState extends State<ConfirmationDialog> {
         (! _confirmed)
         ? [
           FlatButton(
-            child: Text("Cancel"),
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Theme.of(context).accentColor),
+            ),
             onPressed: () => Navigator.of(context).pop(),
           )
         ]
@@ -141,7 +150,10 @@ class _DialogContents extends StatelessWidget {
         if (snapshot.hasData) {
           Future.delayed(Duration(seconds: 3)).then((_) => Navigator.of(context).pop());
 
-          return Text(successMessage);
+          return Text(
+            successMessage,
+            style: TextStyle(color: Theme.of(context).accentColor),
+          );
         }
 
         if (snapshot.hasError) {
@@ -149,13 +161,21 @@ class _DialogContents extends StatelessWidget {
           Future.delayed(Duration(seconds: 3)).then((_) => Navigator.of(context).pop());
           
           if (! useSnapshotErrorMessage)
-            return Text(errorMessage);
+            return Text(
+              errorMessage,
+            );
           else {
             if (snapshot.error.runtimeType == CloudFunctionsException) {
-              return Text((snapshot.error as CloudFunctionsException).message);
+              return Text(
+                (snapshot.error as CloudFunctionsException).message,
+                style: TextStyle(color: Colors.red),
+              );
             }
             
-            return Text("Error: " + snapshot.error.toString());
+            return Text(
+              "Error: " + snapshot.error.toString(),
+              style: TextStyle(color: Colors.red),
+            );
           }
         }
 
