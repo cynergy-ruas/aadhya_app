@@ -133,7 +133,7 @@ class _MainPageState extends State<MainPage> {
 
           // the body of the application
           body: AnimatedSwitcher(
-            duration: Duration(milliseconds: 500),
+            duration: Duration(milliseconds: 250),
             child: _pages[_currentPage],
           ),
           

@@ -7,7 +7,7 @@ import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 /// The page displaying the details of an event
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
 
   /// The day of the event, used to get the
   /// correct date and time
@@ -16,6 +16,16 @@ class DetailPage extends StatelessWidget {
   /// The event
   final Event event;
 
+  /// The tag for the hero widget
+  final Object heroTag;
+
+  DetailPage({@required this.event, @required this.day, this.heroTag});
+
+  @override
+  _DetailPageState createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
   /// The height of the page header thumbnail
   final double thumbnailHeight = 80;
 
@@ -28,10 +38,16 @@ class DetailPage extends StatelessWidget {
   /// The height of the header
   final double headerHeight = 170;
 
-  /// Defines whether to use a hero widget or not
-  final bool useHero;
+  /// The tag for the hero widget
+  Object _heroTag;
 
-  DetailPage({@required this.event, @required this.day, this.useHero = true});
+  @override
+  void initState() {
+    super.initState();
+
+    // setting the hero tag
+    _heroTag = widget.heroTag ?? widget.event;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +143,7 @@ class DetailPage extends StatelessWidget {
           PageHeader(
             height: headerHeight,
             title: Text(
-              event.name,
+              widget.event.name,
               style: Style.titleTextStyle,
             ),
 
@@ -135,23 +151,23 @@ class DetailPage extends StatelessWidget {
               data: [
                 MultilineSubtitleData(
                   icon: Icons.location_on,
-                  text: "Venue: " + event.venue
+                  text: "Venue: " + widget.event.venue
                 ),
 
                 MultilineSubtitleData(
                   icon: Icons.alarm,
-                  text: event.formatDate(index: day) + ", " + event.getTime(index: day)
+                  text: widget.event.formatDate(index: widget.day) + ", " + widget.event.getTime(index: widget.day)
                 )
               ],
             ),
 
             thumbnail: Image.asset(
-              "assets/images/${event.type}.png",
+              "assets/images/${widget.event.type}.png",
               width: thumbnailHeight,
               height: thumbnailWidth,
             ),
 
-            heroTag: (useHero) ? event : null,
+            heroTag: _heroTag,
 
             thumbnailHeight: thumbnailHeight,
 
@@ -177,7 +193,7 @@ class DetailPage extends StatelessWidget {
 
                 // event description
                 MarkdownBody(
-                  data: event.description,
+                  data: widget.event.description,
                   styleSheet: MarkdownStyleSheet(
                     p: Theme.of(context).textTheme.body1,
                   ),

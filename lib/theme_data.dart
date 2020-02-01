@@ -4,7 +4,7 @@ const Color shadowColor = Color(0xffe5e5e5);
 
 ThemeData dwimayTheme = ThemeData(
   // The background color for major parts of the app (toolbars, tab bars, etc).
-  primaryColor: Color(0xff50d890),
+  primaryColor: Color(0xff1089ff),
 
   // A color that contrasts with the primaryColor, e.g. used as the remaining part of a progress bar.
   backgroundColor: Color(0xff11161a),

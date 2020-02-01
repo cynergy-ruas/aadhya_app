@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dwimay/pages/events/list_card.dart';
 import 'package:dwimay/strings.dart';
 import 'package:dwimay/widgets/build_button.dart';
@@ -57,7 +59,7 @@ class RegisteredEventsPage extends StatelessWidget {
                         child: ListCard(
                           event: event,
                           day: 0,
-                          useHero: false,
+                          heroTag: event.id + "${Random().nextInt(1000)}",
                         ),
                       );
                     },

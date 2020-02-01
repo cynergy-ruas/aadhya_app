@@ -15,10 +15,10 @@ class ListCard extends StatefulWidget {
   /// the list of datetimes in the [Event].
   final int day;
 
-  /// Defines whether to use a hero widget or not
-  final bool useHero;
+  /// The hero tag. if [null], the tag will be the [Event] object
+  final Object heroTag;
 
-  ListCard({@required this.event, @required this.day, this.useHero = true});
+  ListCard({@required this.event, @required this.day, this.heroTag});
 
   @override
   _ListCardState createState() => _ListCardState();
@@ -31,6 +31,17 @@ class _ListCardState extends State<ListCard> {
 
   /// The width of the thumbnail
   final double imageWidth = 60;
+
+  /// The tag for the hero widget
+  Object _heroTag;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // setting the hero tag
+    _heroTag = widget.heroTag ?? widget.event;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +88,7 @@ class _ListCardState extends State<ListCard> {
           pageBuilder: (_, __, ___) => DetailPage(
             event: widget.event,
             day: index,
-            useHero: widget.useHero,
+            heroTag:_heroTag,
           ),
           transitionsBuilder:
               (context, animation, secondaryAnimation, child) =>
@@ -122,22 +133,15 @@ class _ListCardState extends State<ListCard> {
     );
 
   /// The top content. Contains the thumbnail image
-  Widget _topContent() {
-
-    Widget content = Image.asset(
-      "assets/images/${widget.event.type}.png",
-      width: imageHeight,
-      height: imageWidth,
+  Widget _topContent() =>
+    Hero(
+      tag: _heroTag,
+      child: Image.asset(
+        "assets/images/${widget.event.type}.png",
+        width: imageHeight,
+        height: imageWidth,
+      ),
     );
-
-    if (widget.useHero)
-      return Hero(
-        tag: widget.event,
-        child: content,
-      );
-
-    return content;
-  }
 
   /// The separator between the event name and the venue
   /// in the card's content.

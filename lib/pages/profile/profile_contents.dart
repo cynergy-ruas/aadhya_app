@@ -143,11 +143,15 @@ class _MemberContents extends StatelessWidget {
         String firstLine;
         String secondLine;
         String assetPath;
+        double assetWidth = 90;
+        double assetHeight = 90;
 
         if (User.instance.getClearanceLevel() > 2) {
           firstLine = "You are managing\n";
           secondLine = Strings.festName;
-          assetPath = "assets/images/talk.png"; // TODO: Use fest logo
+          assetPath = "assets/images/fest_logo.png";
+          assetHeight = 150;
+          assetWidth = 200;
         }
 
         else if (User.instance.getClearanceLevel() == 2) {
@@ -180,8 +184,8 @@ class _MemberContents extends StatelessWidget {
                       // thumbnail
                       Image.asset(
                         assetPath,
-                        width: 90,
-                        height: 90,
+                        width: assetWidth,
+                        height: assetHeight,
                       ),
 
                       // gap

@@ -32,12 +32,13 @@ class _AboutPageState extends State<AboutPage> {
               // the title and FAQ button
               Row(
                 children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      Strings.festName,
-                      style: Theme.of(context).textTheme.title,
-                    ),
+                  Image.asset(
+                    "assets/images/fest_logo.png",
+                    width: 150,
                   ),
+
+                  // gap
+                  Expanded(child: Container(),),
 
                   IconButton(
                     padding: const EdgeInsets.all(0),
