@@ -34,7 +34,7 @@ exports.updateClearance = functions.https.onCall(async (data, context) => {
     try {
         // getting user from firebase
         const user = await admin.auth().getUserByEmail(email);
-        const oldClearance = user.customClaims.clearance;
+        const oldClearance = (user.customClaims === undefined) ? -1 : user.customClaims.clearance;
         
         // getting the claims. The claims are reset if the new clearance level
         // is lower than the old clearance level.
@@ -78,7 +78,7 @@ exports.assignEventsToUser = functions.https.onCall(async (data, context) => {
         const user = await admin.auth().getUserByEmail(data.email);
 
         // assigning event to user only if clearance level is greater than 0
-        if (user.customClaims.clearance !== undefined && user.customClaims.clearance !== 0) {
+        if (user.customClaims !== undefined && user.customClaims.clearance !== undefined && user.customClaims.clearance !== 0) {
             
             // getting current claims
             const claims = user.customClaims;
@@ -176,7 +176,7 @@ exports.publishNotification = functions.https.onCall(async (data, context) => {
         title: data.title,
         body: data.body,
         data: data.data,
-        topic: data.topic
+        condition: `'${data.eventid}' in topics || '${data.department}' in topics`
     });
 
     try {
@@ -184,7 +184,7 @@ exports.publishNotification = functions.https.onCall(async (data, context) => {
         await admin.messaging().send(payload);
 
         // logging
-        console.log(`sent notification to topic ${data.topic}`);
+        console.log(`sent notification to eventid ${data.eventid} of department ${data.department}`);
 
         // returning ok status code
         return {
@@ -192,7 +192,7 @@ exports.publishNotification = functions.https.onCall(async (data, context) => {
         };
     } catch (err) {
         // logging
-        console.log(`error sending sending notification to topic ${data.topic}`);
+        console.log(`error sending sending notification to eventid ${data.eventid} of department ${data.department}`);
         console.log(err);
 
         // returning error status code
@@ -211,16 +211,10 @@ exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
     async function updateData({emailid, eventCode, eventName}) {
         // checking if the user document exists in users collection, and 
         // creating the same if it does not exist.
-        const created = await checkAndCreateUserDocument({emailid: emailid});
+        await checkAndCreateUserDocument({emailid: emailid});
 
         // updating the data for the user
         await updateDataForUser({emailid: emailid, eventCode: eventCode});
-
-        // sending update data message to the user's device, only if the user
-        // document was not created just now. This is because, there will not be
-        // any device token when the document was just created.
-        if (! created)
-            await notifyUserOnRegisteredEvent({emailid: emailid, data: {eventID: eventCode}, eventName: eventName});
     }
 
     // updating data
@@ -259,57 +253,36 @@ exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
     }
 });
 
-exports.registerUser = functions.https.onCall(async (data, context) => {
-    // getting the email id
-    const emailid = data.emailid;
-
-    // getting the password
-    const password = data.password;
-
-    // logging
-    console.log(`received registration request from ${emailid}`);
-
-    // checking if the user document exists. If the user document exists,
-    // that means that the user has paid for atleast one event. If this is
-    // the case, the user should be allowed to register. If not, the registration
-    // request should be rejected.
-    if (! (await db.collection("users").doc(emailid).get()).exists) {
-        console.log(`user ${emailid} request for registration has been rejected.`);
-        throw new functions.https.HttpsError(
-            "invalid-argument",
-            "The user has not paid for any event."
-        );
+/**
+ * Sets the device token for a user.
+ */
+exports.setFCMToken = functions.https.onCall(async (data, context) => {
+    if (data.token === null) {
+        console.log(`received null FCM token from ${data.emailid}, aborting.`);
+        return;
     }
 
-    // creating the user with the given email id and password
-    await admin.auth().createUser({
-        email: emailid,
-        password: password,
-        emailVerified: false,
-        disabled: false
-    });
+    console.log(`setting FCM token for ${data.emailid}`);
 
-    console.log(`Successfully created user ${emailid}`);
+    // adding token to document
+    await db.collection("users").doc(data.emailid).update({
+        deviceToken: data.token
+    });
 });
 
 /**
  * Checks if the user document exists and if it doesnt, creates the 
  * document.
  * @param emailid The email id of the user.
- * @returns true, if the user did not exist and the corresponding document 
- * was created, false otherwise.
  */
 async function checkAndCreateUserDocument({emailid}) {
     try {
         await db.collection("users").doc(emailid).create({
             regEvents: [],
-            deviceToken: ""
         })
-        return true;
     }
     catch (err) {
         console.log(`Document for ${emailid} exists`);
-        return false;
     }
 }
 
@@ -335,43 +308,6 @@ async function updateDataForUser({emailid, eventCode}) {
 }
 
 /**
- * Sends a data message to the user. The device token is 
- * retrieved from the firestore database.
- * @param emailid the email id of the user
- * @param data the data to be sent. 
- * @param eventName the name of the event the user registered for
- */
-async function notifyUserOnRegisteredEvent({emailid, data, eventName}) {
-
-    try {
-        // sending a data message to the mobile phone of the user
-        const user = await admin.auth().getUserByEmail(emailid)
-        // getting the document reference of the user
-        const docRef = db.collection("users").doc(user.email);
-
-        // getting the device token of the user
-        const deviceToken = (await docRef.get()).data().deviceToken;
-
-        const payload = constructNotificationPayload({
-            title: "Registration",
-            body: `You have registered for the event ${eventName}`,
-            data: data, 
-            token: deviceToken
-        });
-
-        // sending data notification to the device
-        await admin.messaging().send(payload);
-        
-        // logging
-        console.log(`sent data message to ${emailid}`);
-    }
-    catch (err) {
-        console.log(`error sending data message to ${emailid}`);
-        console.log(err);
-    }
-}
-
-/**
  * Constructs the notification payload.
  * 
  * @param title The title of the notification.
@@ -379,12 +315,12 @@ async function notifyUserOnRegisteredEvent({emailid, data, eventName}) {
  * @param data The data of the notification.
  * @param topic The topic to send to the notification to.
  */
-function constructNotificationPayload({title, body, data, topic, token}) {
+function constructNotificationPayload({title, body, data, topic, condition}) {
 
     // checking if topic and token both are given at the same time.
     // if it so, throw an error.
-    if (topic !== undefined && token !== undefined) 
-        throw new Error("topic and token both cannot be specified at the same time.");
+    if (topic !== undefined && condition !== undefined) 
+        throw new Error("topic and condition both cannot be specified at the same time.");
     
     // defining setting for sending notification to android devices
     const androidSettings = {
@@ -407,8 +343,9 @@ function constructNotificationPayload({title, body, data, topic, token}) {
 
 
     // adding the topic or token, depending on what is given.
-    if (token !== undefined)
-        payload.token = token;
+    if (condition !== undefined) {
+        payload.condition = condition;
+    }
     else if (topic !== undefined)
         payload.topic = topic;
 
