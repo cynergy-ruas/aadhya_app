@@ -136,6 +136,15 @@ class _MainPageState extends State<MainPage> {
             duration: Duration(milliseconds: 250),
             child: _pages[_currentPage],
           ),
+
+          onPanelClosed: () {
+            // getting the current focus scope node
+            FocusScopeNode node = FocusScope.of(context);
+
+            // unfocusing if it does not have primary focus
+            if (! node.hasPrimaryFocus) 
+              node.unfocus();
+          },
           
 
           // not rendering the sheet
