@@ -48,20 +48,28 @@ class RegisteredEventsPage extends StatelessWidget {
                       ),
                     );
                   }
+
+                  // removing duplicates from [eventIds]
+                  eventIds = eventIds.toSet().toList();
+
                   return ListView.separated(
                     shrinkWrap: true,
                     physics: BouncingScrollPhysics(),
                     itemCount: eventIds.length,
                     itemBuilder: (BuildContext context, int index) {
                       Event event = EventPool.events.firstWhere((event) => event.id == eventIds[index], orElse: () => null);
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 40.0, right: 20),
-                        child: ListCard(
-                          event: event,
-                          day: 0,
-                          heroTag: event.id + "${Random().nextInt(1000)}",
-                        ),
-                      );
+
+                      if (event != null)
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 40.0, right: 20),
+                          child: ListCard(
+                            event: event,
+                            day: 0,
+                            heroTag: event.id + "${Random().nextInt(1000)}",
+                          ),
+                        );
+                      
+                      return Container();
                     },
                     separatorBuilder: (BuildContext context, int index) => 
                       SizedBox(height: 10,),

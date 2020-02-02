@@ -120,7 +120,7 @@ class _EventsPageContentsState extends State<EventsPageContents> {
           );
         },
         separatorBuilder: (BuildContext context, int index) => 
-          SizedBox(width: 25),
+          SizedBox(width: 15),
       ),
     );
   }

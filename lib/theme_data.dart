@@ -17,7 +17,7 @@ ThemeData dwimayTheme = ThemeData(
   accentColor: Color(0xff50d890),
 
   // The color of Material when it is used as a Card.
-  cardColor: Color(0xff11161a),
+  cardColor: Color(0xff27272f),
 
   // background color for dialogs
   dialogBackgroundColor: Color(0xff24213B),

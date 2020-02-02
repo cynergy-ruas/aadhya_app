@@ -72,8 +72,8 @@ class _LoginPageState extends State<LoginPage> {
               onError: (BuildContext context, dynamic e) {
                 String message; 
                 print(e.toString());
-                try {
-                  // type casting
+
+                if (e.runtimeType == PlatformException) {
                   PlatformException err = (e as PlatformException);
 
                   // customizing message based on error
@@ -83,11 +83,16 @@ class _LoginPageState extends State<LoginPage> {
                     message = Strings.wrongPasswordMessage;
                   else if (err.code == "ERROR_USER_NOT_FOUND")
                     message = Strings.userNotFoundMessage;
+                  else if (err.code == "ERROR_EMAIL_ALREADY_IN_USE")
+                    message = Strings.emailAlreadyInUse;
                   else 
                     message = Strings.unknownError;
-                } catch (e) {
-                  message =  Strings.unknownError;
                 }
+
+                else if (e.runtimeType == AuthenticationError) {
+                  message = (e as AuthenticationError).message;
+                }
+                
                 Scaffold.of(context).showSnackBar(
                   SnackBar(
                     content: Text(message),

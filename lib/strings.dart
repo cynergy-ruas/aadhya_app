@@ -67,6 +67,9 @@ class Strings {
   /// User not found error
   static const userNotFoundMessage = "Looks like you haven't registered yet. Please try registering first";
 
+  /// email already in use
+  static const emailAlreadyInUse = "Looks like you have already registered. Try logging in!";
+
   /// Unknown error message
   static const unknownError = "Error occurred. Please try again";
 
