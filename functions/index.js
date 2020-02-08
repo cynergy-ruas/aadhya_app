@@ -208,25 +208,28 @@ exports.publishNotification = functions.https.onCall(async (data, context) => {
  */
 exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
 
-    async function updateData({emailid, eventCode, eventName}) {
+    async function updateData({emailid, eventCode, registrationId}) {
         // checking if the user document exists in users collection, and 
         // creating the same if it does not exist.
         await checkAndCreateUserDocument({emailid: emailid});
 
         // updating the data for the user
-        await updateDataForUser({emailid: emailid, eventCode: eventCode});
+        await updateDataForUser({emailid: emailid, eventCode: eventCode, registrationId: registrationId});
     }
+
+    // getting the data from the request
+    const body = JSON.parse(req.body.data);
 
     // updating data
 
     // townscript api can send an array of dictionaries containing the data.
     // therefore updating the data for all of the given users
-    if (Array.isArray(req.body)) {
+    if (Array.isArray(body)) {
         let statusCode = 200;
 
-        const promises = req.body.map((data) => {
+        const promises = body.map((data) => {
             console.log(`received request with email: ${data.userEmailId}`);
-            return updateData({emailid: data.userEmailId, eventCode: data.eventCode, eventName: data.eventName})
+            return updateData({emailid: data.userEmailId, eventCode: data.eventCode, registrationId: data.registrationId})
             .catch((err) => {
                 statusCode = 202;
                 console.log(`error updating events for the user ${data.userEmailId}`);
@@ -241,8 +244,8 @@ exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
     else {
 
         try {
-            console.log(`received request with email: ${req.body.userEmailId}`);
-            await updateData({emailid: req.body.userEmailId, eventCode: req.body.eventCode, eventName: req.body.eventName});
+            console.log(`received request with email: ${body.userEmailId}`);
+            await updateData({emailid: body.userEmailId, eventCode: body.eventCode, registrationId: body.registrationId});
             res.status(200).send();
         }
         catch (err) {
@@ -279,7 +282,8 @@ async function checkAndCreateUserDocument({emailid}) {
     try {
         await db.collection("users").doc(emailid).create({
             regEvents: [],
-        })
+            regEventIds: [],
+        });
     }
     catch (err) {
         console.log(`Document for ${emailid} exists`);
@@ -291,19 +295,26 @@ async function checkAndCreateUserDocument({emailid}) {
  * @param emailid The email id of the user.
  * @param eventCode The event code to be added.
  */
-async function updateDataForUser({emailid, eventCode}) {
+async function updateDataForUser({emailid, eventCode, registrationId}) {
     // getting reference to user document
     const docRef = db.collection("users").doc(emailid);
 
     // getting the registered events from the document
     const regEvents = (await docRef.get()).data().regEvents;
 
+    // getting the registered event ids (townscript ids)
+    const regEventIds = (await docRef.get()).data().regEventIds;
+
     // appending event code from request to `regEvents`
     regEvents.push(eventCode);
 
+    // appending registration id from request to `regEventIds`
+    regEventIds.push(registrationId);
+
     // updating the document
     await docRef.update({
-        regEvents: regEvents
+        regEvents: regEvents,
+        regEventIds: regEventIds,
     });
 }
 
