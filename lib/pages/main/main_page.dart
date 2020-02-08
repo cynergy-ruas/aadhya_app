@@ -138,6 +138,9 @@ class _MainPageState extends State<MainPage> {
           ),
 
           onPanelClosed: () {
+            // sometimes, the text fields in the panel may be focused randomly.
+            // If this is the case, unfocusing all the text fields when the panel closes.
+            
             // getting the current focus scope node
             FocusScopeNode node = FocusScope.of(context);
 

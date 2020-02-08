@@ -21,7 +21,7 @@ class _AboutPageState extends State<AboutPage> {
           // adding the contents in a column so they appear one after
           // the other.
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -57,17 +57,48 @@ class _AboutPageState extends State<AboutPage> {
               ),
 
               // the about content, fills the rest of the space.
-              // hence, in a [Flexible]
+              // hence, in a [Expanded]
               Expanded(
                 // making the text scrollable
-                child: SingleChildScrollView(
+                child: ListView(
                   physics: BouncingScrollPhysics(),
+                  children: <Widget>[
+                    // the about content title
+                    Text(
+                      Strings.aboutContentTitle,
+                      style: Theme.of(context).textTheme.title,
+                    ),
 
-                  // the about content.
-                  child: Text(
-                    Strings.aboutContent * 10,
-                    style: Theme.of(context).textTheme.body1,
-                  ),
+                    // gap
+                    SizedBox(height: 20,),
+
+                    // the about content
+                    Text(
+                      Strings.aboutContent,
+                      style: Theme.of(context).textTheme.body1,
+                    ),
+
+                    // gap
+                    SizedBox(height: 40,),
+
+                    // The fest theme description title
+                    Text(
+                      Strings.festThemeDescriptionTitle,
+                      style: Theme.of(context).textTheme.title,
+                    ),
+
+                    // gap
+                    SizedBox(height: 20,),
+
+                    // the fest theme description
+                    Text(
+                      Strings.festThemeDescription,
+                      style: Theme.of(context).textTheme.body1
+                    ),
+
+                    // gap (required)
+                    SizedBox(height: 80,)
+                  ],
                 ),
               ),
 

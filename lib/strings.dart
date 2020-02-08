@@ -24,10 +24,17 @@ class Strings {
   /// The password field hint
   static const passwordHint = "password";
 
+  /// Title of the about us section
+  static const aboutContentTitle = "About Us";
+
   /// Content of the about page
-  static const aboutContent = '''
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  ''';
+  static const aboutContent = '''Ola everyone! We are the students of the Ramaiah University of Applied Sciences. We have taken an initiative to bring students of RUAS as well as all the other Universities around to experience amazing technical events, unforgettable memories, and unlimited learning opportunities. We present to you the first-ever TechFest of RUAS, Aadhya 2020. This fest is going to be a melting pot for the techies, a platform where you could showcase your talent, a launchpad for sowing the seed of passion and above all, a paragon of incredible human experience. Amidst the gleam of bonfires and some tech talk, we want to bring in people creating memories lasting for a lifetime. Aadhya aims to capture the vitality of the technological world succinctly, and we strive for Aadhya to be one of the premier fests of our nation. We aspire to broaden our horizons and strengthen plenteous creative brains framing the future. With “The Decade In Review” as its theme, the first edition of Aadhya brings to you a quick look covering all that has happened in past this decade. We invite you to share our vision and be a part of the legacy that carries forward technical excellence.''';
+
+  /// Title of the fest theme description
+  static const festThemeDescriptionTitle = "Theme: A Decade in Review";
+
+  /// Fest theme description
+  static const festThemeDescription = '''The first edition of the Aadhya brings to you the theme, A Decade in Review. As the calendar turns to 2020, like many of you, Aadhya 2020 invites you to pause and reflect on the last decade. There is no future without the past, so why not acknowledge it? This decade created a vast number of opportunities and helped the young generations to garner sufficient knowledge to put forth in the hope of creating a better tomorrow. There were multiple theories that evolved, and multiple events occurred doing a vital chance in how we perceive life. Here this Aadhya 2020 talks about the events which occurred in the decade, and to start a new outlook mapping, an outline of the past event is a must.''';
 
   /// Name of the fest
   static const festName = "Aadhya";
