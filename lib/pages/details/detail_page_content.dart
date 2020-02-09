@@ -48,7 +48,7 @@ class _DetailPageContentsState extends State<DetailPageContents> {
 
     // initializing [_showRegistrationButton]
     if (User.instance.isLoggedIn) {
-      if (User.instance.regEventIDs.contains(widget.event.id))
+      if (User.instance.regEventIDs != null && User.instance.regEventIDs.contains(widget.event.id))
         _showRegistrationButton = false;
       else
         _showRegistrationButton = true;

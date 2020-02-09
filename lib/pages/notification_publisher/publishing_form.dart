@@ -28,7 +28,7 @@ class PublishingFormState extends State<PublishingForm> {
   String _description;
 
   /// The global key for the form
-  GlobalKey<FormState> formKey;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   /// The event to send notifications for.
   Event _event;
@@ -57,9 +57,6 @@ class PublishingFormState extends State<PublishingForm> {
         venue: null,
       )
     );
-
-    // initializing global key for form
-    formKey = GlobalKey<FormState>();
 
     // if the user is a coordinator, setting [_eventid] to the event
     // the coordinator is managing

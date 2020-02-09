@@ -14,17 +14,16 @@ class NotificationPublisher extends StatefulWidget {
   /// Callback that defines what to do when the back button is pressed
   final void Function() onBackPressed;
 
-  /// The global key for the form.
-  final GlobalKey<PublishingFormState> formKey;
-
-  NotificationPublisher({@required this.onBackPressed}) : 
-    formKey = GlobalKey<PublishingFormState>();
+  NotificationPublisher({@required this.onBackPressed});
 
   @override
   _NotificationPublisherState createState() => _NotificationPublisherState();
 }
 
 class _NotificationPublisherState extends State<NotificationPublisher> {
+
+  /// The global key for the form.
+  GlobalKey<PublishingFormState> _formKey = GlobalKey<PublishingFormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class _NotificationPublisherState extends State<NotificationPublisher> {
       // widget to display when loading
       onLoading: _Contents(
         onBackPressed: widget.onBackPressed,
-        formKey: widget.formKey,
+        formKey: _formKey,
         contents: Expanded(
           child: LoadingWidget(),
         ),
@@ -53,10 +52,10 @@ class _NotificationPublisherState extends State<NotificationPublisher> {
       onLoaded: (List<Event> events) => 
         _Contents(
           onBackPressed: widget.onBackPressed,
-          formKey: widget.formKey,
+          formKey: _formKey,
           scrollable: true,
           contents: PublishingForm(
-            key: widget.formKey,
+            key: _formKey,
             events: events,
             onSaved: onSaved,
           ),

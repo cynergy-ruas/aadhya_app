@@ -18,18 +18,10 @@ class PasswordResetForm extends StatefulWidget {
 class PasswordResetFormState extends State<PasswordResetForm> {
 
   /// The key for the form
-  GlobalKey<FormState> _formKey;
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   /// Variable to hold the email address entered by user
   String _emailid;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // initializing the form key
-    _formKey = GlobalKey<FormState>();
-  }
 
   @override
   Widget build(BuildContext context) {

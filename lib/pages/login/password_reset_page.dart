@@ -11,16 +11,8 @@ class PasswordResetPage extends StatefulWidget {
 
 class _PasswordResetPageState extends State<PasswordResetPage> {
   /// The key for the form
-  GlobalKey<PasswordResetFormState> _formKey;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // initializing the key
-    _formKey = GlobalKey<PasswordResetFormState>();
-  }
-
+  GlobalKey<PasswordResetFormState> _formKey = GlobalKey<PasswordResetFormState>();
+  
   @override
   Widget build(BuildContext context) {
     return Padding(

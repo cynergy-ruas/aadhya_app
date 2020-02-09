@@ -22,7 +22,7 @@ class AssignEventsForm extends StatefulWidget {
 class AssignEventsFormState extends State<AssignEventsForm> {
   
   /// The global key for the form
-  GlobalKey<FormState> formKey;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   /// The email id
   String _emailid;
@@ -39,9 +39,6 @@ class AssignEventsFormState extends State<AssignEventsForm> {
   @override
   void initState() {
     super.initState();
-
-    // initializing form key
-    formKey = GlobalKey<FormState>();
 
     // initializing the controller
     _eventsController = TextEditingController();

@@ -21,15 +21,7 @@ class AssignEvents extends StatefulWidget {
 class _AssignEventsState extends State<AssignEvents> {
 
   /// The key for the form
-  GlobalKey<AssignEventsFormState> _formKey;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // initializing the form key
-    _formKey = GlobalKey<AssignEventsFormState>();
-  }
+  GlobalKey<AssignEventsFormState> _formKey = GlobalKey<AssignEventsFormState>();
 
   @override
   Widget build(BuildContext context) {

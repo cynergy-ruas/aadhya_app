@@ -16,21 +16,13 @@ class ClearanceModifierForm extends StatefulWidget {
 class ClearanceModifierFormState extends State<ClearanceModifierForm> {
   
   /// The global key for the form
-  GlobalKey<FormState> formKey;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   /// The email id
   String _emailid;
 
   /// The clearance level
   int _clearance;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // initializing form key
-    formKey = GlobalKey<FormState>();
-  }
 
   @override
   Widget build(BuildContext context) {

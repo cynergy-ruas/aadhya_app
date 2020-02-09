@@ -7,16 +7,21 @@ import 'package:flutter/material.dart';
 
 /// The page where the user can modify clearance level of 
 /// users.
-class ClearanceModifier extends StatelessWidget {
+class ClearanceModifier extends StatefulWidget {
 
   /// The function to execute when the backbutton is pressed
   final void Function() onBackPress;
 
-  /// The key for the form
-  final GlobalKey<ClearanceModifierFormState> formKey;
 
-  ClearanceModifier({@required this.onBackPress}) : 
-    formKey = GlobalKey<ClearanceModifierFormState>();
+  ClearanceModifier({@required this.onBackPress});
+
+  @override
+  _ClearanceModifierState createState() => _ClearanceModifierState();
+}
+
+class _ClearanceModifierState extends State<ClearanceModifier> {
+  /// The key for the form
+  GlobalKey<ClearanceModifierFormState> _formKey = GlobalKey<ClearanceModifierFormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +53,7 @@ class ClearanceModifier extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
                         child: ClearanceModifierForm(
-                          key: formKey,
+                          key: _formKey,
                           onSaved: (String email, int clearance) =>
                             _onSaved(context, email, clearance),
                         ),
@@ -57,8 +62,8 @@ class ClearanceModifier extends StatelessWidget {
 
                     // the back and submit button
                     BackConfirmButtonBar(
-                      onConfirmPressed: () => formKey.currentState.saveForm(),
-                      onBackPressed: onBackPress,
+                      onConfirmPressed: () => _formKey.currentState.saveForm(),
+                      onBackPressed: widget.onBackPress,
                     ),
 
                     // gap

@@ -19,15 +19,7 @@ class _LoginFormState extends State<LoginForm> {
   String _password; 
 
   /// The key for the form
-  GlobalKey<FormState> _formKey;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // initializing form key
-    _formKey = GlobalKey<FormState>();
-  }
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
