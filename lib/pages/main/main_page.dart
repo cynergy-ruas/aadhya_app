@@ -5,7 +5,6 @@ import 'package:dwimay/pages/faq/faq_page.dart';
 import 'package:dwimay/pages/login/login_page.dart';
 import 'package:dwimay/pages/main/collapsed_contents.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 /// The main page. It isn't technically a page, but it consists
@@ -139,9 +138,18 @@ class _MainPageState extends State<MainPage> {
           minHeight: 70,
 
           // the body of the application
-          body: AnimatedSwitcher(
-            duration: Duration(milliseconds: 250),
-            child: _pages[_currentPage],
+          body: Stack(
+            children: <Widget>[
+              // background image
+              Image.asset(
+                "assets/images/pattern.png",
+              ),
+
+              AnimatedSwitcher(
+                duration: Duration(milliseconds: 250),
+                child: _pages[_currentPage],
+              ),
+            ],
           ),
 
           onPanelClosed: () {
