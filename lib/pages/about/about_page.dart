@@ -15,11 +15,21 @@ class _AboutPageState extends State<AboutPage> {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(10),
-        child: ListView(
-          physics: BouncingScrollPhysics(),
+        child: Stack(
           children: <Widget>[
-            FirstPage(),
-            SecondPage()
+            // background image
+            Image.asset(
+              "assets/images/pattern.png",
+            ),
+
+            // contents
+            ListView(
+              physics: BouncingScrollPhysics(),
+              children: <Widget>[
+                FirstPage(),
+                SecondPage()
+              ],
+            ),
           ],
         )
       ),

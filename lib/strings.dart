@@ -36,6 +36,21 @@ class Strings {
   /// Fest theme description
   static const festThemeDescription = '''The first edition of the Aadhya brings to you the theme, A Decade in Review. As the calendar turns to 2020, like many of you, Aadhya 2020 invites you to pause and reflect on the last decade. There is no future without the past, so why not acknowledge it? This decade created a vast number of opportunities and helped the young generations to garner sufficient knowledge to put forth in the hope of creating a better tomorrow. There were multiple theories that evolved, and multiple events occurred doing a vital chance in how we perceive life. Here this Aadhya 2020 talks about the events which occurred in the decade, and to start a new outlook mapping, an outline of the past event is a must.''';
 
+  /// credits title
+  static const creditsTitle = '''Credits''';
+
+  /// title for the developers
+  static const developersTitle = "Developers";
+
+  /// the content for the developers section in credits
+  static const developers = "Shyamant Achar\nTanishq Porwar";
+
+  /// The title for the special thanks section
+  static const specialThanksTitle = "Special Thanks";
+
+  /// the content of the special thanks section in credits
+  static const specialThanks = "Federate One";
+
   /// Name of the fest
   static const festName = "Aadhya";
 

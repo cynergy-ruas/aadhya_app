@@ -54,6 +54,7 @@ flutter:
     - assets/images/talk.png
     - assets/images/workshop.png
     - assets/images/faq.png
+    - assets/images/pattern.png
     - assets/svg/fest_logo.svg
   fonts:
     - family: glacial-indifference

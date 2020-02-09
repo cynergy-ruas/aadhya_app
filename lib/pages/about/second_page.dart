@@ -46,6 +46,55 @@ class SecondPage extends StatelessWidget {
           style: Theme.of(context).textTheme.body1
         ),
 
+        // gap
+        SizedBox(height: 40,),
+
+        // Credits title
+        Text(
+          Strings.creditsTitle,
+          style: Theme.of(context).textTheme.title.copyWith(
+            color: Theme.of(context).primaryColor
+          ),
+        ),
+
+        // gap
+        SizedBox(height: 20,),
+
+        // the developers title
+        Text(
+          Strings.developersTitle,
+          style: Theme.of(context).textTheme.headline.copyWith(
+            fontSize: 22
+          ),
+        ),
+
+        // gap
+        SizedBox(height: 10,),
+
+        // the developers
+        Text(
+          Strings.developers,
+        ),
+
+        // gap
+        SizedBox(height: 20,),
+
+        // the developers title
+        Text(
+          Strings.specialThanksTitle,
+          style: Theme.of(context).textTheme.headline.copyWith(
+            fontSize: 22
+          ),
+        ),
+
+        // gap
+        SizedBox(height: 10,),
+
+        // the developers
+        Text(
+          Strings.specialThanks,
+        ),
+
         // gap (required)
         SizedBox(height: 180,)
       ],
