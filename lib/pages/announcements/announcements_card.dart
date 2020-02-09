@@ -62,10 +62,12 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
                 eventID: widget.announcement.data["eventID"],
               )
             )
+          ).then((_) => 
+            // removing the announcement from the pool
+            BackendProvider.of<NotificationBloc>(context).removeFromPool(index: widget.index)
           );
 
-          // removing the announcement from the pool
-          BackendProvider.of<NotificationBloc>(context).removeFromPool(index: widget.index);
+          
         }
       );
     }

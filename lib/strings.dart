@@ -42,14 +42,8 @@ class Strings {
   /// title for the developers
   static const developersTitle = "Developers";
 
-  /// the content for the developers section in credits
-  static const developers = "Shyamant Achar\nTanishq Porwar";
-
   /// The title for the special thanks section
   static const specialThanksTitle = "Special Thanks";
-
-  /// the content of the special thanks section in credits
-  static const specialThanks = "Federate One";
 
   /// Name of the fest
   static const festName = "Aadhya";

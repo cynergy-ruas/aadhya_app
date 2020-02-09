@@ -42,7 +42,6 @@ class _DetailPageWrapperState extends State<DetailPageWrapper> {
 
         return DetailPage(
           event: event,
-          day: 0,
         );
       },
     );

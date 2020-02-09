@@ -5,99 +5,116 @@ class SecondPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        // the about content title
-        Text(
-          Strings.aboutContentTitle,
-          style: Theme.of(context).textTheme.title.copyWith(
-            color: Theme.of(context).primaryColor
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // the about content title
+          Text(
+            Strings.aboutContentTitle,
+            style: Theme.of(context).textTheme.title.copyWith(
+              color: Theme.of(context).primaryColor
+            ),
           ),
-        ),
 
-        // gap
-        SizedBox(height: 20,),
+          // gap
+          SizedBox(height: 20,),
 
-        // the about content
-        Text(
-          Strings.aboutContent,
-          style: Theme.of(context).textTheme.body1,
-        ),
-
-        // gap
-        SizedBox(height: 40,),
-
-        // The fest theme description title
-        Text(
-          Strings.festThemeDescriptionTitle,
-          style: Theme.of(context).textTheme.title.copyWith(
-            color: Theme.of(context).primaryColor
+          // the about content
+          Text(
+            Strings.aboutContent,
+            style: Theme.of(context).textTheme.body1,
           ),
-        ),
 
-        // gap
-        SizedBox(height: 20,),
+          // gap
+          SizedBox(height: 40,),
 
-        // the fest theme description
-        Text(
-          Strings.festThemeDescription,
-          style: Theme.of(context).textTheme.body1
-        ),
-
-        // gap
-        SizedBox(height: 40,),
-
-        // Credits title
-        Text(
-          Strings.creditsTitle,
-          style: Theme.of(context).textTheme.title.copyWith(
-            color: Theme.of(context).primaryColor
+          // The fest theme description title
+          Text(
+            Strings.festThemeDescriptionTitle,
+            style: Theme.of(context).textTheme.title.copyWith(
+              color: Theme.of(context).primaryColor
+            ),
           ),
-        ),
 
-        // gap
-        SizedBox(height: 20,),
+          // gap
+          SizedBox(height: 20,),
 
-        // the developers title
-        Text(
-          Strings.developersTitle,
-          style: Theme.of(context).textTheme.headline.copyWith(
-            fontSize: 22
+          // the fest theme description
+          Text(
+            Strings.festThemeDescription,
+            style: Theme.of(context).textTheme.body1
           ),
-        ),
 
-        // gap
-        SizedBox(height: 10,),
+          // gap
+          SizedBox(height: 40,),
 
-        // the developers
-        Text(
-          Strings.developers,
-        ),
-
-        // gap
-        SizedBox(height: 20,),
-
-        // the developers title
-        Text(
-          Strings.specialThanksTitle,
-          style: Theme.of(context).textTheme.headline.copyWith(
-            fontSize: 22
+          // Credits title
+          Text(
+            Strings.creditsTitle,
+            style: Theme.of(context).textTheme.title.copyWith(
+              color: Theme.of(context).primaryColor
+            ),
           ),
-        ),
 
-        // gap
-        SizedBox(height: 10,),
+          // gap
+          SizedBox(height: 20,),
 
-        // the developers
-        Text(
-          Strings.specialThanks,
-        ),
+          // the developers title
+          Text(
+            Strings.developersTitle,
+            style: Theme.of(context).textTheme.headline.copyWith(
+              fontSize: 22
+            ),
+          ),
 
-        // gap (required)
-        SizedBox(height: 180,)
-      ],
+          // gap
+          SizedBox(height: 10,),
+
+          // the developers
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text(
+                "Shyamant Achar"
+              ),
+
+              Text(
+                "Tanishq Porwar"
+              )
+            ],
+          ),
+
+          // gap
+          SizedBox(height: 20,),
+
+          // the developers title
+          Text(
+            Strings.specialThanksTitle,
+            style: Theme.of(context).textTheme.headline.copyWith(
+              fontSize: 22
+            ),
+          ),
+
+          // gap
+          SizedBox(height: 10,),
+
+          // the special thanks content
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text(
+                "Federate One"
+              ),
+            ],
+          ),
+
+          // gap (required)
+          SizedBox(height: 180,)
+        ],
+      ),
     );
   }
 }
