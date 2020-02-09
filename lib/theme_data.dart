@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-const Color shadowColor = Color(0xffe5e5e5);
-
 ThemeData dwimayTheme = ThemeData(
   // The background color for major parts of the app (toolbars, tab bars, etc).
   primaryColor: Color(0xff1089ff),

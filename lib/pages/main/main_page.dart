@@ -1,9 +1,11 @@
 import 'package:dwimay/pages/about/about_page.dart';
 import 'package:dwimay/pages/announcements/announcements_page.dart';
 import 'package:dwimay/pages/events/events_page.dart';
+import 'package:dwimay/pages/faq/faq_page.dart';
 import 'package:dwimay/pages/login/login_page.dart';
 import 'package:dwimay/pages/main/collapsed_contents.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 /// The main page. It isn't technically a page, but it consists
@@ -33,6 +35,7 @@ class _MainPageState extends State<MainPage> {
       AboutPage(),
       EventsPage(),
       AnnouncementsPage(),
+      FAQPage()
     ];
 
     _currentPage = 0;
@@ -47,25 +50,23 @@ class _MainPageState extends State<MainPage> {
 
         // the bottom nav bar
         bottomNavigationBar: Container( // adding a shadow around the nav bar
-          height: 45,
-          decoration: BoxDecoration(
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                spreadRadius: 2,
-                blurRadius: 5,
-                color: Colors.black12
-              )
-            ]
-          ),
+          height: 48,
+          
 
           // the actual nav bar
           child: BottomNavigationBar(
+            // the background color
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+
+            // the type of the bar
+            type: BottomNavigationBarType.fixed,
+
             // the index of the highlighted item
             currentIndex: _currentPage,
 
             // theme of unselected icon
             unselectedIconTheme: IconThemeData(
-              color: Theme.of(context).backgroundColor,
+              color: Colors.grey,
             ),
 
             // the icons in the nav bar
@@ -87,6 +88,12 @@ class _MainPageState extends State<MainPage> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.notifications),
                 title: Container(),
+              ),
+
+              // the icon for the faq page
+              BottomNavigationBarItem(
+                icon: Icon(Icons.question_answer),
+                title: Container()
               )
             ],
 
