@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dwimay/pages/details/detail_page.dart';
 import 'package:dwimay/theme_data.dart';
 import 'package:dwimay/widgets/relative_delegate.dart';
@@ -18,7 +16,7 @@ class ListCard extends StatefulWidget {
   /// The hero tag. if [null], the tag will be the [Event] object
   final Object heroTag;
 
-  ListCard({@required this.event, @required this.day, this.heroTag});
+  ListCard({@required this.event, this.day, this.heroTag});
 
   @override
   _ListCardState createState() => _ListCardState();
@@ -50,14 +48,6 @@ class _ListCardState extends State<ListCard> {
     if (widget.event == null)
       return Container();
     
-    // calculating the index of the [datetimes] list 
-    // which contain the correct date and time given 
-    // the day of the event (which is relative to the)
-    // first day of the event
-    int index = 0;
-    if (widget.event.datetimes.length > 1)
-      index = min(widget.event.datetimes.length - 1, widget.day); // used to avoid IndexErrors
-    
     return GestureDetector(
       child: SizedBox(
         // setting the size of the box
@@ -70,7 +60,7 @@ class _ListCardState extends State<ListCard> {
           children: <Widget>[
             LayoutId(
               id: Slot.bottom,
-              child: _bottomContent(index: index),
+              child: _bottomContent(),
             ),
 
             LayoutId(
@@ -87,7 +77,7 @@ class _ListCardState extends State<ListCard> {
           transitionDuration: Duration(milliseconds: 500),
           pageBuilder: (_, __, ___) => DetailPage(
             event: widget.event,
-            day: index,
+            day: widget.day,
             heroTag:_heroTag,
           ),
           transitionsBuilder:
@@ -100,7 +90,7 @@ class _ListCardState extends State<ListCard> {
 
   /// The bottom content of the card. Consists of the event name
   /// and venue
-  Widget _bottomContent({@required int index}) =>
+  Widget _bottomContent() =>
     Card(
       elevation: 10.0,
       child: Padding(

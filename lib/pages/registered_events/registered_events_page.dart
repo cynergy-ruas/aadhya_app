@@ -64,7 +64,6 @@ class RegisteredEventsPage extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 40.0, right: 20),
                           child: ListCard(
                             event: event,
-                            day: 0,
                             heroTag: event.id + "${Random().nextInt(1000)}",
                           ),
                         );

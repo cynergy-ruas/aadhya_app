@@ -95,6 +95,9 @@ class Strings {
   /// Unknown error message
   static const unknownError = "Error occurred. Please try again";
 
+  /// invlaid URL message
+  static const invalidUrl = "URL is invalid.";
+
   /// Password reset page title
   static const passwordResetPageTitle = "Reset Password";
 
@@ -127,6 +130,9 @@ class Strings {
 
   /// The title of the collapsed sheet
   static const collapsedSheetTitle = "Pass";
+
+  /// When user has registered for an event
+  static const registered = "Registered";
 
   /// The title of the events page
   static const eventsPageTitle = "Events";
