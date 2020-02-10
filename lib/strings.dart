@@ -21,6 +21,9 @@ class Strings {
   /// The forgot password text
   static const forgotPassword = "forgot password?";
 
+  /// The warning text
+  static const warning = "Warning";
+
   /// The password field hint
   static const passwordHint = "password";
 
@@ -67,6 +70,9 @@ class Strings {
       "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     },
   ];
+  
+  /// Error message when data cannot be retrieved from townscript API
+  static const townscriptNotRecognized = "Cannot retrieve registration ids. QR codes in townscript confirmation email will not be recognized.";
 
   /// Wrong email address error message
   static const invalidEmailMessage = "Looks like the email address is wrong. Please try again.";

@@ -11,7 +11,10 @@ class QrScanForm extends StatefulWidget {
   /// The list of events to be used in the form
   final List<Event> events;
 
-  QrScanForm({@required this.onSelected, @required this.events});
+  /// The initial text of the form
+  final String initialFormText;
+
+  QrScanForm({@required this.onSelected, @required this.events, @required this.initialFormText});
 
   @override
   _QrScanFormState createState() => _QrScanFormState();
@@ -30,7 +33,7 @@ class _QrScanFormState extends State<QrScanForm> {
     super.initState();
 
     // initializing
-    _eventsController = TextEditingController();
+    _eventsController = TextEditingController(text: widget.initialFormText);
     _events = widget.events.where(
       (event) {
         // if the user is a level 3 or above user

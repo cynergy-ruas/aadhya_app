@@ -3,7 +3,6 @@ import 'package:dwimay/widgets/build_button.dart';
 import 'package:dwimay/widgets/loading_widget.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -78,9 +77,7 @@ class _UserContents extends StatelessWidget {
                 child: Center(
                   child: QrImage(
                     // the data being represented as a QR code
-                    data: _encrypt(
-                      email.substring(0, email.indexOf("@")) + "," + (regEventIds?.join(",") ?? "")
-                    ),
+                    data: email.substring(0, email.indexOf("@")) + "," + (regEventIds?.join(",") ?? ""),
 
                     // the size
                     size: qrCodeSize,
@@ -107,13 +104,6 @@ class _UserContents extends StatelessWidget {
           ),
         ),
     );
-  }
-
-  /// function to encrypt a [string]
-  String _encrypt(message) {
-    var bytes = utf8.encode(message);
-    var base64Str = base64.encode(bytes);
-    return base64Str;
   }
 }
 

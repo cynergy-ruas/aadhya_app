@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -75,22 +74,8 @@ class _QrScanSegmentState extends State<QrScanSegment> {
     // or else the string about the error is stored
     String res = await QrScanner.scan();
 
-    // if the scan is successful then we decrypt the code
-    // the decrypted code is stored in result
-    // if the scan doesnt complete then
-    // decrypt returns "INVALID"
-    String decoded = _decrypt(res);
-
-    if (decoded != null) {
-      widget.onScan(decoded);
+    if (res != QrScanner.CameraAccessDenied && res != QrScanner.UnknownError && res != QrScanner.UserCancelled) {
+      widget.onScan(res);
     }
-  }
-
-  /// function to decrypt the [string]
-  String _decrypt(String base64Str) {
-    var len = base64Str.length;
-    var output =
-        (len % 4 == 0) ? utf8.decode(base64Decode(base64Str)) : null;
-    return output;
   }
 }
