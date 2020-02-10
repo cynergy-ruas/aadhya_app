@@ -30,7 +30,7 @@ class Credits extends StatelessWidget {
 
         // the developers title
         Text(
-          Strings.specialThanksTitle,
+          Strings.poweredByTitle,
           style: Theme.of(context).textTheme.title.copyWith(
             color: Theme.of(context).primaryColor
           ),
