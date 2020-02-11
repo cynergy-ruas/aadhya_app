@@ -220,6 +220,8 @@ exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
     // getting the data from the request
     const body = JSON.parse(req.body.data);
 
+    console.log(`payload: ${JSON.stringify(body)}`);
+
     // updating data
 
     // townscript api can send an array of dictionaries containing the data.
@@ -294,6 +296,7 @@ async function checkAndCreateUserDocument({emailid}) {
  * Updates the registered events for a user.
  * @param emailid The email id of the user.
  * @param eventCode The event code to be added.
+ * @param registrationId The registration id provided by townscript
  */
 async function updateDataForUser({emailid, eventCode, registrationId}) {
     // getting reference to user document
