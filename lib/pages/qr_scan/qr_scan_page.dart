@@ -33,7 +33,7 @@ class _QrScanPageState extends State<QrScanPage> {
   List<String> _regIds;
 
   /// The future that is used to get the info from townscript
-  Future<List<String>> _apiFuture;
+  Future<List<AttendeeInfo>> _apiFuture;
 
   /// The initial text of the form used for level 3+ users
   String _initialFormText;
@@ -54,7 +54,10 @@ class _QrScanPageState extends State<QrScanPage> {
       _eventid = User.instance.getEventId();
 
     // loading the data
-    _apiFuture = TownscriptAPI.instance.getRegisteredUsers(eventCode: _eventid);
+    if (_eventid != null)
+      _apiFuture = TownscriptAPI.instance.getRegisteredUsers(eventCode: _eventid);
+    else
+      _apiFuture = Future.delayed(Duration(milliseconds: 100)).then((_) => []);
   }
 
   @override
@@ -78,16 +81,21 @@ class _QrScanPageState extends State<QrScanPage> {
     else 
       body = _contents();
 
-    return FutureBuilder(
+    return FutureBuilder<List<AttendeeInfo>>(
       future: _apiFuture,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<AttendeeInfo>> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          _regIds = snapshot.data;
+          // if the info was loaded without any error, update [_regIds] list
+          if (snapshot.data != null)
+            _regIds = snapshot.data.map((info) => info.registrationId).toList();
+
+          // else, show alert if not shown already for the current event
           if (snapshot.data == null && ! _alertShown) {
             _alertShown = true;
             _showAlert();
           }
 
+          // returning the body
           return body;
         }
         else

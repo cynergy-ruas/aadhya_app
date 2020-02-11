@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dwimay/pages/details/detail_page.dart';
 import 'package:dwimay/theme_data.dart';
 import 'package:dwimay/widgets/relative_delegate.dart';
@@ -38,7 +40,7 @@ class _ListCardState extends State<ListCard> {
     super.initState();
 
     // setting the hero tag
-    _heroTag = widget.heroTag ?? widget.event;
+    _heroTag = widget.heroTag ?? widget.event.id + Random().nextInt(1000).toString();
   }
 
   @override

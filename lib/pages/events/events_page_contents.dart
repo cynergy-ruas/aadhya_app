@@ -87,6 +87,7 @@ class _EventsPageContentsState extends State<EventsPageContents> {
                 ..addAll(_eventsForDepartment(department: Department.All, displayName: Strings.eventsForAll))
                 ..addAll(_eventsForDepartment(department: Department.AerospaceAndAutomotive, displayName: Strings.aeroAndAuto))
                 ..addAll(_eventsForDepartment(department: Department.ComputerScience, displayName: Strings.cse))
+                ..addAll(_eventsForDepartment(department: Department.Civil, displayName: Strings.civil))
                 ..addAll(_eventsForDepartment(department: Department.ElectricAndElectronics, displayName: Strings.electricAndElectronics))
                 ..addAll(_eventsForDepartment(department: Department.Design, displayName: Strings.design))
                 ..addAll(_eventsForDepartment(department: Department.Mechanical, displayName: Strings.mechanical))

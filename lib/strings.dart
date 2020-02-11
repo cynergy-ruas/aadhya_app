@@ -143,6 +143,9 @@ class Strings {
   /// the title for the events for CS
   static const cse = "Computer Science";
 
+  /// the title for the events for Civil
+  static const civil = "Civil";
+
   /// the title for the events for EC and EEE
   static const electricAndElectronics = "Electrical and Electronics";
 
