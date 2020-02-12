@@ -208,13 +208,13 @@ exports.publishNotification = functions.https.onCall(async (data, context) => {
  */
 exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
 
-    async function updateData({emailid, eventCode, registrationId}) {
+    async function updateData({emailid, eventCode, registrationId, answerList}) {
         // checking if the user document exists in users collection, and 
         // creating the same if it does not exist.
         await checkAndCreateUserDocument({emailid: emailid});
 
         // updating the data for the user
-        await updateDataForUser({emailid: emailid, eventCode: eventCode, registrationId: registrationId});
+        await updateDataForUser({emailid: emailid, eventCode: eventCode, registrationId: registrationId, answerList: answerList});
     }
 
     // getting the data from the request
@@ -231,7 +231,7 @@ exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
 
         const promises = body.map((data) => {
             console.log(`received request with email: ${data.userEmailId}`);
-            return updateData({emailid: data.userEmailId, eventCode: data.eventCode, registrationId: data.registrationId})
+            return updateData({emailid: data.userEmailId, eventCode: data.eventCode, registrationId: data.registrationId, answerList: data.answerList})
             .catch((err) => {
                 statusCode = 202;
                 console.log(`error updating events for the user ${data.userEmailId}`);
@@ -247,7 +247,7 @@ exports.updateEventsForUser = functions.https.onRequest(async (req, res) => {
 
         try {
             console.log(`received request with email: ${body.userEmailId}`);
-            await updateData({emailid: body.userEmailId, eventCode: body.eventCode, registrationId: body.registrationId});
+            await updateData({emailid: body.userEmailId, eventCode: body.eventCode, registrationId: body.registrationId, answerList: body.answerList});
             res.status(200).send();
         }
         catch (err) {
@@ -285,6 +285,7 @@ async function checkAndCreateUserDocument({emailid}) {
         await db.collection("users").doc(emailid).create({
             regEvents: [],
             regEventIds: [],
+            passes: [],
         });
     }
     catch (err) {
@@ -297,27 +298,50 @@ async function checkAndCreateUserDocument({emailid}) {
  * @param emailid The email id of the user.
  * @param eventCode The event code to be added.
  * @param registrationId The registration id provided by townscript
+ * @param answerList The list of answers of the form asked in townscript
  */
-async function updateDataForUser({emailid, eventCode, registrationId}) {
+async function updateDataForUser({emailid, eventCode, registrationId, answerList}) {
     // getting reference to user document
     const docRef = db.collection("users").doc(emailid);
 
+    // getting the data from document
+    const docData = (await docRef.get()).data();
+
     // getting the registered events from the document
-    const regEvents = (await docRef.get()).data().regEvents;
+    const regEvents = docData.regEvents;
 
     // getting the registered event ids (townscript ids)
-    const regEventIds = (await docRef.get()).data().regEventIds;
+    const regEventIds = docData.regEventIds;
 
-    // appending event code from request to `regEvents`
-    regEvents.push(eventCode);
+    // getting the passes from the document
+    const passes = docData.passes;
 
-    // appending registration id from request to `regEventIds`
-    regEventIds.push(registrationId);
+    // checking if the event is a pass or not by getting the pass document using
+    // the `eventCode`. If such a document exists, then the event is a pass
+    const isPass = ! (await db.collection("passes").where("id", "==", eventCode).get()).empty;
+
+    // if its not a pass, treat it as a normal event
+    if (! isPass) {
+        // appending event code from request to `regEvents`
+        regEvents.push(eventCode);
+
+        // appending registration id from request to `regEventIds`
+        regEventIds.push(registrationId);
+    } else {
+        let value = [];
+        answerList.forEach(
+            (qa) => value = value.concat(qa["answer"].split(","))
+        );
+
+        // if it is a pass, add it to the passes field
+        passes[eventCode] = value;
+    }
 
     // updating the document
     await docRef.update({
         regEvents: regEvents,
         regEventIds: regEventIds,
+        passes: passes
     });
 }
 
