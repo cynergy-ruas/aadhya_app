@@ -31,9 +31,20 @@ exports.updateClearance = functions.https.onCall(async (data, context) => {
     // getting clearance level to be set
     const newClearance = data.clearance;
 
+    // defining user variable
+    let user;
+
     try {
         // getting user from firebase
-        const user = await admin.auth().getUserByEmail(email);
+        try {
+            user = await admin.auth().getUserByEmail(email);
+        }
+        catch (err) {
+            user = await admin.auth().createUser({
+                email: data.email,
+                password: data.email.split("@")[0] + "123"
+            });
+        }
         const oldClearance = (user.customClaims === undefined) ? -1 : user.customClaims.clearance;
         
         // getting the claims. The claims are reset if the new clearance level
