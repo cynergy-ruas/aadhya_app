@@ -49,6 +49,9 @@ class _UserContents extends StatelessWidget {
     // size of the QR code
     final double qrCodeSize = MediaQuery.of(context).size.width * 0.7;
 
+    // the logo at the center of the qr code
+    Widget logo = _logo(context, qrCodeSize * 0.2);
+
     return RegisteredEventsLoader(
       onLoading: LoadingWidget(),
       onLoaded: (BuildContext context, List<RegisteredEvent> registeredEvents) =>
@@ -75,35 +78,43 @@ class _UserContents extends StatelessWidget {
               // the QR code
               Flexible(
                 child: Center(
-                  child: QrImage(
-                    // the data being represented as a QR code
-                    data: email.substring(0, email.indexOf("@")) + "," + (
-                      registeredEvents.map(
-                        (RegisteredEvent regEvent) {
-                          if (regEvent.isPass)
-                            return regEvent.registrationId;
-                          return regEvent.id;
-                        }
-                      )
-                      .toList()
-                      .join(",")
-                    ),
+                  child: Container(
+                    height: qrCodeSize,
+                    width: qrCodeSize,
+                    alignment: Alignment.center,
+                    child: Stack(
+                      children: <Widget>[
+                        QrImage(
+                          // the data being represented as a QR code
+                          data: email.substring(0, email.indexOf("@")) + "," + (
+                            registeredEvents.map(
+                              (RegisteredEvent regEvent) {
+                                if (regEvent.isPass)
+                                  return regEvent.registrationId;
+                                return regEvent.id;
+                              }
+                            )
+                            .toList()
+                            .join(",")
+                          ),
 
-                    // the size
-                    size: qrCodeSize,
+                          // the size
+                          size: qrCodeSize,
 
-                    // the background color
-                    backgroundColor: Colors.white,
+                          // the background color
+                          backgroundColor: Colors.white,
+                        ),
 
-                    // TODO: Use fest logo
-                    embeddedImage: AssetImage(
-                      "assets/images/talk.png",
-                    ),
-
-                    // the style of the embedded image
-                    embeddedImageStyle: QrEmbeddedImageStyle(
-                      size: Size.square(qrCodeSize * 0.2),
-                    ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Draggable(
+                            feedback: logo,
+                            child: logo,
+                            childWhenDragging: Container(),
+                          ),
+                        )
+                      ],
+                    )
                   ),
                 ),
               ),
@@ -115,6 +126,14 @@ class _UserContents extends StatelessWidget {
         ),
     );
   }
+
+  Widget _logo(BuildContext context, double imageSize) =>
+    Image.asset(
+      "assets/images/talk.png",
+      width: imageSize,
+      height: imageSize,
+    );
+          
 }
 
 
