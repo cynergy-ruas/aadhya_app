@@ -1,5 +1,6 @@
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class QrScanSegment extends StatefulWidget {
@@ -56,11 +57,13 @@ class _QrScanSegmentState extends State<QrScanSegment> {
           SizedBox(height: 20,),
 
           // the result of scanning
-          Text(
-            widget.displayText,
-            style: Theme.of(context).textTheme.headline.copyWith(
-              color: widget.textColor,
-            )
+          MarkdownBody(
+            data: widget.displayText,
+            styleSheet: MarkdownStyleSheet(
+              p: Theme.of(context).textTheme.headline.copyWith(
+                color: widget.textColor,
+              )
+            ),
           )
         ],
       ),

@@ -56,8 +56,6 @@ class _QrScanPageState extends State<QrScanPage> {
     if (User.instance.getClearanceLevel() == 1)
       _eventid = User.instance.getEventId();
 
-    print(_eventid);
-
     // loading the data
     if (_eventid != null)
       _apiFuture = TownscriptAPI.instance.getRegisteredUsers(eventCode: _eventid, includePasses: true);
@@ -91,7 +89,6 @@ class _QrScanPageState extends State<QrScanPage> {
       builder: (BuildContext context, AsyncSnapshot<List<AttendeeInfo>> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           // if the info was loaded without any error, update [_regIds] and [info] list
-          print(snapshot.data);
           if (snapshot.data != null) {
             info = snapshot.data;
             _regIds = snapshot.data.map((info) => info.registrationId).toList();
@@ -173,41 +170,7 @@ class _QrScanPageState extends State<QrScanPage> {
                     textColor: _textColor,
                     onScan: (String value) => 
                       setState(() {
-                        // for detecting the app generated QR code
-                        if (value.split(",").contains(_eventid)) {
-                          _displayText = value.split(",")[0] + " " + Strings.qrScanSuccess;
-                          _textColor = Colors.green;
-                        }
-                        // for detecting the QR code in townscript confirmation emails
-                        // and passes
-                        else if (_regIds != null && _regIds.contains(value)) {
-                          // getting the index of the registration id in [_regIds]
-                          int index = _regIds.indexOf(value);
-
-                          // checking if the [AttendeeInfo] object has a populated answer list.
-                          // if it has, then the QR scanner has detected a pass
-                          if (info[index].answerList != null && info[index].answerList.length != 0) {
-                            _displayText = "Pass Detected!\nEvents: ${info[index].getAllAnswers(separator: "\n")}";
-                            _textColor = Colors.green;
-                          }
-                          // else, it has detected an individual event payment
-                          else {
-                            _displayText = "User " + Strings.qrScanSuccess;
-                            _textColor = Colors.green;
-                          }
-                        }
-                        // failed scan
-                        else {
-                          List<String> splitVal = value.split(",");
-
-                          if (splitVal[0] != null && double.tryParse(splitVal[0]) != null) {
-                            _displayText = "User " + Strings.qrScanFail;
-                          }
-                          else {
-                            _displayText = splitVal[0] + " " + Strings.qrScanFail;
-                          }
-                          _textColor = Colors.red;
-                        }
+                        _validate(value);
                       }),
                   ),
                 ),
@@ -254,4 +217,70 @@ class _QrScanPageState extends State<QrScanPage> {
           )
       )
     );
+
+  void _validate(String value) {
+    // splitting the qr code at comma
+    List<String> values = value.split(",");
+
+    // if the length of the split is 1, that means the scanner is scanning
+    // a QR code in the townscript confirmation email
+    if (values.length == 1) {
+      // checking if the registration id in the QR code is valid
+      if (_regIds.contains(values[0])) {
+
+        // getting the index of the registration id in [_regIds]
+        int index = _regIds.indexOf(values[0]);
+        _displayText = "Pass Detected!\nEvents:\n- ${info[index].getAllAnswers().join("\n- ")}";
+        _textColor = Colors.green;
+      }
+      else {
+        _displayText = "User " + Strings.qrScanFail;
+        _textColor = Colors.red;
+      }
+    }
+
+    // if the length of the split is greater than 1, that means the scanner
+    // is scanning a app generated QR code
+    else if (values.length > 1) {
+      // checking if the current event id is in the split
+      // this is for an individual event
+      if (values.contains(_eventid)) {
+        _displayText = values[0] + " " + Strings.qrScanSuccess;
+        _textColor = Colors.green;
+      }
+
+      // checking for passes, by getting the intersection of the registration ids
+      // from townscript and the split, since the registration id of the pass
+      // will be in the split, and if their are multiple passes, then there will
+      // be mulitiple intersections
+      else if (_regIds.toSet().intersection(values.toSet()).length != 0) {
+        // getting the intersecting ids
+        List<String> detectedPassRegIds = _regIds.toSet().intersection(values.toSet()).toList();
+
+        // initializing the variable that will contain all the event names
+        String eventNames = "";
+        
+        for (String regId in detectedPassRegIds) {
+          // getting the index of the registration id in [_regIds]
+          int index = _regIds.indexOf(regId);
+
+          if (info[index].answerList != null && info[index].answerList.length != 0) 
+            eventNames += "- " + info[index].getAllAnswers().join("\n- ") + "\n";
+        }
+        
+        _displayText = "Pass Detected!\nEvents:\n$eventNames";
+        _textColor = Colors.green;
+      }
+
+      else {
+        _displayText = values[0] + " " + Strings.qrScanFail;
+        _textColor = Colors.red;
+      }
+    }
+
+    else {
+      _displayText = "QR code not recognised";
+      _textColor = Colors.red;
+    }
+  }
 }
