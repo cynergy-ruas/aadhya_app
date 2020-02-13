@@ -101,6 +101,9 @@ class Strings {
   /// The title of the qr code
   static const qrTitle = "Your pass for the events:";
 
+  /// The title of the passes view in the events page
+  static const passesViewTitle = "Check out these passes!";
+
   /// Title of the QR scan page
   static const qrScanPageTitle = "Scan QR code";
 

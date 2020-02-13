@@ -10,9 +10,16 @@ import 'list_card.dart';
 /// Shows all the events in a brief manner.
 class EventsPageContents extends StatefulWidget {
 
+  /// The events
   final List<Event> events;
 
-  EventsPageContents({@required this.events});
+  /// The passes
+  final List<Pass> passes;
+
+  /// The list of registered events
+  final List<RegisteredEvent> regEvents;
+
+  EventsPageContents({@required this.events, @required this.passes, this.regEvents});
 
   @override
   _EventsPageContentsState createState() => _EventsPageContentsState();
@@ -26,6 +33,9 @@ class _EventsPageContentsState extends State<EventsPageContents> {
   /// the events of a day
   List<Event> events;
 
+  /// The list of registered passes
+  List<RegisteredEvent> _regPasses;
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +45,9 @@ class _EventsPageContentsState extends State<EventsPageContents> {
 
     // initializing the events of a day
     events = _filterEvents(day: _selected);
+
+    // initializing the list of registered passes
+    _regPasses = widget.regEvents?.where((RegisteredEvent event) => event.isPass)?.toList();
   }
 
   @override
@@ -68,39 +81,93 @@ class _EventsPageContentsState extends State<EventsPageContents> {
 
           // gap
           SizedBox(height: 20,),
+        ]
+        ..addAll(
+          (_selected < 4)
+          ? [
+              // the events
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
 
-          // the events
-          Expanded(
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-
-                  // The horizontal carousel having all events
-                  _allEventsCarousel(),
-                  
-                  // gap
-                  SizedBox(height: 40,),  
-                ]
-                // the following are the events per department
-                ..addAll(_eventsForDepartment(department: Department.All, displayName: Strings.eventsForAll))
-                ..addAll(_eventsForDepartment(department: Department.AerospaceAndAutomotive, displayName: Strings.aeroAndAuto))
-                ..addAll(_eventsForDepartment(department: Department.ComputerScience, displayName: Strings.cse))
-                ..addAll(_eventsForDepartment(department: Department.Civil, displayName: Strings.civil))
-                ..addAll(_eventsForDepartment(department: Department.ElectricAndElectronics, displayName: Strings.electricAndElectronics))
-                ..addAll(_eventsForDepartment(department: Department.Design, displayName: Strings.design))
-                ..addAll(_eventsForDepartment(department: Department.Mechanical, displayName: Strings.mechanical))
-                ..add(SizedBox(height: 100,))
-                ,
-              ),
-            ),
-          )
-          
-        ],
+                      // The horizontal carousel having all events
+                      _allEventsCarousel(),
+                      
+                      // gap
+                      SizedBox(height: 40,),  
+                    ]
+                    // the following are the events per department
+                    ..addAll(_eventsForDepartment(department: Department.All, displayName: Strings.eventsForAll))
+                    ..addAll(_eventsForDepartment(department: Department.AerospaceAndAutomotive, displayName: Strings.aeroAndAuto))
+                    ..addAll(_eventsForDepartment(department: Department.ComputerScience, displayName: Strings.cse))
+                    ..addAll(_eventsForDepartment(department: Department.Civil, displayName: Strings.civil))
+                    ..addAll(_eventsForDepartment(department: Department.ElectricAndElectronics, displayName: Strings.electricAndElectronics))
+                    ..addAll(_eventsForDepartment(department: Department.Design, displayName: Strings.design))
+                    ..addAll(_eventsForDepartment(department: Department.Mechanical, displayName: Strings.mechanical))
+                    ..add(SizedBox(height: 100,))
+                    ,
+                  ),
+                ),
+              )
+            ]
+          : [
+              // building the view for passes
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.only(left: 20.0),
+                  physics: BouncingScrollPhysics(),
+                  child: _buildPassesView()
+                ),
+              )
+            ]
+        ),
       ),
     );
   }
+
+  /// Builds the view to show the passes
+  Widget _buildPassesView() =>
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        // title
+        Text(
+          Strings.passesViewTitle,
+          style: Theme.of(context).textTheme.subhead.copyWith(
+            fontWeight: FontWeight.bold
+          ),
+        ),
+
+        // gap
+        SizedBox(height: 20,),
+
+        // the passes
+        ListView.separated(
+          shrinkWrap: true,
+          padding: EdgeInsets.only(right: 20),
+          physics: BouncingScrollPhysics(),
+          itemCount: widget.passes.length,
+          itemBuilder: (BuildContext context, int index) {
+            RegisteredEvent regPass = _regPasses?.firstWhere((regPass) => regPass.id == widget.passes[index].id, orElse: () => null);
+
+            // the card
+            return Padding(
+              padding: const EdgeInsets.only(left: 30, right: 10),
+              child: ListCard(pass: widget.passes[index], passEventNames: regPass?.eventNames ?? [],),
+            );
+          },
+            
+          separatorBuilder: (BuildContext context, int index) => 
+            // gap
+            SizedBox(height: 10,)
+        ),
+
+        SizedBox(height: 130,)
+      ],
+    );
 
   /// Builds the horizontal [ListView] for all the events
   Widget _allEventsCarousel() {
@@ -150,7 +217,7 @@ class _EventsPageContentsState extends State<EventsPageContents> {
 
       // the events
       Padding(
-        padding: const EdgeInsets.only(left:20.0),
+        padding: const EdgeInsets.only(left: 20.0),
         child: (_events.length > 0) // if there are events, then use a list view
                 ? ListView.separated(
                     shrinkWrap: true,
@@ -179,13 +246,13 @@ class _EventsPageContentsState extends State<EventsPageContents> {
   Widget _tabBar () {
 
     /// Function that builds a tab bar button
-    Widget tabButton({int day}) {
+    Widget tabButton({int day, String title, VoidCallback onTap}) {
       // wrapping it in an [InkWell] to make it tappable
       return InkWell(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            "Day " + day.toString(),
+            (title == null) ? "Day " + day.toString() : title,
             style: Theme.of(context).textTheme.subhead.copyWith(
               color: (_selected == day) ? Theme.of(context).primaryColor : Theme.of(context).textTheme.body2.color,
               fontWeight: FontWeight.bold,
@@ -199,9 +266,10 @@ class _EventsPageContentsState extends State<EventsPageContents> {
           if (day != _selected)
             setState(() {
               _selected = day;
-              events = _filterEvents(day: _selected);
+              if (day < 4)
+                events = _filterEvents(day: _selected);
             });
-        },
+        }
       );
     }
 
@@ -211,17 +279,28 @@ class _EventsPageContentsState extends State<EventsPageContents> {
         tabButton(day: 1),
 
         // gap
-        SizedBox(width: 20,),
+        SizedBox(width: 10,),
 
         // day 2 tab
         tabButton(day: 2),
 
         // gap
-        SizedBox(width: 20),
+        SizedBox(width: 10),
 
         // day 2 tab
         tabButton(day: 3),
-      ],
+      ]
+      ..addAll(
+        (widget.passes != null && widget.passes.length != 0)
+        ? [
+            // gap
+            SizedBox(width: 10),
+            
+            // passes tab
+            tabButton(day: 4, title: "Passes")
+          ]
+        : []
+      ),
     );
   }
 

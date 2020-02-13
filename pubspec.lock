@@ -106,7 +106,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "7ccb3a0e5710bbb9e7cb9617a4aa48f29158c272"
+      resolved-ref: "7a64f4d36ff9e78cb6526def375a78a851b96f91"
       url: "https://github.com/cynergy-ruas/dwimay_app_backend.git"
     source: git
     version: "0.0.1"

@@ -16,8 +16,20 @@ class EventsPage extends StatelessWidget {
       onLoading: LoadingWidget(),
 
       onLoaded: (List<Event> events, List<Pass> passes) {
-        return EventsPageContents(
-          events: events,
+        if (! User.instance.isLoggedIn || User.instance.getClearanceLevel() != 0) 
+          return EventsPageContents(
+            events: events,
+            passes: passes,
+          );
+
+        return RegisteredEventsLoader(
+          onLoading: LoadingWidget(),
+          onLoaded: (BuildContext context, List<RegisteredEvent> regEvents) =>
+            EventsPageContents(
+              events: events,
+              passes: passes,
+              regEvents: regEvents,
+            ),
         );
       },
 
