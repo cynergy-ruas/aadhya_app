@@ -129,7 +129,7 @@ class _UserContents extends StatelessWidget {
 
   Widget _logo(BuildContext context, double imageSize) =>
     Image.asset(
-      "assets/images/talk.png",
+      "assets/images/talk.png", // TODO: use fest logo
       width: imageSize,
       height: imageSize,
     );
