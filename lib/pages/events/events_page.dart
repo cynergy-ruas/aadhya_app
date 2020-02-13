@@ -15,7 +15,7 @@ class EventsPage extends StatelessWidget {
 
       onLoading: LoadingWidget(),
 
-      onLoaded: (List<Event> events) {
+      onLoaded: (List<Event> events, List<Pass> passes) {
         return EventsPageContents(
           events: events,
         );

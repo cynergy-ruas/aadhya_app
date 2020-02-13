@@ -35,7 +35,7 @@ class _DetailPageWrapperState extends State<DetailPageWrapper> {
       beginLoad: true,
       bloc: _bloc,
       onLoading: Scaffold(body: Center(child: LoadingWidget()),),
-      onLoaded: (List<Event> events) {
+      onLoaded: (List<Event> events, List<Pass> passes) {
 
         // getting the event from the event id
         Event event = events.firstWhere((event) => event.id == widget.eventID);

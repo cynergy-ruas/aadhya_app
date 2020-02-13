@@ -61,11 +61,16 @@ class PublishingFormState extends State<PublishingForm> {
     // if the user is a coordinator, setting [_eventid] to the event
     // the coordinator is managing
     if (User.instance.getClearanceLevel() == 1)
-      _event = events.firstWhere((event) => event.id == User.instance.claims["eventID"]);
+      _event = events.firstWhere((event) => event.id == User.instance.claims["eventID"], orElse: () => null);
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_event == null && User.instance.getClearanceLevel() == 1) {
+      return Center(
+        child: Text(Strings.level1ProfileErrorSubtitle),
+      );
+    }
     return Form(
       key: formKey,
       child: Column(

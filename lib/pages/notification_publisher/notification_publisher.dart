@@ -49,7 +49,7 @@ class _NotificationPublisherState extends State<NotificationPublisher> {
         ),
 
       // action performed when loaded
-      onLoaded: (List<Event> events) => 
+      onLoaded: (List<Event> events, List<Pass> passes) => 
         _Contents(
           onBackPressed: widget.onBackPressed,
           formKey: _formKey,

@@ -18,6 +18,13 @@ class DetailPageContents extends StatefulWidget {
   /// The event whose details is to be displayed
   final Event event;
 
+  /// The pass whose details is to be displayed
+  final Pass pass;
+
+  /// If a pass is being represented, The list of all the names of the events 
+  /// the pass offers
+  final List<String> passEventNames;
+
   /// the index to be used to index the current datetime
   final int index;
 
@@ -25,7 +32,11 @@ class DetailPageContents extends StatefulWidget {
   final Object heroTag;
 
 
-  DetailPageContents({@required this.event, @required this.heroTag, @required this.index, @required this.headerHeight});
+  DetailPageContents({this.pass, this.event, this.heroTag, this.index, this.passEventNames, @required this.headerHeight}) : 
+    assert((event != null) ^ (pass != null),
+           "Both pass and event cannot be given at the same time"),
+    assert(pass == null || passEventNames != null, 
+           "names of events that the pass offers must be given.");
 
   @override
   _DetailPageContentsState createState() => _DetailPageContentsState();
@@ -42,13 +53,19 @@ class _DetailPageContentsState extends State<DetailPageContents> {
   /// shown or not
   bool _showRegistrationButton;
 
+  /// Boolean that defines whether a pass is being displayed or an event
+  bool _isPass;
+
   @override
   void initState() {
     super.initState();
 
+    // initializing [_isPass]
+    _isPass = widget.pass != null;
+
     // initializing [_showRegistrationButton]
     if (User.instance.isLoggedIn) {
-      if (User.instance.regEventIDs != null && User.instance.regEventIDs.contains(widget.event.id))
+      if (User.instance.regEventIDs != null && User.instance.regEventIDs.contains(widget.event?.id ?? widget.pass.id))
         _showRegistrationButton = false;
       else
         _showRegistrationButton = true;
@@ -67,26 +84,28 @@ class _DetailPageContentsState extends State<DetailPageContents> {
         PageHeader(
           height: widget.headerHeight,
           title: Text(
-            widget.event.name,
+            widget.event?.name ?? widget.pass.name,
             style: Style.titleTextStyle,
           ),
 
-          subtitle: MultilineSubtitle(
-            data: [
-              MultilineSubtitleData(
-                icon: Icons.location_on,
-                text: "Venue: " + widget.event.venue
-              ),
+          subtitle: (! _isPass)
+          ? MultilineSubtitle(
+              data: [
+                MultilineSubtitleData(
+                  icon: Icons.location_on,
+                  text: "Venue: " + widget.event.venue
+                ),
 
-              MultilineSubtitleData(
-                icon: Icons.alarm,
-                text: widget.event.formatDate(index: widget.index) + ", " + widget.event.getTime(index: widget.index)
-              )
-            ],
-          ),
+                MultilineSubtitleData(
+                  icon: Icons.alarm,
+                  text: widget.event.formatDate(index: widget.index) + ", " + widget.event.getTime(index: widget.index)
+                )
+              ]
+            )
+          : null,
 
           thumbnail: Image.asset(
-            "assets/images/${widget.event.type}.png",
+            (! _isPass) ? "assets/images/${widget.event.type}.png" : "assets/images/competition.png", // TODO: Use pass thumbnail
             width: thumbnailHeight,
             height: thumbnailWidth,
           ),
@@ -117,7 +136,7 @@ class _DetailPageContentsState extends State<DetailPageContents> {
 
               // event description
               MarkdownBody(
-                data: widget.event.description,
+                data: widget.event?.description ?? widget.pass.description,
                 styleSheet: MarkdownStyleSheet(
                   p: Theme.of(context).textTheme.body1,
                 ),
@@ -133,8 +152,9 @@ class _DetailPageContentsState extends State<DetailPageContents> {
                   data: Strings.registerButton,
                   onPressed: () async {
                     // launching URL in browser
-                    if (await canLaunch(widget.event.registrationLink))
-                      await launch(widget.event.registrationLink);
+                    String link = widget.event?.registrationLink ?? widget.pass.registrationLink;
+                    if (await canLaunch(link))
+                      await launch(link);
                     else
                       Scaffold.of(context).showSnackBar(
                         SnackBar(
@@ -144,27 +164,49 @@ class _DetailPageContentsState extends State<DetailPageContents> {
                       );
                   },
                 ) 
-              :
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    // registered text
-                    Text(
-                      Strings.registered,
-                      style: Style.headerTextStyle.copyWith(
-                        color: Colors.grey
-                      ),
-                    ),
+              : (
+                  (! _isPass)
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        // registered text
+                        Text(
+                          Strings.registered,
+                          style: Style.headerTextStyle.copyWith(
+                            color: Colors.grey
+                          ),
+                        ),
 
-                    // icon
-                    SizedBox(width: 20,),
+                        // icon
+                        SizedBox(width: 20,),
 
-                    // check icon
-                    Icon(
-                      FontAwesomeIcons.check,
-                      color: Colors.grey,
+                        // check icon
+                        Icon(
+                          FontAwesomeIcons.check,
+                          color: Colors.grey,
+                        )
+                      ] 
                     )
-                  ] 
+                  : 
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "EVENTS",
+                        style: Style.headerTextStyle,
+                      ),
+
+                      // separator
+                      _separator(),
+
+                      MarkdownBody(
+                        data: "- " + widget.passEventNames.join("\n- "),
+                        styleSheet: MarkdownStyleSheet(
+                          p: Theme.of(context).textTheme.body1,
+                        ),
+                      )
+                    ]
+                  )
                 )
             ),
           ),

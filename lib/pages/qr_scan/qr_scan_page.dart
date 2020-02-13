@@ -32,6 +32,9 @@ class _QrScanPageState extends State<QrScanPage> {
   /// as a mail from townscript as well, this list is used in validating that QR code.
   List<String> _regIds;
 
+  /// The attendee information
+  List<AttendeeInfo> info;
+
   /// The future that is used to get the info from townscript
   Future<List<AttendeeInfo>> _apiFuture;
 
@@ -53,9 +56,11 @@ class _QrScanPageState extends State<QrScanPage> {
     if (User.instance.getClearanceLevel() == 1)
       _eventid = User.instance.getEventId();
 
+    print(_eventid);
+
     // loading the data
     if (_eventid != null)
-      _apiFuture = TownscriptAPI.instance.getRegisteredUsers(eventCode: _eventid);
+      _apiFuture = TownscriptAPI.instance.getRegisteredUsers(eventCode: _eventid, includePasses: true);
     else
       _apiFuture = Future.delayed(Duration(milliseconds: 100)).then((_) => []);
   }
@@ -75,7 +80,7 @@ class _QrScanPageState extends State<QrScanPage> {
               backgroundColor: Colors.red,
             )
           ),
-        onLoaded: (List<Event> events) => _contents(events),
+        onLoaded: (List<Event> events, List<Pass> passes) => _contents(events),
       );
 
     else 
@@ -85,9 +90,12 @@ class _QrScanPageState extends State<QrScanPage> {
       future: _apiFuture,
       builder: (BuildContext context, AsyncSnapshot<List<AttendeeInfo>> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          // if the info was loaded without any error, update [_regIds] list
-          if (snapshot.data != null)
+          // if the info was loaded without any error, update [_regIds] and [info] list
+          print(snapshot.data);
+          if (snapshot.data != null) {
+            info = snapshot.data;
             _regIds = snapshot.data.map((info) => info.registrationId).toList();
+          }
 
           // else, show alert if not shown already for the current event
           if (snapshot.data == null && ! _alertShown) {
@@ -129,7 +137,7 @@ class _QrScanPageState extends State<QrScanPage> {
                 onSelected: (Event event) {
                   setState(() {
                     _eventid = event.id;
-                    _apiFuture = TownscriptAPI.instance.getRegisteredUsers(eventCode: _eventid);
+                    _apiFuture = TownscriptAPI.instance.getRegisteredUsers(eventCode: _eventid, includePasses: true);
                     _initialFormText = event.name;
                     _regIds = null;
                     _alertShown = false;
@@ -171,10 +179,24 @@ class _QrScanPageState extends State<QrScanPage> {
                           _textColor = Colors.green;
                         }
                         // for detecting the QR code in townscript confirmation emails
+                        // and passes
                         else if (_regIds != null && _regIds.contains(value)) {
-                          _displayText = "User " + Strings.qrScanSuccess;
-                          _textColor = Colors.green;
+                          // getting the index of the registration id in [_regIds]
+                          int index = _regIds.indexOf(value);
+
+                          // checking if the [AttendeeInfo] object has a populated answer list.
+                          // if it has, then the QR scanner has detected a pass
+                          if (info[index].answerList != null && info[index].answerList.length != 0) {
+                            _displayText = "Pass Detected!\nEvents: ${info[index].getAllAnswers(separator: "\n")}";
+                            _textColor = Colors.green;
+                          }
+                          // else, it has detected an individual event payment
+                          else {
+                            _displayText = "User " + Strings.qrScanSuccess;
+                            _textColor = Colors.green;
+                          }
                         }
+                        // failed scan
                         else {
                           List<String> splitVal = value.split(",");
 

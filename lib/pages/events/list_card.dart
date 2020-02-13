@@ -11,6 +11,13 @@ class ListCard extends StatefulWidget {
   /// The event the card represents
   final Event event;
 
+  /// The pass the card can represent
+  final Pass pass;
+
+  /// If a pass is being represented, The list of all the names of the events 
+  /// the pass offers. Passed on to [DetailPage]
+  final List<String> passEventNames;
+
   /// The day. Used to select the correct datetime from
   /// the list of datetimes in the [Event].
   final int day;
@@ -18,7 +25,12 @@ class ListCard extends StatefulWidget {
   /// The hero tag. if [null], the tag will be the [Event] object
   final Object heroTag;
 
-  ListCard({@required this.event, this.day, this.heroTag});
+  ListCard({this.event, this.pass, this.day, this.heroTag, this.passEventNames}) :
+    assert((event != null) ^ (pass != null),
+           "Both pass and event cannot be given at the same time"),
+    assert(pass == null || passEventNames != null, 
+           "names of events that the pass offers must be given.");
+
 
   @override
   _ListCardState createState() => _ListCardState();
@@ -35,19 +47,25 @@ class _ListCardState extends State<ListCard> {
   /// The tag for the hero widget
   Object _heroTag;
 
+  /// boolean that defines whether the object in question is a pass or not
+  bool _isPass;
+
   @override
   void initState() {
     super.initState();
 
+    // initializing [_isPass]
+    _isPass = widget.pass != null;
+
     // setting the hero tag
-    _heroTag = widget.heroTag ?? widget.event.id + Random().nextInt(1000).toString();
+    _heroTag = widget.heroTag ?? (widget.event?.id ?? widget.pass.id) + Random().nextInt(1000).toString();
   }
 
   @override
   Widget build(BuildContext context) {
 
-    // returning empty container if [event] is null
-    if (widget.event == null)
+    // returning empty container if [event] or [pass] is null
+    if ((widget.event == null && ! _isPass) || (widget.pass == null && _isPass))
       return Container();
     
     return GestureDetector(
@@ -79,8 +97,10 @@ class _ListCardState extends State<ListCard> {
           transitionDuration: Duration(milliseconds: 500),
           pageBuilder: (_, __, ___) => DetailPage(
             event: widget.event,
+            pass: widget.pass,
+            passEventNames: widget.passEventNames,
             day: widget.day,
-            heroTag:_heroTag,
+            heroTag: _heroTag,
           ),
           transitionsBuilder:
               (context, animation, secondaryAnimation, child) =>
@@ -106,7 +126,7 @@ class _ListCardState extends State<ListCard> {
             // event title
             Expanded(
               child: Text(
-                widget.event.name,
+                widget.event?.name ?? widget.pass.name,
                 style: Style.titleTextStyle,
               ),
             ),
@@ -125,15 +145,30 @@ class _ListCardState extends State<ListCard> {
     );
 
   /// The top content. Contains the thumbnail image
-  Widget _topContent() =>
-    Hero(
-      tag: _heroTag,
-      child: Image.asset(
+  Widget _topContent() {
+    Image image;
+    
+    if (! _isPass) {
+      image = Image.asset(
         "assets/images/${widget.event.type}.png",
         width: imageHeight,
         height: imageWidth,
-      ),
+      );
+    }
+    else {
+      // TODO: use pass thumbnail
+      image = Image.asset(
+        "assets/images/competition.png",
+        width: imageWidth,
+        height: imageHeight,
+      );
+    }
+
+    return Hero(
+      tag: _heroTag,
+      child: image
     );
+  }
 
   /// The separator between the event name and the venue
   /// in the card's content.
@@ -147,29 +182,33 @@ class _ListCardState extends State<ListCard> {
 
   /// Formats the venue of the event.
   Widget _eventSubtitle() =>
-    Row(
-      children: <Widget>[
-        // timer icon
-        Icon(
-          Icons.location_on,
-          size: 14.0,
-        ),
+    (! _isPass)
+    ? 
+      Row(
+        children: <Widget>[
+          // timer icon
+          Icon(
+            Icons.location_on,
+            size: 14.0,
+          ),
 
-        // gap
-        SizedBox(
-          width: 8.0,
-        ),
+          // gap
+          SizedBox(
+            width: 8.0,
+          ),
 
-        // venue
-        Text(
-          "Venue: " + widget.event.venue,
-          style: Style.smallTextStyle,
-        ),
+          // venue
+          Text(
+            "Venue: " + widget.event.venue,
+            style: Style.smallTextStyle,
+          ),
 
-        // gap
-        SizedBox(
-          width: 8.0,
-        )
-      ],
-    );
+          // gap
+          SizedBox(
+            width: 8.0,
+          )
+        ],
+      )
+  : 
+    Container();
 }

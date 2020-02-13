@@ -51,7 +51,7 @@ class _UserContents extends StatelessWidget {
 
     return RegisteredEventsLoader(
       onLoading: LoadingWidget(),
-      onLoaded: (BuildContext context, List<String> regEventIds) =>
+      onLoaded: (BuildContext context, List<RegisteredEvent> registeredEvents) =>
         SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           padding: const EdgeInsets.only(bottom: 30.0, left: 20.0, right: 20.0),
@@ -77,7 +77,10 @@ class _UserContents extends StatelessWidget {
                 child: Center(
                   child: QrImage(
                     // the data being represented as a QR code
-                    data: email.substring(0, email.indexOf("@")) + "," + (regEventIds?.join(",") ?? ""),
+                    // TODO: correct this
+                    data: email.substring(0, email.indexOf("@")) + "," + (
+                      registeredEvents?.join(",") ?? ""
+                    ),
 
                     // the size
                     size: qrCodeSize,
@@ -128,7 +131,7 @@ class _MemberContents extends StatelessWidget {
             backgroundColor: Colors.red
           )
         ),
-      onLoaded: (List<Event> events) {
+      onLoaded: (List<Event> events, List<Pass> passes) {
         // getting the matching [Event] object
         Event event = events.firstWhere((event) => event.id == User.instance.getEventId(), orElse: () => null);
 
@@ -136,6 +139,7 @@ class _MemberContents extends StatelessWidget {
         String secondLine;
         Widget thumbnail;
 
+        // for level 3+ users
         if (User.instance.getClearanceLevel() > 2) {
           firstLine = "You are managing\n";
           secondLine = Strings.festName;
@@ -145,21 +149,27 @@ class _MemberContents extends StatelessWidget {
           );
         }
 
+        // for level 2 users
         else if (User.instance.getClearanceLevel() == 2) {
-          firstLine = "You are managing the events for\n";
-          secondLine = DepartmentExtras.getNameFromId(User.instance.getEventId());
-          thumbnail = Image.asset(
+          String eventId = User.instance.getEventId();
+          firstLine = (eventId != null) ? Strings.level2ProfileHeader : Strings.level2ProfileErrorHeader;
+          secondLine = (eventId != null) ? DepartmentExtras.getNameFromId(eventId) : Strings.level2ProfileErrorSubtitle;
+          thumbnail = (eventId != null) ? Image.asset(
             "assets/images/competition.png",
             width: 90,
-          );// TODO: Use deparment image
+          ) // TODO: Use deparment image
+          : Container();
         } 
+
+        // for level 1 users
         else {
-          firstLine = "You are managing the event\n";
-          secondLine = event.name;
-          thumbnail = Image.asset(
+          firstLine = (event == null) ? Strings.level1ProfileErrorHeader : Strings.level1ProfileHeader;
+          secondLine = event?.name ?? Strings.level1ProfileErrorSubtitle;
+          thumbnail = (event != null) ? Image.asset(
             "assets/images/${event.type}.png",
             width: 90,
-          );
+          )
+          : Container();
         }
 
         return Padding(

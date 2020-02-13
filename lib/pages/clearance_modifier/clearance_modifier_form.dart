@@ -47,6 +47,7 @@ class ClearanceModifierFormState extends State<ClearanceModifierForm> {
             // Text field for email id
             TextFormField(
               style: Theme.of(context).textTheme.body1,
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(hintText: Strings.formEmailHint),
               validator: (String value) {
                 if (value.length == 0)

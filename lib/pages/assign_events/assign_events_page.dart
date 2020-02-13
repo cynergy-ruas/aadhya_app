@@ -55,7 +55,7 @@ class _AssignEventsState extends State<AssignEvents> {
                         child: EventLoader(
                           beginLoad: true,
                           onLoading: Center(child: LoadingWidget(),),
-                          onLoaded: (List<Event> events) => 
+                          onLoaded: (List<Event> events, List<Pass> passes) => 
                             AssignEventsForm(
                               key: _formKey,
                               events: events,

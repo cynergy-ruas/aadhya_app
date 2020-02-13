@@ -167,6 +167,24 @@ class Strings {
   /// The text to display when there are no announcements
   static const noAnnouncementsText = "No Announcements for Now!";
 
+  /// The part of text to display for level 1 users in profile page
+  static const level1ProfileHeader = "You are managing the event\n";
+
+  /// The part of text to display for level 2 users in profile page
+  static const level2ProfileHeader = "You are managing the events for\n";
+
+  /// The text for level 1 users error
+  static const level1ProfileErrorHeader = "You have not been assigned an event\n";
+
+  /// The text for level 2 users error
+  static const level2ProfileErrorHeader = "You have not been assigned a department.\n";
+
+  /// The subtitle for the level 1 users error
+  static const level1ProfileErrorSubtitle = "Contact your lead to get an event assigned to you.";
+  
+  /// The subtitle for the level 2 users error
+  static const level2ProfileErrorSubtitle = "Contact the core committee.";
+
   /// The title of the clearance page
   static const clearancePageTitle = "Update Clearance";
 

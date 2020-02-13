@@ -18,7 +18,7 @@ class RegisteredEventsPage extends StatelessWidget {
     return EventLoader(
       beginLoad: true,
       onLoading: LoadingWidget(),
-      onLoaded: (List<Event> events) {
+      onLoaded: (List<Event> events, List<Pass> passes) {
         return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,9 +38,10 @@ class RegisteredEventsPage extends StatelessWidget {
             // The events
             Expanded(
               child: RegisteredEventsLoader(
-                onLoading: Container(),
-                onLoaded: (BuildContext context, List<String> eventIds) {
-                  if (eventIds == null || eventIds.length == 0) {
+                onLoading: LoadingWidget(),
+                onLoaded: (BuildContext context, List<RegisteredEvent> registeredEvents) {
+                  
+                  if (registeredEvents == null || registeredEvents.length == 0) {
                     return Center(
                       child: Text(
                         Strings.noRegEvents,
@@ -49,25 +50,35 @@ class RegisteredEventsPage extends StatelessWidget {
                     );
                   }
 
-                  // removing duplicates from [eventIds]
-                  eventIds = eventIds.toSet().toList();
-
                   return ListView.separated(
                     shrinkWrap: true,
                     physics: BouncingScrollPhysics(),
-                    itemCount: eventIds.length,
+                    itemCount: registeredEvents.length,
                     itemBuilder: (BuildContext context, int index) {
-                      Event event = EventPool.events.firstWhere((event) => event.id == eventIds[index], orElse: () => null);
+                      RegisteredEvent reg = registeredEvents[index];
 
-                      if (event != null)
+                      Event event;
+                      Pass pass;
+
+                      if (reg.isPass) {
+                        pass = passes.firstWhere((pass) => pass.id == reg.id, orElse: () => null);
+                      }
+                      else {
+                        event = events.firstWhere((event) => event.id == reg.id, orElse: () => null);
+                      }
+
+                      if (event != null || pass != null) {
                         return Padding(
                           padding: const EdgeInsets.only(left: 40.0, right: 20),
                           child: ListCard(
                             event: event,
-                            heroTag: event.id + "${Random().nextInt(1000)}",
+                            pass: pass,
+                            passEventNames: reg.eventNames,
+                            heroTag: (event?.id ?? pass.id) + "${Random().nextInt(1000)}",
                           ),
                         );
-                      
+                      }
+
                       return Container();
                     },
                     separatorBuilder: (BuildContext context, int index) => 

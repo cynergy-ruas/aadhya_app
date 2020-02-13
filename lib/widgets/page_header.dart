@@ -95,7 +95,9 @@ class PageHeader extends StatelessWidget {
             // subtitle
             subtitle
           ]
-          : []
+          : [
+            Container()
+          ]
         ),
       ),
     );

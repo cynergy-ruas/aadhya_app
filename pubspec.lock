@@ -27,7 +27,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "39ecc57bc0eef7b0465c891d900d2fb1f34a2390"
+      resolved-ref: ac4fbd2cf9aa344e091d57d24d1237e49108af0a
       url: "https://github.com/apptreesoftware/flutter_barcode_reader.git"
     source: git
     version: "1.0.0"
@@ -106,7 +106,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: c4c83f6f9b709491b73ed6e654593824cb1e5ad2
+      resolved-ref: "7ccb3a0e5710bbb9e7cb9617a4aa48f29158c272"
       url: "https://github.com/cynergy-ruas/dwimay_app_backend.git"
     source: git
     version: "0.0.1"

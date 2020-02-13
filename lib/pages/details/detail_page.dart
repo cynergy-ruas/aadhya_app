@@ -14,11 +14,22 @@ class DetailPage extends StatefulWidget {
   /// The event
   final Event event;
 
+  /// The pass whose details are to be displayed
+  final Pass pass;
+
+  /// If a pass is being represented, The list of all the names of the events 
+  /// the pass offers. Passed on to [DetailPageContents].
+  final List<String> passEventNames;
+
   /// The tag for the hero widget
   final Object heroTag;
 
-  DetailPage({@required this.event, this.day, this.heroTag});
-
+  DetailPage({this.event, this.pass, this.day, this.heroTag, this.passEventNames}) : 
+    assert((event != null) ^ (pass != null),
+           "Both pass and event cannot be given at the same time"),
+    assert(pass == null || passEventNames != null, 
+           "names of events that the pass offers must be given.");
+  
   @override
   _DetailPageState createState() => _DetailPageState();
 }
@@ -40,32 +51,40 @@ class _DetailPageState extends State<DetailPage> {
   Object _heroTag;
 
   /// The index of the correct datetime in the list of datetimes
-  int index;
+  int _index;
+
+  /// Boolean that defines whether a pass is being displayed or an event
+  bool _isPass;
 
   @override
   void initState() {
     super.initState();
 
     // setting the hero tag
-    _heroTag = widget.heroTag ?? widget.event;
+    _heroTag = widget.heroTag ?? widget.event ?? widget.pass;
 
-    // initializing index
-    index = 0;
+    // initializing [_index]
+    _index = 0;
 
-    // calculating the index of the [datetimes] list 
-    // which contain the correct date and time given 
-    // the day of the event (which is relative to the)
-    // first day of the event
-    if (widget.day != null)
-      index = min(widget.event.datetimes.length - 1, widget.day); // used to avoid IndexErrors
-    else {
-      // identifying the correct index to be used by comparing 'now' with each
-      // of the dates in the list of dates
-      DateTime now = DateTime.now();
-      for (int i = 0; i < widget.event.datetimes.length; i++) {
-        if (now.compareTo(widget.event.datetimes[i]) <= 0) {
-          index = i;
-          break;
+    // initializing [_isPass]
+    _isPass = widget.pass != null;
+
+    if (! _isPass) {
+      // calculating the index of the [datetimes] list 
+      // which contain the correct date and time given 
+      // the day of the event (which is relative to the)
+      // first day of the event
+      if (widget.day != null)
+        _index = min(widget.event.datetimes.length - 1, widget.day); // used to avoid IndexErrors
+      else {
+        // identifying the correct index to be used by comparing 'now' with each
+        // of the dates in the list of dates
+        DateTime now = DateTime.now();
+        for (int i = 0; i < widget.event.datetimes.length; i++) {
+          if (now.compareTo(widget.event.datetimes[i]) <= 0) {
+            _index = i;
+            break;
+          }
         }
       }
     }
@@ -98,9 +117,11 @@ class _DetailPageState extends State<DetailPage> {
                 padding: EdgeInsets.fromLTRB(20.0, gradientStart + gradientHeight - headerHeight, 20.0, 0.0),
                 child: DetailPageContents(
                   event: widget.event,
+                  pass: widget.pass,
+                  passEventNames: widget.passEventNames,
                   heroTag: _heroTag,
                   headerHeight: headerHeight,
-                  index: index,
+                  index: _index,
                 ),
               ),
               

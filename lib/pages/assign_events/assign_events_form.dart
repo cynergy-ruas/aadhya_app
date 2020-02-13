@@ -104,6 +104,7 @@ class AssignEventsFormState extends State<AssignEventsForm> {
               decoration: TextFormFieldShadow(),
               child: TextFormField(
                 style: Theme.of(context).textTheme.body1,
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(hintText: Strings.formEmailHint),
                 validator: (String value) {
                   if (value.length == 0)
