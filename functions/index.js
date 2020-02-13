@@ -345,7 +345,10 @@ async function updateDataForUser({emailid, eventCode, registrationId, answerList
         );
 
         // if it is a pass, add it to the passes field
-        passes[eventCode] = value;
+        passes[eventCode] = {
+            id: registrationId,
+            events: value
+        };
     }
 
     // updating the document
