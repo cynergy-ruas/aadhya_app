@@ -77,9 +77,16 @@ class _UserContents extends StatelessWidget {
                 child: Center(
                   child: QrImage(
                     // the data being represented as a QR code
-                    // TODO: correct this
                     data: email.substring(0, email.indexOf("@")) + "," + (
-                      registeredEvents?.join(",") ?? ""
+                      registeredEvents.map(
+                        (RegisteredEvent regEvent) {
+                          if (regEvent.isPass)
+                            return regEvent.registrationId;
+                          return regEvent.id;
+                        }
+                      )
+                      .toList()
+                      .join(",")
                     ),
 
                     // the size
