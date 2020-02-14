@@ -380,6 +380,11 @@ function constructNotificationPayload({title, body, data, topic, condition}) {
             click_action: "FLUTTER_NOTIFICATION_CLICK"
         }
     }
+
+    // adding title and body to data field so that `onResume` and `onLaunch` in 
+    // the app works
+    data.title = title;
+    data.body = body;
     
     // the body of the notification
     const payload = {
