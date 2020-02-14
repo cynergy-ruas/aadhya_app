@@ -60,6 +60,8 @@ flutter:
     - assets/images/pattern.png
     - assets/images/cynergyLogoWhite.png
     - assets/images/federateOne.png
+    - assets/images/logo.png
+    - assets/images/pass.png
     - assets/svg/fest_logo.svg
 
   fonts:

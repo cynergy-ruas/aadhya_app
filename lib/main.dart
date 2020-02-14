@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'config.dart' as config;
 
+/// Icon made by Freepik from www.flaticon.com
+/// Icon made by Eucalyp from www.flaticon.com
+/// Icon made by DinosoftLabs from www.flaticon.com
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])

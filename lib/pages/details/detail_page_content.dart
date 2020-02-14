@@ -105,7 +105,7 @@ class _DetailPageContentsState extends State<DetailPageContents> {
           : null,
 
           thumbnail: Image.asset(
-            (! _isPass) ? "assets/images/${widget.event.type}.png" : "assets/images/competition.png", // TODO: Use pass thumbnail
+            (! _isPass) ? "assets/images/${widget.event.type}.png" : "assets/images/pass.png",
             width: thumbnailHeight,
             height: thumbnailWidth,
           ),

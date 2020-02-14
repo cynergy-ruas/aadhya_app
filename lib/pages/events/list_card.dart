@@ -156,9 +156,8 @@ class _ListCardState extends State<ListCard> {
       );
     }
     else {
-      // TODO: use pass thumbnail
       image = Image.asset(
-        "assets/images/competition.png",
+        "assets/images/pass.png",
         width: imageWidth,
         height: imageHeight,
       );

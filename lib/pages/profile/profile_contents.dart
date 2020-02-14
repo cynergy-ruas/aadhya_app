@@ -50,7 +50,7 @@ class _UserContents extends StatelessWidget {
     final double qrCodeSize = MediaQuery.of(context).size.width * 0.7;
 
     // the logo at the center of the qr code
-    Widget logo = _logo(context, qrCodeSize * 0.2);
+    Widget logo = _logo(context, qrCodeSize * 0.22);
 
     return RegisteredEventsLoader(
       onLoading: LoadingWidget(),
@@ -128,10 +128,19 @@ class _UserContents extends StatelessWidget {
   }
 
   Widget _logo(BuildContext context, double imageSize) =>
-    Image.asset(
-      "assets/images/talk.png", // TODO: use fest logo
-      width: imageSize,
+    Container(
       height: imageSize,
+      width: imageSize,
+      decoration: BoxDecoration(
+        color: Colors.black,
+      ),
+      child: Center(
+        child: Image.asset(
+          "assets/images/logo.png",
+          width: imageSize,
+          height: imageSize,
+        ),
+      ),
     );
           
 }
