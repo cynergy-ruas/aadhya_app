@@ -9,16 +9,18 @@ class DetailPageBackground extends StatelessWidget {
   /// The height of the gradient
   final double gradientHeight;
 
-  DetailPageBackground({@required this.gradientStart, @required this.gradientHeight});
+  /// The path to the background image
+  final String backgroundImagePath;
+
+  DetailPageBackground({@required this.gradientStart, @required this.gradientHeight, @required this.backgroundImagePath});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
         // background image
-        Image.network(
-          // TODO: use  [Image.asset] instead of network image
-          "https://www.sxsw.com/wp-content/uploads/2019/06/2019-Hackathon-Photo-by-Randy-and-Jackie-Smith.jpg",
+        Image.asset(
+          backgroundImagePath,
           fit: BoxFit.cover,
           height: gradientStart + gradientHeight,
           color: Theme.of(context).backgroundColor.withAlpha(128),

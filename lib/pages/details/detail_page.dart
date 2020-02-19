@@ -56,6 +56,9 @@ class _DetailPageState extends State<DetailPage> {
   /// Boolean that defines whether a pass is being displayed or an event
   bool _isPass;
 
+  /// The path for the image to be used for background in [DetailPageBackground]
+  String _backgroundPath;
+
   @override
   void initState() {
     super.initState();
@@ -88,6 +91,29 @@ class _DetailPageState extends State<DetailPage> {
         }
       }
     }
+
+    // initializing [_backgroundPath]
+    if (! _isPass) {
+      _backgroundPath = "assets/images/events_background.jpg";
+    }
+    else {
+      _backgroundPath = "assets/images/";
+
+      if (widget.pass.name.toLowerCase().contains("homecoming"))
+        _backgroundPath += "homecoming_pass.png";
+      else if (widget.pass.name.toLowerCase().contains("endgame"))
+        _backgroundPath += "endgame_pass.png";
+      else if (widget.pass.name.toLowerCase().contains("ultron"))
+        _backgroundPath += "ultron_pass.png";
+      else if (widget.pass.name.toLowerCase().contains("universe"))
+        _backgroundPath += "universe_pass.png";
+      else if (widget.pass.name.toLowerCase().contains("multiverse"))
+        _backgroundPath += "multiverse_pass.png";
+      else if (widget.pass.name.toLowerCase().contains("infinity"))
+        _backgroundPath += "infinity_pass.png";
+      else
+        _backgroundPath += "events_background.jpg";
+    }
       
   }
 
@@ -110,6 +136,7 @@ class _DetailPageState extends State<DetailPage> {
               DetailPageBackground(
                 gradientStart: gradientStart,
                 gradientHeight: gradientHeight,
+                backgroundImagePath: _backgroundPath,
               ),
 
               // the content of the detail page

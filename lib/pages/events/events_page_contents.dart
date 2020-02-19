@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:dwimay/strings.dart';
+import 'package:dwimay/widgets/dot_indicator_widget.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'carousel_card.dart';
 import 'list_card.dart';
@@ -16,10 +18,7 @@ class EventsPageContents extends StatefulWidget {
   /// The passes
   final List<Pass> passes;
 
-  /// The list of registered events
-  final List<RegisteredEvent> regEvents;
-
-  EventsPageContents({@required this.events, @required this.passes, this.regEvents});
+  EventsPageContents({@required this.events, @required this.passes});
 
   @override
   _EventsPageContentsState createState() => _EventsPageContentsState();
@@ -33,8 +32,8 @@ class _EventsPageContentsState extends State<EventsPageContents> {
   /// the events of a day
   List<Event> events;
 
-  /// The list of registered passes
-  List<RegisteredEvent> _regPasses;
+  /// The page controller for the passes view
+  PageController _pageController;
 
   @override
   void initState() {
@@ -46,8 +45,8 @@ class _EventsPageContentsState extends State<EventsPageContents> {
     // initializing the events of a day
     events = _filterEvents(day: _selected);
 
-    // initializing the list of registered passes
-    _regPasses = widget.regEvents?.where((RegisteredEvent event) => event.isPass)?.toList();
+    // initializing the page controller
+    _pageController = PageController();
   }
 
   @override
@@ -142,27 +141,70 @@ class _EventsPageContentsState extends State<EventsPageContents> {
         ),
 
         // gap
-        SizedBox(height: 20,),
+        SizedBox(height: 10,),
+        
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            DotIndicatorWidget(
+              controller: _pageController,
+              dotCount: widget.passes.length,
+              axis: Axis.horizontal,
+            ),
+          ],
+        ),
+
+        // gap
+        SizedBox(height: 10,),
 
         // the passes
-        ListView.separated(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(right: 20),
-          physics: BouncingScrollPhysics(),
-          itemCount: widget.passes.length,
-          itemBuilder: (BuildContext context, int index) {
-            RegisteredEvent regPass = _regPasses?.firstWhere((regPass) => regPass.id == widget.passes[index].id, orElse: () => null);
+        SizedBox(
+          // constraining the size of the [PageView]
+          height: MediaQuery.of(context).size.height * 0.60,
+          
+          child: PageView.builder(
+            controller: _pageController,
+            physics: BouncingScrollPhysics(),
+            itemCount: widget.passes.length,
+            itemBuilder: (BuildContext context, int index) {
+              String assetPath = "assets/images/";
 
-            // the card
-            return Padding(
-              padding: const EdgeInsets.only(left: 30, right: 10),
-              child: ListCard(pass: widget.passes[index], passEventNames: regPass?.eventNames ?? [],),
-            );
-          },
-            
-          separatorBuilder: (BuildContext context, int index) => 
-            // gap
-            SizedBox(height: 10,)
+              if (widget.passes[index].name.toLowerCase().contains("homecoming"))
+                assetPath += "homecoming_pass.png";
+              else if (widget.passes[index].name.toLowerCase().contains("endgame"))
+                assetPath += "endgame_pass.png";
+              else if (widget.passes[index].name.toLowerCase().contains("ultron"))
+                assetPath += "ultron_pass.png";
+              else if (widget.passes[index].name.toLowerCase().contains("universe"))
+                assetPath += "universe_pass.png";
+              else if (widget.passes[index].name.toLowerCase().contains("multiverse"))
+                assetPath += "multiverse_pass.png";
+              else if (widget.passes[index].name.toLowerCase().contains("infinity"))
+                assetPath += "infinity_pass.png";
+              else
+                assetPath += "events_background.jpg";
+
+              return GestureDetector(
+                child: RotatedBox(
+                  quarterTurns: 3,
+                  child: Image.asset(
+                    assetPath
+                  ),
+                ),
+                onTap: () async {
+                  if (await canLaunch(widget.passes[index].registrationLink))
+                    await launch(widget.passes[index].registrationLink);
+                  else
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(Strings.invalidUrl),
+                        backgroundColor: Colors.red,
+                      )
+                    );
+                },
+              );
+            },
+          ),
         ),
 
         SizedBox(height: 130,)

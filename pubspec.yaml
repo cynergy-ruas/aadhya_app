@@ -19,7 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
+
   unicorndial: ^1.1.5
   font_awesome_flutter: ^8.5.0
   material_design_icons_flutter: 3.4.4795
@@ -39,6 +39,7 @@ dependencies:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.7.4
   flutter_test:
     sdk: flutter
 
@@ -62,6 +63,13 @@ flutter:
     - assets/images/federateOne.png
     - assets/images/logo.png
     - assets/images/pass.png
+    - assets/images/endgame_pass.png
+    - assets/images/events_background.jpg
+    - assets/images/homecoming_pass.png
+    - assets/images/infinity_pass.png
+    - assets/images/multiverse_pass.png
+    - assets/images/ultron_pass.png
+    - assets/images/universe_pass.png
     - assets/svg/fest_logo.svg
 
   fonts:
