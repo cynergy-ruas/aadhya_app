@@ -72,7 +72,7 @@ class Strings {
   ];
   
   /// Error message when data cannot be retrieved from townscript API
-  static const townscriptNotRecognized = "Cannot retrieve registration ids. QR codes in townscript confirmation email will not be recognized.";
+  static const townscriptNotRecognized = "Cannot retrieve registration ids. QR codes in townscript confirmation email and passes will not be recognized.";
 
   /// Wrong email address error message
   static const invalidEmailMessage = "Looks like the email address is wrong. Please try again.";

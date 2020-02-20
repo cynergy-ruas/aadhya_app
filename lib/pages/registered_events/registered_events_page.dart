@@ -78,7 +78,8 @@ class RegisteredEventsPage extends StatelessWidget {
                           ),
                         );
                       }
-
+                      
+                      print(reg.id);
                       return Container();
                     },
                     separatorBuilder: (BuildContext context, int index) => 

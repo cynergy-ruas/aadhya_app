@@ -41,6 +41,10 @@ class PublishingFormState extends State<PublishingForm> {
     events
     .add(
       Event(
+        poc: {
+          "name": "",
+          "number": "",
+        },
         datetimes: null,
         department: null,
         description: "general channel",
