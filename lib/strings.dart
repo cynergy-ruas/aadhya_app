@@ -48,35 +48,38 @@ class Strings {
   /// FAQ page title
   static const faqTitle = "Frequently Asked \nQuestions";
 
+  /// FAQ page poc section title
+  static const faqPoc = "For Further Queries Contact";
+
   /// The frequently asked questions
   static const faqs = [
     {
-      "question": "will certificates be provided?",
-      "answer": "yes certificates will be provided if you participate in workshops and competitions."
+      "question": "Will certificates be provided?",
+      "answer": "Yes certificates will be provided if you participate in workshops and competitions."
     },
 
     {
       "question": "How do I register for Aadhya 2020?",
-      "answer": "you can either register for individual events or buy combo packages (i.e. passes) for full day access."
+      "answer": "You can either register for individual events or buy combo packages (i.e. passes) for full day access."
     },
 
     {
       "question": "Is there an entry fee?",
-      "answer": "some talks are free to attend but there is a price for participating in each workshop and competitions. you can also buy special passes which grant you full day access to events and stalls."
+      "answer": "Some talks are free to attend but there is a price for participating in each workshop and competitions. you can also buy special passes which grant you full day access to events and stalls."
     },
 
     {
-      "question": "where can i stay during techfest in RUAS?",
-      "answer": "our team will contact you once you register for the event. if you want an accomodation, it will be provided with minimal charges. (a small price to pay for salvation. :')"
+      "question": "Where can i stay during techfest in RUAS?",
+      "answer": "Our team will contact you once you register for the event. if you want an accomodation, it will be provided with minimal charges. (a small price to pay for salvation. :')"
     },
     {
-      "question": "how many members should be there in a team during a team event",
-      "answer": "the number might vary for each event. although individual participation is encouraged."
+      "question": "How many members should be there in a team during a team event",
+      "answer": "The number might vary for each event. although individual participation is encouraged."
     },
 
     {
       "question": "What to do after registering?",
-      "answer": "sit back and chill. our team will contact you shortly. make sure you book your transportation tho'."
+      "answer": "Sit back and chill. our team will contact you shortly. make sure you book your transportation tho'."
     },
 
     {
