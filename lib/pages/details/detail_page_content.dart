@@ -150,7 +150,7 @@ class _DetailPageContentsState extends State<DetailPageContents> {
               SizedBox(height: 20,),
             ]
             ..addAll(
-              (! _isPass && widget.event.type != "competition" && (widget.event.speaker != null || widget.event.speaker.length != 0))
+              (! _isPass && widget.event.type != "competition" && widget.event.speaker != null && widget.event.speaker.length != 0)
               ? [
                   // the speaker
                   Text(
