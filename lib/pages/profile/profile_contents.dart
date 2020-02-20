@@ -49,9 +49,6 @@ class _UserContents extends StatelessWidget {
     // size of the QR code
     final double qrCodeSize = MediaQuery.of(context).size.width * 0.7;
 
-    // the logo at the center of the qr code
-    Widget logo = _logo(context, qrCodeSize * 0.22);
-
     return RegisteredEventsLoader(
       onLoading: LoadingWidget(),
       onLoaded: (BuildContext context, List<RegisteredEvent> registeredEvents) =>
@@ -78,43 +75,25 @@ class _UserContents extends StatelessWidget {
               // the QR code
               Flexible(
                 child: Center(
-                  child: Container(
-                    height: qrCodeSize,
-                    width: qrCodeSize,
-                    alignment: Alignment.center,
-                    child: Stack(
-                      children: <Widget>[
-                        QrImage(
-                          // the data being represented as a QR code
-                          data: email.substring(0, email.indexOf("@")) + "," + (
-                            registeredEvents.map(
-                              (RegisteredEvent regEvent) {
-                                if (regEvent.isPass)
-                                  return regEvent.registrationId;
-                                return regEvent.id;
-                              }
-                            )
-                            .toList()
-                            .join(",")
-                          ),
+                  child: QrImage(
+                    // the data being represented as a QR code
+                    data: email.substring(0, email.indexOf("@")) + "," + (
+                      registeredEvents.map(
+                        (RegisteredEvent regEvent) {
+                          if (regEvent.isPass)
+                            return regEvent.registrationId;
+                          return regEvent.id;
+                        }
+                      )
+                      .toList()
+                      .join(",")
+                    ),
 
-                          // the size
-                          size: qrCodeSize,
+                    // the size
+                    size: qrCodeSize,
 
-                          // the background color
-                          backgroundColor: Colors.white,
-                        ),
-
-                        Align(
-                          alignment: Alignment.center,
-                          child: Draggable(
-                            feedback: logo,
-                            child: logo,
-                            childWhenDragging: Container(),
-                          ),
-                        )
-                      ],
-                    )
+                    // the background color
+                    backgroundColor: Colors.white,
                   ),
                 ),
               ),
@@ -125,24 +104,7 @@ class _UserContents extends StatelessWidget {
           ),
         ),
     );
-  }
-
-  Widget _logo(BuildContext context, double imageSize) =>
-    Container(
-      height: imageSize,
-      width: imageSize,
-      decoration: BoxDecoration(
-        color: Colors.black,
-      ),
-      child: Center(
-        child: Image.asset(
-          "assets/images/logo.png",
-          width: imageSize,
-          height: imageSize,
-        ),
-      ),
-    );
-          
+  }       
 }
 
 

@@ -139,12 +139,42 @@ class _DetailPageContentsState extends State<DetailPageContents> {
                 data: widget.event?.description ?? widget.pass.description,
                 styleSheet: MarkdownStyleSheet(
                   p: Theme.of(context).textTheme.body1,
+                  h1: Style.headerTextStyle,
+                  h2: Style.headerTextStyle.copyWith(
+                    fontSize: 18
+                  )
                 ),
               ),
 
               // gap
               SizedBox(height: 20,),
             ]
+            ..addAll(
+              (! _isPass && widget.event.type != "competition" && (widget.event.speaker != null || widget.event.speaker.length != 0))
+              ? [
+                  // the speaker
+                  Text(
+                    Strings.speakerSectionTitle,
+                    style: Style.headerTextStyle,
+                  ),
+
+                  // separator
+                  _separator(),
+
+                  MarkdownBody(
+                    data: widget.event.speaker,
+                    styleSheet: MarkdownStyleSheet(
+                      p: Theme.of(context).textTheme.body1,
+                    ),
+                  ),
+
+                  // gap
+                  SizedBox(height: 20,)
+                ]
+              : [
+                  Container()
+                ]
+            )
             ..add(
               (_showRegistrationButton)
               ? // register button

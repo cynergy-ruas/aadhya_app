@@ -137,6 +137,9 @@ class Strings {
   /// The title of the details page
   static const detailsPageTitle = "OVERVIEW";
 
+  /// The title of the speakers section
+  static const speakerSectionTitle = "SPEAKER";
+
   /// the title for the events for all departments
   static const eventsForAll = "For All";
 
@@ -160,6 +163,9 @@ class Strings {
 
   /// the message to print if there are no events for a day
   static const noEventsMessage = "No Events";
+
+  /// the message to display if there are no passes
+  static const noPassesMessage = "No Passes.";
 
   /// The title of the announcements page
   static const announcementsPageTitle = "Announcements";

@@ -128,8 +128,14 @@ class _EventsPageContentsState extends State<EventsPageContents> {
   }
 
   /// Builds the view to show the passes
-  Widget _buildPassesView() =>
-    Column(
+  Widget _buildPassesView() {
+    if (widget.passes == null || widget.passes.length == 0)
+      return Text(
+        Strings.noPassesMessage,
+        style: Theme.of(context).textTheme.body2,
+      );
+    
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         // title
@@ -210,6 +216,7 @@ class _EventsPageContentsState extends State<EventsPageContents> {
         SizedBox(height: 130,)
       ],
     );
+  }
 
   /// Builds the horizontal [ListView] for all the events
   Widget _allEventsCarousel() {
