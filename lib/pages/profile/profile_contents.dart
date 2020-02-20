@@ -192,7 +192,7 @@ class _MemberContents extends StatelessWidget {
           thumbnail = (eventId != null) ? Image.asset(
             "assets/images/competition.png",
             width: 90,
-          ) // TODO: Use deparment image
+          )
           : Container();
         } 
 
