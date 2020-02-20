@@ -18,12 +18,6 @@ class PublishingForm extends StatefulWidget {
 
 class PublishingFormState extends State<PublishingForm> {
 
-  /// The title of the notification
-  String _title;
-
-  /// The subtitle of the notification
-  String _subtitle;
-
   /// The description of the notification
   String _description;
 
@@ -92,56 +86,6 @@ class PublishingFormState extends State<PublishingForm> {
         )
         ..addAll(
           [
-            // title of the title field
-            Text(
-              Strings.titleFieldTitle,
-              style: Theme.of(context).textTheme.subhead,
-            ),
-
-            // gap
-            SizedBox(height: 20,),
-
-            // Form field for title
-            TextFormField(
-              decoration: InputDecoration(hintText: Strings.titleFieldHint),
-              textCapitalization: TextCapitalization.sentences,
-              style: Theme.of(context).textTheme.body1,
-              validator: (String value) {
-                if (value.length == 0)
-                  return Strings.titleFieldEmpty;
-                return null;
-              },
-              onSaved: (String value) => _title = value.trim(),
-            ),
-
-            // gap
-            SizedBox(height: 40,),
-
-            // title of the field
-            Text(
-              Strings.subtitleFieldTitle,
-              style: Theme.of(context).textTheme.subhead,
-            ),
-
-            // gap
-            SizedBox(height: 20,),
-
-            // Form field for substitle
-            TextFormField(
-              style: Theme.of(context).textTheme.body1,
-              textCapitalization: TextCapitalization.sentences,
-              decoration: InputDecoration(hintText: Strings.subtitleFieldHint),
-              validator: (String value) {
-                if (value.length == 0)
-                  return Strings.subtitleFieldEmpty;
-                return null;
-              },
-              onSaved: (String value) => _subtitle = value.trim(),
-            ),
-
-            // gap
-            SizedBox(height: 40,),
-
             // title of the field
             Text(
               Strings.detailsFieldTitle,
@@ -197,7 +141,18 @@ class PublishingFormState extends State<PublishingForm> {
   void saveForm() {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-      widget.onSaved(_event.id, _event.department, _title, _subtitle, _description);
+      widget.onSaved(
+        _event.id,
+        _event.department,
+        "Announcement!", // the title of the notification
+        "There's an announcement for " +
+          (
+            (_event.id != "general")
+            ? _event.name + " participants"
+            : "everyone."
+          ), // the subtitle of the notification
+        _description
+      );
       formKey.currentState.reset();
     }
   }

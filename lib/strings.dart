@@ -237,7 +237,7 @@ class Strings {
   static const detailsFieldTitle = "Details";
 
   /// The hint text for the title field
-  static const detailsFieldHint = "Long description";
+  static const detailsFieldHint = "Info you want to send";
 
   /// The title of the notification publishing form title field
   static const notificationsPublishEventsFieldTitle = "Event to publish for";
