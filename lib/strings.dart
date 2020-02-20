@@ -51,23 +51,42 @@ class Strings {
   /// The frequently asked questions
   static const faqs = [
     {
-      "question": "Question 1",
-      "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      "question": "will certificates be provided?",
+      "answer": "yes certificates will be provided if you participate in workshops and competitions."
     },
 
     {
-      "question": "Question 2",
-      "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      "question": "How do I register for Aadhya 2020?",
+      "answer": "you can either register for individual events or buy combo packages (i.e. passes) for full day access."
     },
 
     {
-      "question": "Question 3",
-      "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      "question": "Is there an entry fee?",
+      "answer": "some talks are free to attend but there is a price for participating in each workshop and competitions. you can also buy special passes which grant you full day access to events and stalls."
     },
 
     {
-      "question": "Question 4",
-      "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      "question": "where can i stay during techfest in RUAS?",
+      "answer": "our team will contact you once you register for the event. if you want an accomodation, it will be provided with minimal charges. (a small price to pay for salvation. :')"
+    },
+    {
+      "question": "how many members should be there in a team during a team event",
+      "answer": "the number might vary for each event. although individual participation is encouraged."
+    },
+
+    {
+      "question": "What to do after registering?",
+      "answer": "sit back and chill. our team will contact you shortly. make sure you book your transportation tho'."
+    },
+
+    {
+      "question": "Is parking available?",
+      "answer": "Yes. The parking lot will be allocated to you. unless it's not a chopper."
+    },
+
+    {
+      "question": "Where is the venue of the event and how to reach there?",
+      "answer": "Ramaiah University of Applied Science, peenya 2nd stage, Bengaluru \nP.S: c'mon you know how to use google maps. :)"
     },
   ];
   
