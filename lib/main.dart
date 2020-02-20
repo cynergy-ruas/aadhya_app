@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         NotificationCard(message: message,),
 
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Aadhya',
         theme: dwimayTheme,
         home: MainPage(),
         debugShowCheckedModeBanner: false,

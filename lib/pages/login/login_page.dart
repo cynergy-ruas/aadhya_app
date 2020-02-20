@@ -71,7 +71,6 @@ class _LoginPageState extends State<LoginPage> {
               // authentication process
               onError: (BuildContext context, dynamic e) {
                 String message; 
-                print(e.toString());
 
                 if (e.runtimeType == PlatformException) {
                   PlatformException err = (e as PlatformException);
@@ -87,23 +86,61 @@ class _LoginPageState extends State<LoginPage> {
                     message = Strings.emailAlreadyInUse;
                   else 
                     message = Strings.unknownError;
+
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(message),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
                 }
 
                 else if (e.runtimeType == AuthenticationError) {
-                  message = (e as AuthenticationError).message;
+                  _showDialog();
+                }
+
+                else {
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(Strings.unknownError),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
                 }
                 
-                Scaffold.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                    backgroundColor: Colors.red,
-                  ),
-                );
+                
               },
             ),
           ),
         ],
       ),
+    );
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      child: AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))
+        ),
+
+        title: Text(
+          "Oops!",
+          style: TextStyle(color: Colors.red),
+        ),
+        content: Text(Strings.userNotPaid),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              "OK",
+              style: TextStyle(color: Theme.of(context).accentColor),
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          )
+        ],
+      )
     );
   }
 }

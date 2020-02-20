@@ -108,6 +108,9 @@ class Strings {
   /// email already in use
   static const emailAlreadyInUse = "Looks like you have already registered. Try logging in!";
 
+  /// user has not paid for event and is trying to register
+  static const userNotPaid = "Make sure you have paid for atleast one event before registering.";
+
   /// Unknown error message
   static const unknownError = "Error occurred. Please try again";
 
