@@ -247,6 +247,9 @@ class _EventsPageContentsState extends State<EventsPageContents> {
 
     // getting the events that belong to the [department]
     List<Event> _events = events.where((e) => e.department == department.id).toList();
+
+    if (_events.length == 0)
+      return [];
     
     return [
 
