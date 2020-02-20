@@ -176,7 +176,7 @@ class _DetailPageContentsState extends State<DetailPageContents> {
                 ]
             )
             ..addAll(
-              (widget.event.getPocName() != "")
+              (widget.event!=null && widget.event.getPocName() != "")
               ? [
                   Text(
                     Strings.pocSectionTitle,
