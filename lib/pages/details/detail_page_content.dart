@@ -175,6 +175,64 @@ class _DetailPageContentsState extends State<DetailPageContents> {
                   Container()
                 ]
             )
+            ..addAll(
+              (widget.event.getPocName() != "")
+              ? [
+                  Text(
+                    Strings.pocSectionTitle,
+                    style: Style.headerTextStyle,
+                  ),
+
+                  _separator(),
+                  
+                  Row(
+                    children: <Widget>[
+                      FloatingActionButton(
+                        child: Icon(FontAwesomeIcons.phoneAlt,),
+                        mini: true,
+                        // iconSize: 20,
+                        onPressed: () async {
+                          String phoneNumber = "tel:" + widget.event.getPocNumber();
+                          if (await canLaunch(phoneNumber))
+                            await launch(phoneNumber);
+                          else
+                            Scaffold.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(Strings.callError),
+                                backgroundColor: Colors.red,
+                              )
+                            );
+                        },
+                      ),
+
+                      SizedBox(width: 10,),
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            widget.event.getPocName()
+                          ),
+
+                          SizedBox(height: 5,),
+
+                          Text(
+                            widget.event.getPocNumber()
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  
+
+                  SizedBox(
+                    height: 20,
+                  )
+                ]
+              : [
+                  Container()
+                ]
+            )
             ..add(
               (_showRegistrationButton)
               ? // register button

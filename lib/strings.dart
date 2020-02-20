@@ -144,6 +144,9 @@ class Strings {
   /// The message to display when there are no registered events for a user
   static const noRegEvents = "You have not paid for any event yet.";
 
+  /// The error message when the poc cannot be called
+  static const callError = "Cannot call number.";
+
   /// The title of the collapsed sheet
   static const collapsedSheetTitle = "Pass";
 
@@ -158,6 +161,9 @@ class Strings {
 
   /// The title of the speakers section
   static const speakerSectionTitle = "SPEAKER";
+
+  /// The title of the POC section
+  static const pocSectionTitle = "POINT OF CONTACT";
 
   /// the title for the events for all departments
   static const eventsForAll = "For All";

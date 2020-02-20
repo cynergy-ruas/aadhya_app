@@ -16,6 +16,8 @@ class Credits extends StatelessWidget {
           ),
         ),
 
+        SizedBox(height: 10,),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

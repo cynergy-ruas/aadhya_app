@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 
 ThemeData dwimayTheme = ThemeData(
   // The background color for major parts of the app (toolbars, tab bars, etc).
