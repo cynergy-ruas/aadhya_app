@@ -143,17 +143,17 @@ exports.notifyUpdatedEvent = functions.firestore.document("/events/{docId}")
         // logging
         console.log(`sending notification for event ${eventID}`);
         
-        // constructing the notification payload
+        // constructing the notification payload for android
         const payload = constructNotificationPayload({
             title: "Update!",
             body: `There is a change regarding the event ${eventName}`,
             data: {
                 eventID: eventID
             },
-            topic: eventID
+            topic: eventID,
         });
         
-        // sending the notification
+        // sending the notification for android and ios
         return admin.messaging().send(payload)
         .then((response) => {
             console.log(`sent event ${eventID} update notification`);
@@ -367,36 +367,53 @@ async function updateDataForUser({emailid, eventCode, registrationId, answerList
  * @param data The data of the notification.
  * @param topic The topic to send to the notification to.
  */
-function constructNotificationPayload({title, body, data, topic, condition}) {
+function constructNotificationPayload({title, body, data, topic, condition, ios}) {
 
     // checking if topic and token both are given at the same time.
     // if it so, throw an error.
     if (topic !== undefined && condition !== undefined) 
         throw new Error("topic and condition both cannot be specified at the same time.");
-    
-    // defining setting for sending notification to android devices
-    const androidSettings = {
-        notification: {
-            click_action: "FLUTTER_NOTIFICATION_CLICK"
-        }
-    }
 
     // adding title and body to data field so that `onResume` and `onLaunch` in 
     // the app works
     data.title = title;
     data.body = body;
     
-    // the body of the notification
-    const payload = {
+    // defining setting for sending notification to android devices
+    const androidSettings = {
         notification: {
             title: title,
-            body: body
+            body: body,
+            click_action: "FLUTTER_NOTIFICATION_CLICK"
         },
+        data: data
+    }
 
-        data: data,
+    // defining settings for sending notifications to iOS devices
+    const iosSettings = {
+        payload: {
+            headers: {
+                "apns-priority": 10
+            },
+            aps: {
+                alert: {
+                    title: title,
+                    body: body
+                }
+            },
 
+            data: data
+        }
+    }
+    
+    // the body of the notification
+    const payload = {
+        apns: iosSettings,
         android: androidSettings
     }
+
+    // adding ios settings if needed
+    
 
 
     // adding the topic or token, depending on what is given.
