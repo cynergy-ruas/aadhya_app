@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
     return BackendProvider(
       // config file is not added in source control
       townscriptAPIToken: config.townscriptAPIToken,
-      onMessage: (BuildContext context, Map<String, dynamic> message) => 
-        NotificationCard(message: message,),
+      onMessage: (BuildContext context, Announcement announcement) => 
+        NotificationCard(announcement: announcement,),
 
       child: MaterialApp(
         title: 'Aadhya',

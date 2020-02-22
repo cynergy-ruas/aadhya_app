@@ -1,12 +1,13 @@
+import 'package:dwimay_backend/dwimay_backend.dart';
 import 'package:flutter/material.dart';
 
 /// Widget that describes how a notification should look like
 class NotificationCard extends StatelessWidget {
 
   /// The data of the notification
-  final Map<String, dynamic> message;
+  final Announcement announcement;
 
-  NotificationCard({@required this.message});
+  NotificationCard({@required this.announcement});
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +21,10 @@ class NotificationCard extends StatelessWidget {
           child: ListTile(
             contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             title: Text(
-              message['notification']['title'],
+              announcement.title,
             ),
             subtitle: Text(
-              message['notification']['body'],
+              announcement.body,
             ),
           ),
         ),
