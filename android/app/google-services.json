@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "278433410224",
+    "firebase_url": "https://techfest-e5c76.firebaseio.com",
+    "project_id": "techfest-e5c76",
+    "storage_bucket": "techfest-e5c76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278433410224:android:ef71da3c0dcab665005f75",
+        "android_client_info": {
+          "package_name": "com.example.example"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "278433410224-6076p3a8ai9ebg874gd54v95v32mtsrg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHPCsbBVOXq3FP0jzq6u31CjNhpd8JmXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "278433410224-6076p3a8ai9ebg874gd54v95v32mtsrg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278433410224:android:8b3bf25b60cb7c39005f75",
+        "android_client_info": {
+          "package_name": "io.github.cynergy.dwimay_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "278433410224-6076p3a8ai9ebg874gd54v95v32mtsrg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHPCsbBVOXq3FP0jzq6u31CjNhpd8JmXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "278433410224-6076p3a8ai9ebg874gd54v95v32mtsrg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

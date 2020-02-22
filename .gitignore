@@ -74,7 +74,4 @@
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 # google-services file
-google-services.json
-
-# townscript api token file
-config.dart
+# google-services.json
