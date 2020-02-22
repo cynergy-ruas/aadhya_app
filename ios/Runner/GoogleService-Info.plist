@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>278433410224-eqo71ku68o47ij926clk3guq3ssk372t.apps.googleusercontent.com</string>
+	<string>278433410224-cn6ibaag8ckcdb5eg1nc9n0g6uhsa2i6.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.278433410224-eqo71ku68o47ij926clk3guq3ssk372t</string>
+	<string>com.googleusercontent.apps.278433410224-cn6ibaag8ckcdb5eg1nc9n0g6uhsa2i6</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBfg8m3oLQGQsxHIKVTK6whMl1V-OhgzAM</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.aadhyaApp</string>
+	<string>io.github.cynergy.dwimayApp</string>
 	<key>PROJECT_ID</key>
 	<string>techfest-e5c76</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:278433410224:ios:95ec6bb55be48485005f75</string>
+	<string>1:278433410224:ios:1fde55ce9fec8bae005f75</string>
 	<key>DATABASE_URL</key>
 	<string>https://techfest-e5c76.firebaseio.com</string>
 </dict>
