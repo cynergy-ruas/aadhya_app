@@ -30,6 +30,13 @@
             {
               "client_id": "278433410224-6076p3a8ai9ebg874gd54v95v32mtsrg.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "278433410224-5u26f0k3gjc800kp165a9sanq3e5mpic.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dwimay.backend"
+              }
             }
           ]
         }
@@ -37,7 +44,7 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:278433410224:android:8b3bf25b60cb7c39005f75",
+        "mobilesdk_app_id": "1:278433410224:android:bf31686755d94bf3005f75",
         "android_client_info": {
           "package_name": "io.github.cynergy.dwimay_app"
         }
@@ -59,6 +66,13 @@
             {
               "client_id": "278433410224-6076p3a8ai9ebg874gd54v95v32mtsrg.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "278433410224-5u26f0k3gjc800kp165a9sanq3e5mpic.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dwimay.backend"
+              }
             }
           ]
         }
