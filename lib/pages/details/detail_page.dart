@@ -147,7 +147,7 @@ class _DetailPageState extends State<DetailPage> {
                   pass: widget.pass,
                   passEventNames: widget.passEventNames,
                   heroTag: _heroTag,
-                  headerHeight: headerHeight,
+                  headerHeight: headerHeight + ((MediaQuery.of(context).size.height <= 580) ? 10 : 0),
                   index: _index,
                 ),
               ),

@@ -22,9 +22,11 @@ class AboutDescription extends StatelessWidget {
         SizedBox(height: 20,),
 
         // the about content
-        Text(
-          Strings.aboutContent,
-          style: Theme.of(context).textTheme.body1,
+        RichText(
+          text: TextSpan(
+            text: Strings.aboutContent,
+            style: Theme.of(context).textTheme.body1,
+          ),
         ),
 
         // gap

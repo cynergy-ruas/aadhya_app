@@ -128,6 +128,7 @@ class _ListCardState extends State<ListCard> {
               child: Text(
                 widget.event?.name ?? widget.pass.name,
                 style: Style.titleTextStyle,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
 
@@ -197,9 +198,11 @@ class _ListCardState extends State<ListCard> {
           ),
 
           // venue
-          Text(
-            "Venue: " + widget.event.venue,
-            style: Style.smallTextStyle,
+          RichText(
+            text: TextSpan(
+              text: "Venue: " + widget.event.venue,
+              style: Style.smallTextStyle
+            ),
           ),
 
           // gap

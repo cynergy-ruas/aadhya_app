@@ -21,9 +21,11 @@ class ThemeDescription extends StatelessWidget {
         SizedBox(height: 20,),
 
         // the fest theme description
-        Text(
-          Strings.festThemeDescription,
-          style: Theme.of(context).textTheme.body1
+        RichText(
+          text: TextSpan(
+            text: Strings.festThemeDescription,
+            style: Theme.of(context).textTheme.body1
+          ),
         ),
 
         // gap

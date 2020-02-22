@@ -20,6 +20,14 @@ class BuildButton extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    TextStyle buttonTextStyle = Style.buttonTextStyle;
+
+    if (MediaQuery.of(context).size.height <= 580) {
+      buttonTextStyle = buttonTextStyle.copyWith(
+        fontSize: 12
+      );
+    }
+
     return RaisedButton(
       elevation: 5.0,
       onPressed: onPressed,
@@ -28,10 +36,12 @@ class BuildButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       color: Color(0xff24213B),
-      child: Text(
-        data,
-        style: Style.buttonTextStyle,
-      ),
+      child: RichText(
+        text: TextSpan(
+          text: data,
+          style: buttonTextStyle,
+        ),
+      )
     );
   }
 }

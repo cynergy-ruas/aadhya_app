@@ -44,72 +44,72 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     
     // the scaffold
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
 
-        // the bottom nav bar
-        bottomNavigationBar: Container( // adding a shadow around the nav bar
-          height: 48,
-          
+      // the bottom nav bar
+      bottomNavigationBar: Container( // adding a shadow around the nav bar
+        height: 48,
+        
 
-          // the actual nav bar
-          child: BottomNavigationBar(
-            // the background color
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        // the actual nav bar
+        child: BottomNavigationBar(
+          // the background color
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
-            // the type of the bar
-            type: BottomNavigationBarType.fixed,
+          // the type of the bar
+          type: BottomNavigationBarType.fixed,
 
-            // the index of the highlighted item
-            currentIndex: _currentPage,
+          // the index of the highlighted item
+          currentIndex: _currentPage,
 
-            // theme of unselected icon
-            unselectedIconTheme: IconThemeData(
-              color: Colors.grey,
+          // theme of unselected icon
+          unselectedIconTheme: IconThemeData(
+            color: Colors.grey,
+          ),
+
+          // the icons in the nav bar
+          items: <BottomNavigationBarItem> [
+
+            // icon for the about page
+            BottomNavigationBarItem(
+              icon: Icon(Icons.info),
+              title: Container(),
             ),
 
-            // the icons in the nav bar
-            items: <BottomNavigationBarItem> [
+            // the icon for the events page
+            BottomNavigationBarItem(
+              icon: Icon(Icons.event),
+              title: Container(),
+            ),
 
-              // icon for the about page
-              BottomNavigationBarItem(
-                icon: Icon(Icons.info),
-                title: Container(),
-              ),
+            // the icon for the announcements page
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications),
+              title: Container(),
+            ),
 
-              // the icon for the events page
-              BottomNavigationBarItem(
-                icon: Icon(Icons.event),
-                title: Container(),
-              ),
+            // the icon for the faq page
+            BottomNavigationBarItem(
+              icon: Icon(Icons.question_answer),
+              title: Container()
+            )
+          ],
 
-              // the icon for the announcements page
-              BottomNavigationBarItem(
-                icon: Icon(Icons.notifications),
-                title: Container(),
-              ),
-
-              // the icon for the faq page
-              BottomNavigationBarItem(
-                icon: Icon(Icons.question_answer),
-                title: Container()
-              )
-            ],
-
-            // defining what to do when a tab in the nav bar is tapped
-            onTap: (int index) {
-              setState(() {
-                // setting the [_currentPage] to the index of the tapped tab
-                _currentPage = index;
-              });
-            },
-          ),
+          // defining what to do when a tab in the nav bar is tapped
+          onTap: (int index) {
+            setState(() {
+              // setting the [_currentPage] to the index of the tapped tab
+              _currentPage = index;
+            });
+          },
         ),
+      ),
 
-        // the body of the app is wrapped in a Bottom sheet widget 
-        // called [SlidingUpPanel]. This widget displays the list
-        // of registered events if the user has logged in.
-        body: SlidingUpPanel(
+      // the body of the app is wrapped in a Bottom sheet widget 
+      // called [SlidingUpPanel]. This widget displays the list
+      // of registered events if the user has logged in.
+      body: SafeArea(
+        child: SlidingUpPanel(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(14.0),
             topRight: Radius.circular(14.0)
@@ -170,8 +170,8 @@ class _MainPageState extends State<MainPage> {
 
           // setting the parallax effect
           parallaxEnabled: true,
-        )
-      ),
+        ),
+      )
     );
   }
 }

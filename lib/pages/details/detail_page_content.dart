@@ -86,6 +86,7 @@ class _DetailPageContentsState extends State<DetailPageContents> {
           title: Text(
             widget.event?.name ?? widget.pass.name,
             style: Style.titleTextStyle,
+            textAlign: TextAlign.center,
           ),
 
           subtitle: (! _isPass)

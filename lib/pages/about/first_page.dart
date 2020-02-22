@@ -49,8 +49,11 @@ class _FirstPageState extends State<FirstPage> {
                   Expanded(child: Container(),), 
                   CountdownTimer(
                     endTime: festDate.millisecondsSinceEpoch,
-                    textStyle: TextStyle(fontSize: 30, color: Theme.of(context).primaryColor),
-                    daysSymbol: "\t\t",
+                    textStyle: TextStyle(
+                      fontSize: (MediaQuery.of(context).size.height <= 580) ? 26 : 30,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    daysSymbol: "\t" + ((MediaQuery.of(context).size.height <= 580) ? "" : "\t"),
                     hoursSymbol: ":",
                     secSymbol: "",
                     minSymbol: ":",
