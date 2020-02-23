@@ -64,7 +64,7 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
             )
           ).then((_) => 
             // removing the announcement from the pool
-            BackendProvider.of<NotificationBloc>(context).removeFromPool(index: widget.index)
+            BackendProvider.of<NotificationBloc>(context).removeFromPool(announcement: widget.announcement)
           );
 
           
@@ -119,7 +119,7 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
 
       // action to perform when item is dismissed
       onDismissed: (DismissDirection direction) {
-        BackendProvider.of<NotificationBloc>(context).removeFromPool(index: widget.index);
+        BackendProvider.of<NotificationBloc>(context).removeFromPool(announcement: widget.announcement);
       }
     );
   }
