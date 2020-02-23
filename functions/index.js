@@ -378,6 +378,9 @@ function constructNotificationPayload({title, body, data, topic, condition, ios}
     // the app works
     data.title = title;
     data.body = body;
+
+    // adding id
+    data.id = (Date.now() + Math.random()).toString();
     
     // defining setting for sending notification to android devices
     const androidSettings = {
