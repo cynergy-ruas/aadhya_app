@@ -48,8 +48,6 @@ class _MainPageState extends State<MainPage> {
 
       // the bottom nav bar
       bottomNavigationBar: Container( // adding a shadow around the nav bar
-        height: 48,
-        
 
         // the actual nav bar
         child: BottomNavigationBar(
