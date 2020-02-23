@@ -193,7 +193,7 @@ class _DetailPageContentsState extends State<DetailPageContents> {
                         mini: true,
                         // iconSize: 20,
                         onPressed: () async {
-                          String phoneNumber = "tel:" + widget.event.getPocNumber();
+                          String phoneNumber = "tel:" + widget.event.getPocNumber().replaceAll(new RegExp(r"\s+\b|\b\s"), "");
                           if (await canLaunch(phoneNumber))
                             await launch(phoneNumber);
                           else

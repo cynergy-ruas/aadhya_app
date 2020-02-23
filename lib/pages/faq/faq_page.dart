@@ -79,7 +79,7 @@ class FAQPage extends StatelessWidget {
                           mini: true,
                           // iconSize: 20,
                           onPressed: () async {
-                            String phoneNumber = "tel:93401 40230";
+                            String phoneNumber = "tel:+919340140230";
                             if (await canLaunch(phoneNumber))
                               await launch(phoneNumber);
                             else
