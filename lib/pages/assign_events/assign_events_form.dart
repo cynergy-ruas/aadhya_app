@@ -69,6 +69,7 @@ class AssignEventsFormState extends State<AssignEventsForm> {
       ? [
           Department.AerospaceAndAutomotive.name,
           Department.All.name,
+          Department.Civil.name,
           Department.ComputerScience.name,
           Department.Design.name,
           Department.ElectricAndElectronics.name,
