@@ -25,6 +25,15 @@ exports.updateClearance = functions.https.onCall(async (data, context) => {
 
     console.log(`changing clearance for ${data.email} to ${data.clearance}`);
 
+    // checking if the user is attempting to change his own clearance level
+    if (context.auth.token.email === data.email) {
+        console.log(`Attempting to change one's own clearance. Aborting.`);
+        throw new functions.https.HttpsError(
+            'invalid-argument',
+            "Cannot change one's own clearance. Aborted."
+        );
+    }
+
     // getting the email of the user who's clearance should be updated
     const email = data.email;
 
