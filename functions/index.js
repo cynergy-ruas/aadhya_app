@@ -296,7 +296,7 @@ async function checkAndCreateUserDocument({emailid}) {
         await db.collection("users").doc(emailid).create({
             regEvents: [],
             regEventIds: [],
-            passes: [],
+            passes: {},
         });
     }
     catch (err) {
