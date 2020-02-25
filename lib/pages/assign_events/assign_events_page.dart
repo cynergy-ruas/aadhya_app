@@ -55,13 +55,65 @@ class _AssignEventsState extends State<AssignEvents> {
                         child: EventLoader(
                           beginLoad: true,
                           onLoading: Center(child: LoadingWidget(),),
-                          onLoaded: (List<Event> events, List<Pass> passes) => 
-                            AssignEventsForm(
-                              key: _formKey,
-                              events: events,
-                              onSaved: (String email, String eventID) =>
-                                _onSaved(context, email, eventID),
-                          ),
+                          onLoaded: (List<Event> events, List<Pass> passes) {
+                            if (User.instance.getClearanceLevel() > 1) {
+                              return AssignEventsForm(
+                                key: _formKey,
+                                events: events,
+                                onSaved: (String email, String eventID) =>
+                                  _onSaved(context, email, eventID),
+                              );
+                            }
+                            else {
+                              Event event = events.firstWhere((event) => event.id == User.instance.getEventId(), orElse: () => null);
+
+                              if (event != null) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Assigning user for event: " + event.name,
+                                      style: Theme.of(context).textTheme.subhead.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+
+                                    // gap
+                                    SizedBox(height: 20,),
+
+                                    // the form
+                                    AssignEventsForm(
+                                      key: _formKey,
+                                      events: events,
+                                      onSaved: (String email, String eventID) =>
+                                        _onSaved(context, email, eventID),
+                                    )
+                                  ],
+                                );
+                              }
+                              
+                              // displaying error text
+                              return RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  text: Strings.level1ProfileErrorHeader,
+                                  style: Theme.of(context).textTheme.subtitle.copyWith(
+                                    fontWeight: FontWeight.normal,             
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: Strings.level1ProfileErrorSubtitle,
+                                      style:  Theme.of(context).textTheme.headline.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.underline,
+                                        height: 1.5
+                                      ),
+                                    )
+                                  ]
+                                ),
+                              );
+                            }
+                          }
                         )
                       ),
                     ),

@@ -149,17 +149,44 @@ class _QrScanPageState extends State<QrScanPage> {
         ..addAll(
           // if no event was selected
           (_eventid == null)
-          ? [
-              // message that prompts member to select an event first
-              Expanded(
-                child: Center(
-                  child: Text(
-                    Strings.noEventSelected,
-                    style: Theme.of(context).textTheme.body2,
+          ? 
+            (User.instance.getClearanceLevel() == 1)
+            ? [
+                Expanded(
+                  child: Center(
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: Strings.level1ProfileErrorHeader,
+                        style: Theme.of(context).textTheme.subtitle.copyWith(
+                          fontWeight: FontWeight.normal,             
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: Strings.level1ProfileErrorSubtitle,
+                            style:  Theme.of(context).textTheme.headline.copyWith(
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                              height: 1.5
+                            ),
+                          )
+                        ]
+                      ),
+                    ),
                   ),
-                ),
-              )
-            ]
+                )
+              ]
+            : [
+                // message that prompts member to select an event first
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      Strings.noEventSelected,
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                  ),
+                )
+              ]
 
           : [
               // scanner

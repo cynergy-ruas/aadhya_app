@@ -62,7 +62,12 @@ class ToolsFAB extends StatelessWidget {
                   onPressed: onClearanceModifierButtonPressed,
                 ),
               ),
-
+          ]
+          : []
+        )
+        ..addAll(
+          (User.instance.getClearanceLevel() >= 1)
+          ? [
               // button for assigning events to coordinators / volunteers
               UnicornButton(
                 currentButton: FloatingActionButton(
@@ -74,8 +79,8 @@ class ToolsFAB extends StatelessWidget {
                   mini: true,
                   onPressed: onAssignEventsButtonPressed,
                 ),
-              )     
-          ]
+              )
+            ]
           : []
         ),
       ),

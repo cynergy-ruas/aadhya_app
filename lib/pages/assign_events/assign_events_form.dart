@@ -43,41 +43,46 @@ class AssignEventsFormState extends State<AssignEventsForm> {
     // initializing the controller
     _eventsController = TextEditingController();
 
-    // getting the event names
-    eventNames = widget.events.where(
-      (event) {
-        // if the user is a level 3 or above user
-        if (User.instance.getClearanceLevel() > 2)
-          return true;
-        
-        // if the user is a level 2 user, only return the events
-        // of that user's department
-        if (User.instance.getClearanceLevel() == 2 && 
-            (User.instance.getEventId() == event.department || 
-            (event.department == Department.All.id && User.instance.getEventId() != null)))
-          return true;
+    if (User.instance.getClearanceLevel() == 1) {
+      // setting the event id to the coordinators event
+      _eventid = User.instance.getEventId();
 
-        // else return false
-        return false; 
-      }
-    )
-    .map((event) => event.name)
-    .toList()
-    // adding the departments if the user is of a high clearance level
-    ..addAll(
-      (User.instance.getClearanceLevel() > 2) 
-      ? [
-          Department.AerospaceAndAutomotive.name,
-          Department.All.name,
-          Department.Civil.name,
-          Department.ComputerScience.name,
-          Department.Design.name,
-          Department.ElectricAndElectronics.name,
-          Department.Mechanical.name,
-        ]
-      : []
-    );
+    } else {
+      // getting the event names
+      eventNames = widget.events.where(
+        (event) {
+          // if the user is a level 3 or above user
+          if (User.instance.getClearanceLevel() > 2)
+            return true;
+          
+          // if the user is a level 2 user, only return the events
+          // of that user's department
+          if (User.instance.getClearanceLevel() == 2 && 
+              (User.instance.getEventId() == event.department || 
+              (event.department == Department.All.id && User.instance.getEventId() != null)))
+            return true;
 
+          // else return false
+          return false; 
+        }
+      )
+      .map((event) => event.name)
+      .toList()
+      // adding the departments if the user is of a high clearance level
+      ..addAll(
+        (User.instance.getClearanceLevel() > 2) 
+        ? [
+            Department.AerospaceAndAutomotive.name,
+            Department.All.name,
+            Department.Civil.name,
+            Department.ComputerScience.name,
+            Department.Design.name,
+            Department.ElectricAndElectronics.name,
+            Department.Mechanical.name,
+          ]
+        : []
+      );
+    }
   }
 
   @override
@@ -115,90 +120,98 @@ class AssignEventsFormState extends State<AssignEventsForm> {
                 onSaved: (String value) => _emailid = value.trim(),
               ),
             ),
+          ]
+          ..addAll(
+            (User.instance.getClearanceLevel() == 1)
+            ? [
+                // gap
+                SizedBox(height: 40,),
+              ]
+            : [
+                // gap
+                SizedBox(height: 40,),
 
-            // gap
-            SizedBox(height: 40,),
-
-            // title of the "choose clearance level" section
-            Text(
-              Strings.eventFormFieldTitle,
-              style: Theme.of(context).textTheme.subhead,
-            ),
-
-            // gap
-            SizedBox(height: 20,),
-
-            // Suggestions field for events
-            Container(
-              decoration: TextFormFieldShadow(),
-              child: TypeAheadFormField<String>(
-                direction: AxisDirection.up,
-                // configuring the field
-                textFieldConfiguration: TextFieldConfiguration(
-                  decoration: InputDecoration(
-                    hintText: Strings.eventsFieldHint,
-                  ),
-                  style: Theme.of(context).textTheme.body1,
-                  controller: _eventsController
-                ),
-                
-                suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                // title of the "choose event" section
+                Text(
+                  Strings.eventFormFieldTitle,
+                  style: Theme.of(context).textTheme.subhead,
                 ),
 
-                // used to get the suggestions from the string user has 
-                // typed
-                suggestionsCallback: (String pattern) =>
-                  eventNames.where(
-                    (names) => names.toLowerCase().contains(pattern.toLowerCase())
-                  )
-                  .toList(),
+                // gap
+                SizedBox(height: 20,),
 
-                // used to build the UI for each suggestion
-                itemBuilder: (BuildContext context, String suggestion) =>
-                  ListTile(
-                    title: Text(
-                      suggestion,
-                      style: TextStyle(color: Colors.black),
+                // Suggestions field for events
+                Container(
+                  decoration: TextFormFieldShadow(),
+                  child: TypeAheadFormField<String>(
+                    direction: AxisDirection.up,
+                    // configuring the field
+                    textFieldConfiguration: TextFieldConfiguration(
+                      decoration: InputDecoration(
+                        hintText: Strings.eventsFieldHint,
+                      ),
+                      style: Theme.of(context).textTheme.body1,
+                      controller: _eventsController
                     ),
-                  ),
-                
-                // Used to build the UI when no matching suggestion is found
-                noItemsFoundBuilder: (BuildContext context) => 
-                  ListTile(
-                    title: Text(
-                      Strings.noEventsFound,
-                      style: TextStyle(color: Colors.grey),
+                    
+                    suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
                     ),
+
+                    // used to get the suggestions from the string user has 
+                    // typed
+                    suggestionsCallback: (String pattern) =>
+                      eventNames.where(
+                        (names) => names.toLowerCase().contains(pattern.toLowerCase())
+                      )
+                      .toList(),
+
+                    // used to build the UI for each suggestion
+                    itemBuilder: (BuildContext context, String suggestion) =>
+                      ListTile(
+                        title: Text(
+                          suggestion,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    
+                    // Used to build the UI when no matching suggestion is found
+                    noItemsFoundBuilder: (BuildContext context) => 
+                      ListTile(
+                        title: Text(
+                          Strings.noEventsFound,
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+
+                    // defines what to do when a suggestion is tapped
+                    onSuggestionSelected: (String suggestion) => 
+                      _eventsController.text = suggestion,
+
+                    // validator
+                    validator: (String selected) {
+                      if (selected.isEmpty) {
+                        return Strings.eventsFieldEmpty;
+                      }
+
+                      if (eventNames.where((name) => name == selected).length == 0) {
+                        return Strings.notValidEvent;
+                      }
+
+                      return null;
+                    },
+
+                    // defines what to do when the form is saved
+                    onSaved: (String value) =>
+                      _eventid = widget.events.firstWhere(
+                        (event) => event.name == value,
+                        orElse: () => null,
+                      )?.id ?? DepartmentExtras.getIdFromName(value),
+
                   ),
-
-                // defines what to do when a suggestion is tapped
-                onSuggestionSelected: (String suggestion) => 
-                  _eventsController.text = suggestion,
-
-                // validator
-                validator: (String selected) {
-                  if (selected.isEmpty) {
-                    return Strings.eventsFieldEmpty;
-                  }
-
-                  if (eventNames.where((name) => name == selected).length == 0) {
-                    return Strings.notValidEvent;
-                  }
-
-                  return null;
-                },
-
-                // defines what to do when the form is saved
-                onSaved: (String value) =>
-                  _eventid = widget.events.firstWhere(
-                    (event) => event.name == value,
-                    orElse: () => null,
-                  )?.id ?? DepartmentExtras.getIdFromName(value),
-
-              ),
-            ),
-          ],
+                ),
+              ]
+          ),
         ),
       ),
     );
