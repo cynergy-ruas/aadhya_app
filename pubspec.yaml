@@ -70,6 +70,7 @@ flutter:
     - assets/images/multiverse_pass.png
     - assets/images/ultron_pass.png
     - assets/images/universe_pass.png
+    - assets/images/antman_pass.png
     - assets/svg/fest_logo.svg
 
   fonts:

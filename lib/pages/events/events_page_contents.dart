@@ -187,6 +187,8 @@ class _EventsPageContentsState extends State<EventsPageContents> {
                 assetPath += "multiverse_pass.png";
               else if (widget.passes[index].name.toLowerCase().contains("infinity"))
                 assetPath += "infinity_pass.png";
+              else if (widget.passes[index].name.toLowerCase().contains("antman"))
+                assetPath += "antman_pass.png";
               else
                 assetPath += "events_background.jpg";
 
