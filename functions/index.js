@@ -55,6 +55,14 @@ exports.updateClearance = functions.https.onCall(async (data, context) => {
             });
         }
         const oldClearance = (user.customClaims === undefined) ? -1 : user.customClaims.clearance;
+
+        if (context.auth.token.clearance < oldClearance) {
+            console.log("Cannot change the clearance level of a higher privileged user.");
+            throw new functions.https.HttpsError(
+                'invalid-argument',
+                "Cannot change the clearance level of a higher privileged user."
+            );
+        }
         
         // getting the claims. The claims are reset if the new clearance level
         // is lower than the old clearance level.
@@ -113,6 +121,15 @@ exports.assignEventsToUser = functions.https.onCall(async (data, context) => {
                         `Cannot assign level 1 user to events: ${data.eventID}`
                     );
                 }
+
+            // checking if request is trying to assign event(s) to a user with a higher clearance level
+            if (claims.clearance > context.auth.token.clearance) {
+                console.log("Cannot assign event(s) to a user of a higher clearance level.");
+                throw new functions.https.HttpsError(
+                    'invalid-argument',
+                    "Cannot assign event(s) to a user of a higher clearance level"
+                );
+            }
             
             // assigning event
             claims.eventID = data.eventID;
