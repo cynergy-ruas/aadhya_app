@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dwimay/config.dart';
 import 'package:dwimay/pages/events/search_events_page.dart';
 import 'package:dwimay/strings.dart';
 import 'package:dwimay/widgets/dot_indicator_widget.dart';
@@ -120,13 +121,12 @@ class _EventsPageContentsState extends State<EventsPageContents> {
                     // the following are the events per department
                     ..addAll(_eventsForDepartment(department: Department.All, displayName: Strings.eventsForAll))
                     ..addAll(_eventsForDepartment(department: Department.AerospaceAndAutomotive, displayName: Strings.aeroAndAuto))
-                    ..addAll(_eventsForDepartment(department: Department.ComputerScience, displayName: Strings.cse))
                     ..addAll(_eventsForDepartment(department: Department.Civil, displayName: Strings.civil))
+                    ..addAll(_eventsForDepartment(department: Department.ComputerScience, displayName: Strings.cse))
                     ..addAll(_eventsForDepartment(department: Department.ElectricAndElectronics, displayName: Strings.electricAndElectronics))
                     ..addAll(_eventsForDepartment(department: Department.Design, displayName: Strings.design))
                     ..addAll(_eventsForDepartment(department: Department.Mechanical, displayName: Strings.mechanical))
-                    ..add(SizedBox(height: 100,))
-                    ,
+                    ..add(SizedBox(height: 100,)),
                   ),
                 ),
               )
@@ -254,7 +254,10 @@ class _EventsPageContentsState extends State<EventsPageContents> {
         itemBuilder: (BuildContext context, int index) {
           return SizedBox(
             width: 150, // constraining the width of the sized box
-            child: CarouselCard(event: events[index],)
+            child: CarouselCard(
+              event: events[index],
+              day: _selected - 1,
+            )
           );
         },
         separatorBuilder: (BuildContext context, int index) => 
@@ -292,22 +295,22 @@ class _EventsPageContentsState extends State<EventsPageContents> {
       Padding(
         padding: const EdgeInsets.only(left: 20.0),
         child: (_events.length > 0) // if there are events, then use a list view
-                ? ListView.separated(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.only(right: 20),
-                    physics: BouncingScrollPhysics(),
-                    itemCount: _events.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                      // the card
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30, right: 10),
-                        child: ListCard(event: _events[index], day: _selected - 1,),
-                      ),
-                    separatorBuilder: (BuildContext context, int index) => 
-                      // gap
-                      SizedBox(height: 10,)
-                  )
-                : Text(Strings.noEventsMessage), // else display a text saying "no events"
+          ? ListView.separated(
+              shrinkWrap: true,
+              padding: EdgeInsets.only(right: 20),
+              physics: BouncingScrollPhysics(),
+              itemCount: _events.length,
+              itemBuilder: (BuildContext context, int index) =>
+                // the card
+                Padding(
+                  padding: const EdgeInsets.only(left: 30, right: 10),
+                  child: ListCard(event: _events[index], day: _selected - 1,),
+                ),
+              separatorBuilder: (BuildContext context, int index) => 
+                // gap
+                SizedBox(height: 10,)
+            )
+          : Text(Strings.noEventsMessage), // else display a text saying "no events"
       ),
 
       // gap
@@ -379,24 +382,45 @@ class _EventsPageContentsState extends State<EventsPageContents> {
 
   /// Filters the events based on day, and sorts them based on time
   List<Event> _filterEvents({@required day}) {
-    return Event.getEventsOfDay(day: _selected, events: widget.events)
-                ..sort((Event a, Event b) {
-                  int indexA = 0;
-                  int indexB = 0;
+    return _getEventsOfDay(_selected - 1, widget.events)
+      ..sort((Event a, Event b) {
+        int indexA = 0;
+        int indexB = 0;
 
-                  // getting the index of the correct element
-                  // in the [Event.datetimes] list. it is calculated
-                  // by checking if the length of the list is more than 1.
-                  // if it is, then the minimum of the current day - 1 (one
-                  // subtracted so that it can be used to index the array)
-                  // and the total length of the list is taken as the index.
-                  if (a.datetimes.length > 1)
-                    indexA = min(a.datetimes.length - 1, day - 1);
-                  
-                  if (b.datetimes.length > 1)
-                    indexB = min(b.datetimes.length - 1, day - 1);
+        // getting the index of the correct element
+        // in the [Event.datetimes] list. it is calculated
+        // by checking if the length of the list is more than 1.
+        // if it is, then the minimum of the current day - 1 (one
+        // subtracted so that it can be used to index the array)
+        // and the total length of the list is taken as the index.
+        if (a.datetimes.length > 1)
+          indexA = min(a.datetimes.length - 1, day - 1);
+        
+        if (b.datetimes.length > 1)
+          indexB = min(b.datetimes.length - 1, day - 1);
 
-                  return a.datetimes[indexA].compareTo(b.datetimes[indexB]);
-                });
+        return a.datetimes[indexA].compareTo(b.datetimes[indexB]);
+      }
+    );
+  }
+
+  /// Gets the events of a day
+  List<Event> _getEventsOfDay(int day, List<Event> events) {
+    List<Event> filteredEvents = List<Event>();
+
+    DateTime date = festDate.add(Duration(days: day));
+
+    for (int i = 0; i < events.length; i++) {
+      Event event = events[i];
+
+      for (int j = 0; j < event.datetimes.length; j++) {
+        if (date == DateTime(event.datetimes[j].year, event.datetimes[j].month, event.datetimes[j].day)) {
+          filteredEvents.add(event);
+          break;
+        }
+      }
+    }
+
+    return filteredEvents;
   }
 }
