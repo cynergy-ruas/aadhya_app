@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dwimay/pages/events/search_events_page.dart';
 import 'package:dwimay/strings.dart';
 import 'package:dwimay/widgets/dot_indicator_widget.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
@@ -60,17 +61,35 @@ class _EventsPageContentsState extends State<EventsPageContents> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
 
-          // the title of the page
           Padding(
-            padding: const EdgeInsets.only(left: 20.0),
-            child: Text(
-              Strings.eventsPageTitle,
-              style: Theme.of(context).textTheme.title,
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              children: <Widget>[
+                // the title of the page
+                Expanded(
+                  child: Text(
+                    Strings.eventsPageTitle,
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                ),
+
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    Icons.search,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SearchEventsPage(
+                        events: widget.events,
+                      )
+                    )
+                  )
+                )
+              ],
             ),
           ),
-
-          // gap
-          SizedBox(height: 10,),
 
           // the tab bar
           Padding(
