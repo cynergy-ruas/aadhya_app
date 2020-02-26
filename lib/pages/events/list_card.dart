@@ -25,7 +25,11 @@ class ListCard extends StatefulWidget {
   /// The hero tag. if [null], the tag will be the [Event] object
   final Object heroTag;
 
-  ListCard({this.event, this.pass, this.day, this.heroTag, this.passEventNames}) :
+  /// Determines whether all the dates of the event has to be used
+  /// in the date string or not
+  final bool useAllDates;
+
+  ListCard({this.event, this.pass, this.day, this.heroTag, this.passEventNames, this.useAllDates = false}) :
     assert((event != null) ^ (pass != null),
            "Both pass and event cannot be given at the same time"),
     assert(pass == null || passEventNames != null, 
@@ -101,6 +105,7 @@ class _ListCardState extends State<ListCard> {
             passEventNames: widget.passEventNames,
             day: widget.day,
             heroTag: _heroTag,
+            useAllDates: widget.useAllDates
           ),
           transitionsBuilder:
               (context, animation, secondaryAnimation, child) =>

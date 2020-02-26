@@ -31,8 +31,12 @@ class DetailPageContents extends StatefulWidget {
   /// The hero tag
   final Object heroTag;
 
+  /// Determines whether all the dates of the event has to be used
+  /// in the date string or not
+  final bool useAllDates;
 
-  DetailPageContents({this.pass, this.event, this.heroTag, this.index, this.passEventNames, @required this.headerHeight}) : 
+
+  DetailPageContents({this.pass, this.event, this.heroTag, this.index, this.passEventNames, @required this.headerHeight, this.useAllDates = false}) : 
     assert((event != null) ^ (pass != null),
            "Both pass and event cannot be given at the same time"),
     assert(pass == null || passEventNames != null, 
@@ -56,6 +60,9 @@ class _DetailPageContentsState extends State<DetailPageContents> {
   /// Boolean that defines whether a pass is being displayed or an event
   bool _isPass;
 
+  /// The date string
+  String _dateString;
+
   @override
   void initState() {
     super.initState();
@@ -72,6 +79,20 @@ class _DetailPageContentsState extends State<DetailPageContents> {
     }
     else {
       _showRegistrationButton = true;
+    }
+
+    // initializing the date string
+    _dateString = "";
+
+    if (! widget.useAllDates) {
+      _dateString = widget.event.formatDate(index: widget.index) + ", " + widget.event.getTime(index: widget.index);
+    } else {
+      for(int i = 0; i < widget.event.datetimes.length; i++) {
+        _dateString += widget.event.formatDate(index: i) + ", " + widget.event.getTime(index: i);
+
+        if (i + 1 != widget.event.datetimes.length)
+        _dateString += ' and ';
+      }
     }
   }
 
@@ -99,7 +120,7 @@ class _DetailPageContentsState extends State<DetailPageContents> {
 
                 MultilineSubtitleData(
                   icon: Icons.alarm,
-                  text: widget.event.formatDate(index: widget.index) + ", " + widget.event.getTime(index: widget.index)
+                  text: _dateString
                 )
               ]
             )

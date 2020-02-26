@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'package:dwimay/config.dart';
 import 'package:dwimay/pages/details/detail_page_content.dart';
 import 'package:flutter/material.dart';
 import 'package:dwimay_backend/dwimay_backend.dart';
@@ -24,7 +24,11 @@ class DetailPage extends StatefulWidget {
   /// The tag for the hero widget
   final Object heroTag;
 
-  DetailPage({this.event, this.pass, this.day, this.heroTag, this.passEventNames}) : 
+  /// Determines whether all the dates of the event has to be used
+  /// in the date string or not
+  final bool useAllDates;
+
+  DetailPage({this.event, this.pass, this.day, this.heroTag, this.passEventNames, this.useAllDates = false}) : 
     assert((event != null) ^ (pass != null),
            "Both pass and event cannot be given at the same time"),
     assert(pass == null || passEventNames != null, 
@@ -73,12 +77,16 @@ class _DetailPageState extends State<DetailPage> {
     _isPass = widget.pass != null;
 
     if (! _isPass) {
-      // calculating the index of the [datetimes] list 
-      // which contain the correct date and time given 
-      // the day of the event (which is relative to the)
-      // first day of the event
+      // identifying the correct index to be used by comparing the fest date with each
+        // of the dates in the list of dates
       if (widget.day != null)
-        _index = min(widget.event.datetimes.length - 1, widget.day); // used to avoid IndexErrors
+        for(int i = 0; i < widget.event.datetimes.length; i++) {
+          DateTime temp = widget.event.datetimes[i];
+          if (DateTime(temp.year, temp.month, temp.day).difference(festDate).inDays == widget.day) {
+            _index = i;
+            break;
+          }
+        }
       else {
         // identifying the correct index to be used by comparing 'now' with each
         // of the dates in the list of dates
@@ -149,6 +157,7 @@ class _DetailPageState extends State<DetailPage> {
                   heroTag: _heroTag,
                   headerHeight: headerHeight + ((MediaQuery.of(context).size.height <= 580) ? 10 : 0),
                   index: _index,
+                  useAllDates: widget.useAllDates,
                 ),
               ),
               

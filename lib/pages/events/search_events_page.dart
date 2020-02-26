@@ -109,7 +109,7 @@ class _SearchEventsPageState extends State<SearchEventsPage> {
                     // the card
                     Padding(
                       padding: const EdgeInsets.only(left: 30, right: 10),
-                      child: ListCard(event: _filteredEvents[index]),
+                      child: ListCard(event: _filteredEvents[index], useAllDates: true,),
                     ),
                   separatorBuilder: (BuildContext context, int index) => 
                     SizedBox(height: 10,),

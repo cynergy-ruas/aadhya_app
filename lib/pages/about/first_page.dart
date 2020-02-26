@@ -1,3 +1,4 @@
+import 'package:dwimay/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_timer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,9 +12,6 @@ class _FirstPageState extends State<FirstPage> {
 
   /// variable that defines whether the countdown should be shown or not
   bool _displayCountDown;
-
-  /// The date of the fest
-  final DateTime festDate = DateTime(2020, 2, 28);
 
   @override
   void initState() {
