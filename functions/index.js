@@ -166,6 +166,9 @@ exports.notifyUpdatedEvent = functions.firestore.document("/events/{docId}")
         // getting the name of the event (name field in document)
         const eventName = docData.name;
 
+        // getting the department of the event
+        const department = docData.department;
+
         // logging
         console.log(`sending notification for event ${eventID}`);
         
@@ -176,7 +179,7 @@ exports.notifyUpdatedEvent = functions.firestore.document("/events/{docId}")
             data: {
                 eventID: eventID
             },
-            topic: eventID,
+            condition: `'${eventID}' in topics || '${department}' in topics`,
         });
         
         // sending the notification for android and ios
